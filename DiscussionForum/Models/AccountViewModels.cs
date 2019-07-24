@@ -79,6 +79,11 @@ namespace DiscussionForum.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name ="User Name")]
+        [StringLength(10, ErrorMessage = "The {0} must be between {2} and 10 characters long.", MinimumLength = 4)]
+        public string LoginName { get; set; }
     }
 
     public class ResetPasswordViewModel

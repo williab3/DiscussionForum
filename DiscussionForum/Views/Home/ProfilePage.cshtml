@@ -1,0 +1,115 @@
+﻿@using DiscussionForum.Custom_Helpers
+@using DiscussionForum.Models
+@using DiscussionForum.Models.ViewModel
+@model DiscussionForum.Models.ViewModel.ProfilePageViewModel
+@{
+	ViewBag.Title = "ProfilePage";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+	<div class="col-md-2 left-sidebar"></div>
+	<div class="col-md-8">
+		<div class="newDiscussion-container">
+			<label for="discussionTitleBox">CREATE A DISCUSSION</label>
+			<div class="text-group">
+				<input type="text" placeholder="Discussion Title" id="discussionTitleBox" />
+				<button type="button" class="btn-primary">
+					<span class="glyphicon glyphicon-plus"></span>
+				</button>
+			</div>
+		</div>
+
+		@*<h2>Profile Page</h2>
+		<ol>
+			<li>Name</li>
+			<li>Friends List</li>
+			<li>Favorite Anime</li>
+			<li><del>Followed Anime</del> </li>
+			<li>Commented discussions </li>
+
+		</ol>*@
+		<div class="feed-container">
+			@foreach (IFeedItem item in Model.AnimeFeed)
+			{
+				if (item.GetType() == typeof(ProfileVewAnime))
+				{
+					ProfileVewAnime Anime = (ProfileVewAnime)item;
+			<div class="feedItem">
+				<a href="@Url.Action("Anime", "Anime", new {Anime.Id })">
+					<div class="media feedItem">
+						<div class="media-left">
+							<img class="media-object" src="@Anime.ImageUrlMedium" alt="...">
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">@Anime.Title_Romaji</h4>
+							<p class="subtitle">@Anime.Title_English</p>
+							<p>@Html.Raw(Anime.Description)</p>
+						</div>
+					</div>
+				</a>
+				@if (Anime.IsFavorite)
+				{
+					<div class="favoriteCheckbox" data-bendo-checked="true" data-bendo-itemId="@Anime.Id"></div>
+				}
+				else
+				{
+					<div class="favoriteCheckbox" data-bendo-checked="" data-bendo-itemId="@Anime.Id"></div>
+				}
+			</div>
+				}
+			}
+		</div>
+		@section scripts{
+			<script>
+				$(".favoriteCheckbox").bendoCheckbox({
+					checkedImagUrl: "/Content/Images/Favorite.png",
+					uncheckedImageUrl: "/Content/Images/UnFavorite.png",
+					uncheckAction: function (args) {
+						console.log("unchecked!! " + args);
+						$.ajax({
+							url: "/Home/FavoriteCheck",
+							method: "Post",
+							data: {
+								animeId: args
+							},
+							success: function (data) {
+								console.log(data);
+							},
+							error: function (data) {
+								alert("Something went wrong!!!");
+							}
+						})
+					},
+					checkAction: function (args) {
+						console.log("unchecked!! " + args);
+						$.ajax({
+							url: "/Home/FavoriteCheck",
+							method: "Post",
+							data: {
+								animeId: args
+							},
+							success: function (data) {
+								console.log("it worked!! " + data);
+							},
+							error: function (data) {
+								alert("Something went wrong checked!!!");
+							}
+						})
+					}
+				});
+			</script>
+			}
+	</div>
+	<div class="col-md-2">
+	</div>
+</div>
+<div id="friendContainer">
+	<label class="friend-title">FRIENDS</label>
+	<div class="friendList">
+		<div>Test 1</div>
+		<div>Test 2</div>
+	</div>
+</div>
+
+

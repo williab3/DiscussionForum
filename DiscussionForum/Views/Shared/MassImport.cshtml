@@ -1,0 +1,45 @@
+﻿@model DiscussionForum.Models.ViewModel.MainAdminViewModel
+<div id="ann">
+	<div class="row">
+		<div class="col-md-12">
+			<h1>Import Results</h1>
+			<div class="col-md-6">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>New Anime Titles</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (string title in Model.NewAnimeTitles)
+						{
+							<tr>
+								<td>@title</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-6">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>New Genres</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (string genre in Model.NewGenres)
+						{
+							<tr>
+								<td>@genre</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+
+			</div>
+
+		</div>
+	</div>
+
+</div>

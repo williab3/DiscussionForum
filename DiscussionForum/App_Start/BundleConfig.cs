@@ -9,7 +9,11 @@ namespace DiscussionForum
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-{version}.js", 
+                        "~/Scripts/jquery.validate.min.js", 
+                        "~/Scripts/jquery.validate.unobtrusive.js", 
+                        "~/Scripts/jquery.unobtrusive-ajax.min.js", 
+                        "~/Scripts/Bendo.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -23,8 +27,9 @@ namespace DiscussionForum
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/Cerulean3.37.css",
+                      "~/Content/site.css",
+                      "~/Content/Bendo.css"));
         }
     }
 }

@@ -1,0 +1,10 @@
+﻿@model DiscussionForum.Models.ViewModel.MainAdminViewModel
+@using DiscussionForum.Models
+<ul id="pendingUpdateList">
+	@foreach (AnimeModel anime in Model.AnimeModels)
+	{
+		Ajax.ActionLink(anime.Title_Romaji, "SeedPopularity", new { anilistID = anime.AnilistId },
+																										new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pendingUpdateList" },
+																										new { @class = "btn btn-info" });
+	}
+</ul>

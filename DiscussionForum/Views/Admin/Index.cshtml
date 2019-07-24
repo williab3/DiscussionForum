@@ -1,0 +1,129 @@
+﻿
+@model DiscussionForum.Models.ViewModel.MainAdminViewModel
+@using DiscussionForum.Custom_Helpers
+@using DiscussionForum.Models
+
+@{
+	ViewBag.Title = "Index";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Administrator</h2>
+
+<div class="btn-group" role="group" aria-label="...">
+	@MyHtml.Button("Import Anime", ButtonType.primary, "ImportAnime", "Admin")
+	@Ajax.ActionLink("Import Updates", "ImportUpdates", null, new AjaxOptions() { UpdateTargetId = "ann", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-info" })
+	@Html.ActionLink(" Seed Popularity", "SeedPopularity", null, new {@class = "btn btn-warning" })
+</div>
+@Ajax.ActionLink("Get Report", "NewsReport", null, new AjaxOptions() {UpdateTargetId= "massImportResults", InsertionMode = InsertionMode.Replace }, new {@class="btn btn-primary" })
+<div class="row">
+	<div class="col-md-12 mass-import-container">
+		@using (Ajax.BeginForm("MassImport", new AjaxOptions() { UpdateTargetId = "massImportResults", InsertionMode = InsertionMode.Replace, HttpMethod = "Post" }))
+		{
+			<h3>Import New Anime</h3>
+			<div style="display: flex">
+				<div class="form-group import-form-group">
+					@Html.LabelFor(m => m.RequestVariables.StartDate)
+					<input type="date" id="RequestVariables_StartDate" name="StartDate" class="form-control" />
+				</div>
+				<div class="form-group import-form-group">
+					@Html.LabelFor(m => m.RequestVariables.EndDate)
+					<input type="date" id="RequestVariables_EndDate" name="EndDate" class="form-control" />
+				</div>
+				<div class="form-group import-form-group">
+					@Html.LabelFor(m => m.RequestVariables.ReleaseStatus)
+					<select id="RequestVariables_ReleaseStatus" name="ReleaseStatus" class="form-control">
+						<option value="">Status</option>
+						<option value="RELEASING">Active</option>
+						<option value="FINISHED">Completed</option>
+						<option value="NOT_YET_RELEASED">Pending Release</option>
+						<option value="CANCELLED">Canceled</option>
+					</select>
+				</div>
+				<div class="form-group import-form-group">
+					@Html.LabelFor(m => m.RequestVariables.Title)
+					@Html.TextBoxFor(m => m.RequestVariables.Title, new { @class = "form-control", placeholder = "Anime Title" })
+				</div>
+			</div>
+			<div>
+				<button type="submit" class="btn btn-primary">Import A Lot!!</button>
+			</div>
+
+		}
+	</div>
+	<div id="massImportResults"></div>
+	@section scripts{
+		@*<script>
+			$("#importButton").click(function () {
+				$.ajax({
+					url: "/Admin/MassImport",
+					type: "Post",
+					data: {
+						Title: $("#RequestVariables_Title").val(),
+						ReleaseStatus: $("#RequestVariables_ReleaseStatus").val(),
+						EndDate: $("#RequestVariables_EndDate").val(),
+						StartDate: $("#RequestVariables_StartDate").val(),
+					},
+					success: function (data) {
+						var container = $("#massImportResults");
+
+					}
+				})
+			});
+		</script>*@
+		}
+</div>
+<div id="ann"></div>
+
+@if (Model == null)
+{
+	<h4>NO</h4>
+}
+else
+{
+	if (Model.DidSeedPopularity)
+	{
+		<p>@Model.PopularityUpdated anime titles have had their popularity updated</p>
+		if (Model.AnimeModels.Count > 0)
+		{
+			<strong>The following titles still need to be updated:</strong>
+			<ul id="pendingUpdateList">
+				@foreach (AnimeModel anime in Model.AnimeModels)
+				{
+					Ajax.ActionLink(anime.Title_Romaji, "SeedPopularity", new { anilistID = anime.AnilistId }, 
+																										new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pendingUpdateList" }, 
+																										new { @class = "btn btn-info" });
+				}
+			</ul>
+		}
+	}
+	else
+	{
+		<div>
+			<p> @Model.NewAnimeTitles.Count() new anime have been added to the database bringing the total number of anime titles to @Model.TotalAnimeInDb</p>
+			@if (Model.NewAnimeTitles.Count > 0)
+			{
+				<strong>The following titles were added to the database:</strong>
+				<ul id="newAnimeList">
+					@foreach (string animeTitle in Model.NewAnimeTitles)
+					{
+						<li>@animeTitle</li>
+					}
+				</ul>
+
+			}
+			<p> @Model.NewGenres.Count() new genres were recorded. The total number of genres that are currently in the database is @Model.TotalGenre </p>
+			@if (Model.NewGenres.Count > 0)
+			{
+				<strong>The following genres have been added to the database:</strong>
+				<ul>
+					@foreach (string genre in Model.NewGenres)
+					{
+						<li>@genre</li>
+					}
+				</ul>
+			}
+		</div>
+
+	}
+}

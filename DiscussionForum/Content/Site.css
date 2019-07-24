@@ -2,6 +2,9 @@
     padding-top: 50px;
     padding-bottom: 20px;
 }
+html,body{
+    height:100%
+}
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
@@ -20,5 +23,113 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    /*max-width: 280px;*/
+}
+.newDiscussion-container {
+    background-color: white;
+    position: fixed;
+    left: 17%;
+    right: 17%;
+    padding-top: 10px;
+}
+.feed-container{
+    margin-top: 75px;
+}
+.subtitle {
+    font-size: small;
+    font-style: italic;
+}
+.left-sidebar {
+    display: flex;
+    -ms-flex-direction: column;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+.left-sidebar-product {
+    -webkit-align-items: center;
+    align-items: center;
+    display: flex;
+    -ms-flex-direction: column;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    margin-top: 10px;
+    border-bottom: 1px solid #eeeeee;
+}
+.left-sidebar-product > img{
+    max-width: 70%
+}
+.left-sidebar-product > strong{
+    width:85%;
+    text-align:center;
+}
+.left-sidebar-product > h5{
+    text-align:center;
+    font-weight:bold;
+    color:blue;
+}
+.carousel-inner > div.item{
+    overflow-y:hidden;
+    height: 300px;
+}
+.carousel-inner > div.item > img{
+    height:500px;
+}
+
+.text-group{
+    display: flex;
+}
+.text-group > input{
+    border-radius: 3px 0px 0px 3px;
+    width: 100%;
+    height: 35px;
+    max-width: 100%;
+}
+.text-group > button {
+    border-radius: 0px 3px 3px 0px;
+}
+.lower-right-container {
+    display: flex;
+    -ms-flex-direction: column-reverse;
+    -webkit-flex-direction: column-reverse;
+    flex-direction: column-reverse;
+    height:100%;
+}
+#friendContainer {
+    position:fixed;
+    right:30px;
+    bottom:10px;
+}
+.friend-title {
+    text-align: center;
+    color: white;
+    background-image: linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5);
+    width: 200px;
+    border-radius: 3px 3px 0px 0px;
+    margin-bottom: 0px;
+}
+
+.friendList {
+    border-width: 0px 2px 2px 2px;
+    border-style: double;
+    border-radius: 0px 0px 3px 3px;
+    padding: 5px;
+    background-color: azure;
+    -moz-box-shadow: 3px -3px 3px inset rgb(134, 134, 130);
+    -webkit-box-shadow: 3px -3px 3px inset rgb(134, 134, 130);
+    box-shadow: 3px -3px 3px inset rgb(134, 134, 130);
+}
+.feedItem {
+    background: linear-gradient(to top, #4bb0ea -100%, #ffffff 28%);
+    margin-top: 5px !important;
+}
+a.feedItem:hover{
+    text-decoration:none !important;
+}
+.import-form-group{
+    margin-right: 15px;
+}
+.mass-import-container{
+    border: 1px solid lightgray;
+    padding: 10px 10px;
+    margin-top: 10px
 }

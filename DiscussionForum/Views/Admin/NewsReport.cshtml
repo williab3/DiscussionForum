@@ -1,0 +1,9 @@
+﻿@model DiscussionForum.Models.ViewModel.MainAdminViewModel
+@using DiscussionForum.Models
+<strong>@Model.ReportItems.Count news report links imported</strong>
+<ul>
+	@foreach (NewAnimeReport report in Model.ReportItems)
+	{
+		<li><a href="@report.InfoUrl">@report.Title</a></li>
+	}
+</ul>

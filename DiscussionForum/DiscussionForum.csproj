@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -18,7 +18,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44395</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -45,16 +45,92 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FSharp.Core, Version=4.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FSharp.Core.4.5.2\lib\net45\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.7.4.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.7.4\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Json.Net, Version=1.0.16.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Json.Net.1.0.16\lib\netstandard2.0\Json.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="JsonSubTypes, Version=1.6.0.0, Culture=neutral, PublicKeyToken=ee75fc290dbc1176, processorArchitecture=MSIL">
+      <HintPath>..\packages\JsonSubTypes.1.6.0\lib\net46\JsonSubTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.4.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.4.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.4.0.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.4.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.6.9.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.6.9\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="ScrapySharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScrapySharp.3.0.0\lib\netstandard2.0\ScrapySharp.dll</HintPath>
+    </Reference>
+    <Reference Include="ScrapySharp.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScrapySharp.3.0.0\lib\netstandard2.0\ScrapySharp.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -72,35 +148,8 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.4\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.4\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -130,72 +179,186 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin">
-      <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Host.SystemWeb">
-      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.0\lib\net451\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security">
-      <HintPath>..\packages\Microsoft.Owin.Security.4.0.0\lib\net451\Microsoft.Owin.Security.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Cookies">
-      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.4.0.0\lib\net451\Microsoft.Owin.Security.Facebook.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Owin.Security.Cookies">
       <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.0\lib\net451\Microsoft.Owin.Security.Cookies.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.Google">
-      <HintPath>..\packages\Microsoft.Owin.Security.Google.4.0.0\lib\net451\Microsoft.Owin.Security.Google.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Twitter">
-      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.4.0.0\lib\net451\Microsoft.Owin.Security.Twitter.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
-      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.4.0.0\lib\net451\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.OAuth">
-      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.0\lib\net451\Microsoft.Owin.Security.OAuth.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APICommunicator.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AnimeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\StoreController.cs" />
+    <Compile Include="Custom Helpers\MyHtml.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906200630552_InitialCreate.cs" />
+    <Compile Include="Migrations\201906200630552_InitialCreate.Designer.cs">
+      <DependentUpon>201906200630552_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906280931592_initilizeDb.cs" />
+    <Compile Include="Migrations\201906280931592_initilizeDb.Designer.cs">
+      <DependentUpon>201906280931592_initilizeDb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906280936001_addFriendsToUser.cs" />
+    <Compile Include="Migrations\201906280936001_addFriendsToUser.Designer.cs">
+      <DependentUpon>201906280936001_addFriendsToUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906280953354_createAnimeTable.cs" />
+    <Compile Include="Migrations\201906280953354_createAnimeTable.Designer.cs">
+      <DependentUpon>201906280953354_createAnimeTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906280956201_createAnimesTable.cs" />
+    <Compile Include="Migrations\201906280956201_createAnimesTable.Designer.cs">
+      <DependentUpon>201906280956201_createAnimesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906280957310_RenameAnimesTable.cs" />
+    <Compile Include="Migrations\201906280957310_RenameAnimesTable.Designer.cs">
+      <DependentUpon>201906280957310_RenameAnimesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906281000272_updateUser_w_FavoriteAnime.cs" />
+    <Compile Include="Migrations\201906281000272_updateUser_w_FavoriteAnime.Designer.cs">
+      <DependentUpon>201906281000272_updateUser_w_FavoriteAnime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906281657233_updateUser_w_LoginName.cs" />
+    <Compile Include="Migrations\201906281657233_updateUser_w_LoginName.Designer.cs">
+      <DependentUpon>201906281657233_updateUser_w_LoginName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906282012156_addDiscussionsTable.cs" />
+    <Compile Include="Migrations\201906282012156_addDiscussionsTable.Designer.cs">
+      <DependentUpon>201906282012156_addDiscussionsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906282037397_updateDiscussion_w_addImageURL.cs" />
+    <Compile Include="Migrations\201906282037397_updateDiscussion_w_addImageURL.Designer.cs">
+      <DependentUpon>201906282037397_updateDiscussion_w_addImageURL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906290718512_updateUser_w_FollowedDiscussions.cs" />
+    <Compile Include="Migrations\201906290718512_updateUser_w_FollowedDiscussions.Designer.cs">
+      <DependentUpon>201906290718512_updateUser_w_FollowedDiscussions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907021300455_updatedAllFeedItems_w_LastUpdated.cs" />
+    <Compile Include="Migrations\201907021300455_updatedAllFeedItems_w_LastUpdated.Designer.cs">
+      <DependentUpon>201907021300455_updatedAllFeedItems_w_LastUpdated.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907051341580_createdLastUpdatedTable.cs" />
+    <Compile Include="Migrations\201907051341580_createdLastUpdatedTable.Designer.cs">
+      <DependentUpon>201907051341580_createdLastUpdatedTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907061937423_updatedLastUpdated_w_NewProperties.cs" />
+    <Compile Include="Migrations\201907061937423_updatedLastUpdated_w_NewProperties.Designer.cs">
+      <DependentUpon>201907061937423_updatedLastUpdated_w_NewProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907062233410_updateAnimeModel_w_RomanjiTitle.cs" />
+    <Compile Include="Migrations\201907062233410_updateAnimeModel_w_RomanjiTitle.Designer.cs">
+      <DependentUpon>201907062233410_updateAnimeModel_w_RomanjiTitle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907062238293_updateAnimeModel_w_ImageUrl_Sizes.cs" />
+    <Compile Include="Migrations\201907062238293_updateAnimeModel_w_ImageUrl_Sizes.Designer.cs">
+      <DependentUpon>201907062238293_updateAnimeModel_w_ImageUrl_Sizes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907062240158_updateAnimeModel_w_Color.cs" />
+    <Compile Include="Migrations\201907062240158_updateAnimeModel_w_Color.Designer.cs">
+      <DependentUpon>201907062240158_updateAnimeModel_w_Color.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907062248164_AddGenresTable.cs" />
+    <Compile Include="Migrations\201907062248164_AddGenresTable.Designer.cs">
+      <DependentUpon>201907062248164_AddGenresTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907062250104_updateAnimeModel_w_Genres.cs" />
+    <Compile Include="Migrations\201907062250104_updateAnimeModel_w_Genres.Designer.cs">
+      <DependentUpon>201907062250104_updateAnimeModel_w_Genres.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907062312386_tweakedGenreModelName.cs" />
+    <Compile Include="Migrations\201907062312386_tweakedGenreModelName.Designer.cs">
+      <DependentUpon>201907062312386_tweakedGenreModelName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907062347424_updateGenres_w_animes.cs" />
+    <Compile Include="Migrations\201907062347424_updateGenres_w_animes.Designer.cs">
+      <DependentUpon>201907062347424_updateGenres_w_animes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907080200061_updateAnimeModel_w_LastUpdatesisNullable.cs" />
+    <Compile Include="Migrations\201907080200061_updateAnimeModel_w_LastUpdatesisNullable.Designer.cs">
+      <DependentUpon>201907080200061_updateAnimeModel_w_LastUpdatesisNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907100247425_updateAnimeModel_w_popularitycoloumn.cs" />
+    <Compile Include="Migrations\201907100247425_updateAnimeModel_w_popularitycoloumn.Designer.cs">
+      <DependentUpon>201907100247425_updateAnimeModel_w_popularitycoloumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907130427563_addNewAnimeReportTable.cs" />
+    <Compile Include="Migrations\201907130427563_addNewAnimeReportTable.Designer.cs">
+      <DependentUpon>201907130427563_addNewAnimeReportTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907130435026_updateNewAnimeReport_w_AnilitIdsArray.cs" />
+    <Compile Include="Migrations\201907130435026_updateNewAnimeReport_w_AnilitIdsArray.Designer.cs">
+      <DependentUpon>201907130435026_updateNewAnimeReport_w_AnilitIdsArray.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907130445077_addBridge4AnimeModel_NewAnimeReport.cs" />
+    <Compile Include="Migrations\201907130445077_addBridge4AnimeModel_NewAnimeReport.Designer.cs">
+      <DependentUpon>201907130445077_addBridge4AnimeModel_NewAnimeReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907130448502_removeBridgeAnimeModel_NewAnimeReport.cs" />
+    <Compile Include="Migrations\201907130448502_removeBridgeAnimeModel_NewAnimeReport.Designer.cs">
+      <DependentUpon>201907130448502_removeBridgeAnimeModel_NewAnimeReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907212149258_addBridgeTable4Users_FavoriteAnime.cs" />
+    <Compile Include="Migrations\201907212149258_addBridgeTable4Users_FavoriteAnime.Designer.cs">
+      <DependentUpon>201907212149258_addBridgeTable4Users_FavoriteAnime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907240513432_testAnimeModel_notInclude_IsFavorite.cs" />
+    <Compile Include="Migrations\201907240513432_testAnimeModel_notInclude_IsFavorite.Designer.cs">
+      <DependentUpon>201907240513432_testAnimeModel_notInclude_IsFavorite.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AnilistModel.cs" />
+    <Compile Include="Models\AnimeGenres.cs" />
+    <Compile Include="Models\AnimeModel.cs" />
+    <Compile Include="Models\AnimeStatsModel.cs" />
+    <Compile Include="Models\Discussion.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\NewAnimeReport.cs" />
+    <Compile Include="Models\ViewModel\AnimeViewModel.cs" />
+    <Compile Include="Models\ViewModel\HomePage_UA.cs" />
+    <Compile Include="Models\ViewModel\MainAdminViewModel.cs" />
+    <Compile Include="Models\ViewModel\ProfilePageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Bendo.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Cerulean3.37.css" />
+    <Content Include="Content\Images\Favorite.png" />
+    <Content Include="Content\Images\UnFavorite.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\Bendo.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.3.1.js" />
-    <Content Include="Scripts\jquery-3.3.1.min.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -235,9 +398,17 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Home\ProfilePage.cshtml" />
+    <Content Include="Views\Anime\Anime.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\SeedPopularity.cshtml" />
+    <Content Include="Views\Admin\NewsReport.cshtml" />
+    <Content Include="Views\Shared\MassImport.cshtml" />
+    <Content Include="Views\Admin\ImportUpdates.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\UserImages\" />
+    <Folder Include="Views\Store\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -249,8 +420,95 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="packages.config" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201906200630552_InitialCreate.resx">
+      <DependentUpon>201906200630552_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906280931592_initilizeDb.resx">
+      <DependentUpon>201906280931592_initilizeDb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906280936001_addFriendsToUser.resx">
+      <DependentUpon>201906280936001_addFriendsToUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906280953354_createAnimeTable.resx">
+      <DependentUpon>201906280953354_createAnimeTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906280956201_createAnimesTable.resx">
+      <DependentUpon>201906280956201_createAnimesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906280957310_RenameAnimesTable.resx">
+      <DependentUpon>201906280957310_RenameAnimesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906281000272_updateUser_w_FavoriteAnime.resx">
+      <DependentUpon>201906281000272_updateUser_w_FavoriteAnime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906281657233_updateUser_w_LoginName.resx">
+      <DependentUpon>201906281657233_updateUser_w_LoginName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906282012156_addDiscussionsTable.resx">
+      <DependentUpon>201906282012156_addDiscussionsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906282037397_updateDiscussion_w_addImageURL.resx">
+      <DependentUpon>201906282037397_updateDiscussion_w_addImageURL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906290718512_updateUser_w_FollowedDiscussions.resx">
+      <DependentUpon>201906290718512_updateUser_w_FollowedDiscussions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907021300455_updatedAllFeedItems_w_LastUpdated.resx">
+      <DependentUpon>201907021300455_updatedAllFeedItems_w_LastUpdated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907051341580_createdLastUpdatedTable.resx">
+      <DependentUpon>201907051341580_createdLastUpdatedTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907061937423_updatedLastUpdated_w_NewProperties.resx">
+      <DependentUpon>201907061937423_updatedLastUpdated_w_NewProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907062233410_updateAnimeModel_w_RomanjiTitle.resx">
+      <DependentUpon>201907062233410_updateAnimeModel_w_RomanjiTitle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907062238293_updateAnimeModel_w_ImageUrl_Sizes.resx">
+      <DependentUpon>201907062238293_updateAnimeModel_w_ImageUrl_Sizes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907062240158_updateAnimeModel_w_Color.resx">
+      <DependentUpon>201907062240158_updateAnimeModel_w_Color.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907062248164_AddGenresTable.resx">
+      <DependentUpon>201907062248164_AddGenresTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907062250104_updateAnimeModel_w_Genres.resx">
+      <DependentUpon>201907062250104_updateAnimeModel_w_Genres.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907062312386_tweakedGenreModelName.resx">
+      <DependentUpon>201907062312386_tweakedGenreModelName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907062347424_updateGenres_w_animes.resx">
+      <DependentUpon>201907062347424_updateGenres_w_animes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907080200061_updateAnimeModel_w_LastUpdatesisNullable.resx">
+      <DependentUpon>201907080200061_updateAnimeModel_w_LastUpdatesisNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907100247425_updateAnimeModel_w_popularitycoloumn.resx">
+      <DependentUpon>201907100247425_updateAnimeModel_w_popularitycoloumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907130427563_addNewAnimeReportTable.resx">
+      <DependentUpon>201907130427563_addNewAnimeReportTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907130435026_updateNewAnimeReport_w_AnilitIdsArray.resx">
+      <DependentUpon>201907130435026_updateNewAnimeReport_w_AnilitIdsArray.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907130445077_addBridge4AnimeModel_NewAnimeReport.resx">
+      <DependentUpon>201907130445077_addBridge4AnimeModel_NewAnimeReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907130448502_removeBridgeAnimeModel_NewAnimeReport.resx">
+      <DependentUpon>201907130448502_removeBridgeAnimeModel_NewAnimeReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907212149258_addBridgeTable4Users_FavoriteAnime.resx">
+      <DependentUpon>201907212149258_addBridgeTable4Users_FavoriteAnime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907240513432_testAnimeModel_notInclude_IsFavorite.resx">
+      <DependentUpon>201907240513432_testAnimeModel_notInclude_IsFavorite.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -270,7 +528,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>63144</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:63144/</IISUrl>
+          <IISUrl>https://localhost:44395/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -284,7 +542,7 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

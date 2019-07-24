@@ -1,31 +1,142 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@using DiscussionForum.Custom_Helpers
+@using DiscussionForum.Models
+@model DiscussionForum.Models.ViewModel.HomePage_UA
+@{
+	ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<div class="row">
+	@* Left Side *@
+	<div class="col-md-2 left-sidebar">
+		<div class="left-sidebar-product">
+			<img class="img-thumbnail" src="https://ae01.alicdn.com/kf/HTB1DCBDQmzqK1RjSZPxq6A4tVXab/DXF-Anime-ONE-PUNCH-MAN-Saitama-Figure-Toys-Saitama-figma-310-575-Genos-Nendoroid-figure-PVC.jpg_640x640.jpg" alt="One Punch Mane">
+			<strong>DXF Anime ONE PUNCH MAN Saitama Figure PVC Model Toy</strong>
+			<h5>$39.99</h5>
+		</div>
+		<div class="left-sidebar-product">
+			<img class="img-thumbnail" src="https://ae01.alicdn.com/kf/HTB1ZH4eV7zoK1RjSZFlq6yi4VXap/39cm-Anime-One-Piece-GK-Monkey-D-Luffy-Gear-fourth-Big-fist-Ver-pvc-Collection-Model.jpg_640x640.jpg" alt="One Peice">
+			<strong>39cm One Piece GK Monkey D Luffy Gear fourth Big fist Model Figure</strong>
+			<h5>$59.99</h5>
+		</div>
+		<div class="left-sidebar-product">
+			<img class="img-thumbnail" src="https://ae01.alicdn.com/kf/HTB1wcoWatfvK1RjSspfq6zzXFXaM/TAAWAA-Japanese-Anime-Black-Clover-Art-Silk-TV-Series-Poster-and-Print-16x24-24x36-inches-Wall.jpg" alt="Black Clover">
+			<strong>Black Clover Art Silk TV Series Poster and Print 16x24 24x36 inches Wall Picture</strong>
+			<h5>$17.99</h5>
+		</div>
+	</div>
+
+	@* Main content *@
+	<div class="col-md-8">
+		@{
+			int animeCoount = Model.AnimeFeed.Count;
+			List<AnimeModel> carouselItem = new List<AnimeModel>();
+
+			do
+			{
+				Random random = new Random();
+				int index = random.Next(0, 9);
+				if (!carouselItem.Contains(Model.AnimeFeed[index]))
+				{
+					carouselItem.Add((AnimeModel)Model.AnimeFeed[index]);
+				}
+			} while (carouselItem.Count < 3);
+
+			<div id="animeCarousel" class="carousel slide" data-ride="carousel">
+				<!-- Indicators -->
+				<ol class="carousel-indicators">
+					<li data-target="#id" data-slide-to="0" class="active"></li>
+					<li data-target="#id" data-slide-to="1"></li>
+					<li data-target="#id" data-slide-to="2"></li>
+				</ol>
+
+				<!-- Wrapper for slides -->
+				<div class="carousel-inner" role="listbox">
+					<div class="item active" style="background-image:linear-gradient(to right,#00000000, @carouselItem[0].Color )">
+						<img alt="First slide" src="@carouselItem[0].ImageUrlLarge">
+						<div class="carousel-caption">
+							<h3>@carouselItem[0].Title_Romaji</h3>
+							<p>@carouselItem[0].Title_English</p>
+						</div>
+					</div>
+					<div class="item"style="background-image:linear-gradient(to right,#00000000, @carouselItem[1].Color)">
+						<img alt="Second slide" src="@carouselItem[1].ImageUrlLarge">
+						<div class="carousel-caption">
+							<h3>@carouselItem[1].Title_Romaji</h3>
+							<p>@carouselItem[1].Title_English</p>
+						</div>
+					</div>
+					<div class="item"style="background-image:linear-gradient(to right,#00000000, @carouselItem[2].Color)">
+						<img alt="Third slide" src="@carouselItem[2].ImageUrlLarge">
+						<div class="carousel-caption">
+							<h3>@carouselItem[2].Title_Romaji</h3>
+							<p>@carouselItem[2].Title_English</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		}
+
+		<div class="col-md-12" style="margin-top: 10px; height: 600px; overflow-y:scroll; padding-right: 0px;">
+			@foreach (AnimeModel Anime in Model.AnimeFeed)
+			{
+				<a class="feedItem" href="@Url.Action("Anime", "Anime", new {Anime.Id })">
+					<div class="media feedItem">
+						<div class="media-left">
+							<img class="media-object" src="@Anime.ImageUrlMedium" alt="...">
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">@Anime.Title_Romaji</h4>
+							<sup>@Anime.Title_English</sup>
+							<p>@Html.Raw(Anime.Description)</p>
+						</div>
+					</div>
+				</a>
+			}
+		</div>
+	</div>
+	<div class="col-md-2">
+			
+	</div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+
+@section scripts{
+	<script>
+		$("#getToken").click(function () {
+			var query = ` query ($year: FuzzyDateInt) { # Define which variables will be used in the query (id)
+  Media (startDate_greater: $year, type: ANIME) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
+	id
+	title {
+	  romaji
+	  english
+	  native
+	}
+	description
+	genres
+  }
+}
+`;
+			// Define our query variables and values that will be used in the query request
+			var variables = {
+				year: 2000
+			};
+			$.ajax({
+				//url: " https://Anilistmikilior1V1.p.rapidapi.com/getAccessToken",
+				url: "https://graphql.anilist.co",
+				method: "Post",
+				dataType: "JSON",
+				data: {
+					query: query,
+					variables: variables
+				},
+				success: function (data, status, xhr) {
+					console.log(data);
+				},
+				error: function (xhr, status, err) {
+					alert("PROBLEM!!: " + status)
+				}
+			})
+		});
+	</script>
+	}

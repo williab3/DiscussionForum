@@ -1,0 +1,27 @@
+﻿@model DiscussionForum.Models.Media
+@{
+	ViewBag.Title = "Anime";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+	<div class="col-md-2 left-sidebar">
+
+	</div>
+	<div class="col-md-8" style="margin-top:10px">
+		<div class="media">
+			<div class="media-left">
+				<a href="#">
+					<img class="media-object" src="@Model.CoverImage.Large" alt="...">
+				</a>
+			</div>
+			<div class="media-body">
+				<h4 class="media-heading">@Model.Title.English</h4>
+				@Html.Raw(Model.Description)
+			</div>
+		</div>
+	</div>
+	<div class="col-md-2"></div>
+
+</div>
+
