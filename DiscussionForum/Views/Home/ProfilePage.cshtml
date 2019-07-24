@@ -48,14 +48,16 @@
 						</div>
 					</div>
 				</a>
-				@if (Anime.IsFavorite)
-				{
-					<div class="favoriteCheckbox" data-bendo-checked="true" data-bendo-itemId="@Anime.Id"></div>
-				}
-				else
-				{
-					<div class="favoriteCheckbox" data-bendo-checked="" data-bendo-itemId="@Anime.Id"></div>
-				}
+				<div class="icon-container">
+					@if (Anime.IsFavorite)
+					{
+						<div class="favoriteCheckbox" data-bendo-checked="true" data-bendo-itemId="@Anime.Id"></div>
+					}
+					else
+					{
+						<div class="favoriteCheckbox" data-bendo-checked="" data-bendo-itemId="@Anime.Id"></div>
+					}
+				</div>
 			</div>
 				}
 			}

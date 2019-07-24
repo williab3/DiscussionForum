@@ -122,8 +122,8 @@ textarea {
     background: linear-gradient(to top, #4bb0ea -100%, #ffffff 28%);
     margin-top: 5px !important;
 }
-a.feedItem:hover{
-    text-decoration:none !important;
+.feedItem > a:hover{
+    text-decoration: none;
 }
 .import-form-group{
     margin-right: 15px;
@@ -132,4 +132,16 @@ a.feedItem:hover{
     border: 1px solid lightgray;
     padding: 10px 10px;
     margin-top: 10px
+}
+.icon-container {
+    display: flex;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
+}
+.favoriteCheckbox{
+    margin-right: 5px;
+    padding: 3px 0px;
+}
+.favoriteCheckbox:hover{
+    cursor:pointer;
 }
