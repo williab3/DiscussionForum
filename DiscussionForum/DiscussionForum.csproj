@@ -316,6 +316,18 @@
     <Compile Include="Migrations\201907240513432_testAnimeModel_notInclude_IsFavorite.Designer.cs">
       <DependentUpon>201907240513432_testAnimeModel_notInclude_IsFavorite.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907271809256_updateDiscussions_w_ImageUrltoList.cs" />
+    <Compile Include="Migrations\201907271809256_updateDiscussions_w_ImageUrltoList.Designer.cs">
+      <DependentUpon>201907271809256_updateDiscussions_w_ImageUrltoList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907272004278_addPicturesTable.cs" />
+    <Compile Include="Migrations\201907272004278_addPicturesTable.Designer.cs">
+      <DependentUpon>201907272004278_addPicturesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907272008175_updateDiscussions_w_Pictures.cs" />
+    <Compile Include="Migrations\201907272008175_updateDiscussions_w_Pictures.Designer.cs">
+      <DependentUpon>201907272008175_updateDiscussions_w_Pictures.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AnilistModel.cs" />
@@ -326,6 +338,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\NewAnimeReport.cs" />
+    <Compile Include="Models\Picture.cs" />
     <Compile Include="Models\ViewModel\AnimeViewModel.cs" />
     <Compile Include="Models\ViewModel\HomePage_UA.cs" />
     <Compile Include="Models\ViewModel\MainAdminViewModel.cs" />
@@ -508,6 +521,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907240513432_testAnimeModel_notInclude_IsFavorite.resx">
       <DependentUpon>201907240513432_testAnimeModel_notInclude_IsFavorite.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907271809256_updateDiscussions_w_ImageUrltoList.resx">
+      <DependentUpon>201907271809256_updateDiscussions_w_ImageUrltoList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907272004278_addPicturesTable.resx">
+      <DependentUpon>201907272004278_addPicturesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907272008175_updateDiscussions_w_Pictures.resx">
+      <DependentUpon>201907272008175_updateDiscussions_w_Pictures.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

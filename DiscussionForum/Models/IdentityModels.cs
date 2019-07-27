@@ -69,6 +69,7 @@ namespace DiscussionForum.Models
         public DbSet<AnimeStatsModel> LastUpdated { get; set; }
         public DbSet<NewAnimeReport> NewAnimeReport { get; set; }
         public DbSet<AnimeGenre> Genres { get; set; }
+        public DbSet<Picture> Pictures { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
