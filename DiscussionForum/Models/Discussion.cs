@@ -9,6 +9,7 @@ namespace DiscussionForum.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        public string Premise { get; set; }
         public List<Picture> Pictures { get; set; }
         public List<Comment> Comments { get; set; }
         public DateTime? LastUpdated { get; set; }

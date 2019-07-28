@@ -328,6 +328,10 @@
     <Compile Include="Migrations\201907272008175_updateDiscussions_w_Pictures.Designer.cs">
       <DependentUpon>201907272008175_updateDiscussions_w_Pictures.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907280416290_updateDiscussions_w_Premise.cs" />
+    <Compile Include="Migrations\201907280416290_updateDiscussions_w_Premise.Designer.cs">
+      <DependentUpon>201907280416290_updateDiscussions_w_Premise.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AnilistModel.cs" />
@@ -530,6 +534,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907272008175_updateDiscussions_w_Pictures.resx">
       <DependentUpon>201907272008175_updateDiscussions_w_Pictures.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907280416290_updateDiscussions_w_Premise.resx">
+      <DependentUpon>201907280416290_updateDiscussions_w_Premise.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
