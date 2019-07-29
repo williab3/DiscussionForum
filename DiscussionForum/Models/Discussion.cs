@@ -13,6 +13,7 @@ namespace DiscussionForum.Models
         public List<Picture> Pictures { get; set; }
         public List<Comment> Comments { get; set; }
         public DateTime? LastUpdated { get; set; }
+        public List<Tag> Tags { get; set; }
     }
 
     public class Comment :IFeedItem

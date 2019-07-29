@@ -32,9 +32,18 @@
 							<label class="control-label" for="discussionTitle">Title</label>
 							<input type="text" class="form-control" id="discussionTitle" placeholder="Title" style="width:100%">
 						</div>
-						<label class="control-label" for="imageUploads">Upload Images</label>
-						<input id="imageUploads" type="file" accept="image/*" class="form-control" placeholder="Upload a few pics" multiple />
-						@Html.TextArea("Premise", new { @class = "form-control", style = "width:100%; margin-top:10px;" })
+						<div class="form-group">
+							<label class="control-label" for="imageUploads">Upload Images</label>
+							<input id="imageUploads" type="file" accept="image/*" placeholder="Upload a few pics" multiple />
+						</div>
+						<div class="form-group">
+							<label for="txtBox-newDiscussionPremise">Topic</label>
+							@Html.TextArea("Premise", new { @class = "form-control", style = "width:100%;", id = "txtBox-newDiscussionPremise" })
+						</div>
+						<div class="form-group">
+							<label class="control-label" for="txtbx-tags">Tags</label>
+							<input type="text" class="form-control" id="txtbx-tags" placeholder="Tags" style="width:90%">
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -87,6 +96,14 @@
 		</div>
 		@section scripts{
 			<script>
+				$("#txtbx-tags").bendoAutocomplete({
+					data: {
+						url: "/Home/Tags",
+						method: "Post",
+						dataType: "json",
+					}
+				});
+
 				$("#btn-newDiscussion").click(function (args) {
 					$("#discussionTitle").val($("#discussionTitleBox").val());
 				});

@@ -393,41 +393,48 @@ $.fn.bendoAutocomplete = function (args) {
     var resultsHolder = $("<div>").addClass("autocomplete-results-container").width(this.width() + 5).attr("id", "resultsContainer-" + this.attr("id"));
     container.append(resultsHolder);
     //Get data from server
+    $.ajax({
+        url: defaultSettings.data.url,
+        dataType: defaultSettings.data.dataType,
+        method: defaultSettings.data.method,
+        data: function () {
+            if (defaultSettings.data.searchTerm === null) {
+                return null;
+            } else {
+                defaultSettings.data.searchTerm;
+            }
+        },
+        success: function (data, status, xhr) {
+            if (data.length > 0) {
+                $(data).each(function (index, item) {
+                    resultsHolder.css("height", "200px");
+                    var resultItem = $("<p>").html(item[defaultSettings.data.textField]).addClass("autocomplete-results").attr("data-autocomplete-value", item[defaultSettings.data.valueField]);
+                    bendoAutocomplete.keydown(function (args) {
+                    });
+                    resultItem.click(function (args) {
+                        bendoAutocomplete.val(resultItem.text());
+                        bendoAutocomplete.attr("data-autocomplete-value", resultItem.attr("data-autocomplete-value"));
+                    });
+                    resultsHolder.append(resultItem);
+                });
+
+            }
+            if (args.keyCode === 40) {
+                for (var i = 0; i < resultsHolder.length; i++) {
+                    $(resultsHolder[0].childNodes[i]).addClass("active");
+                }
+            }
+        },
+        error: function () {
+            alert("search fail");
+        }
+    });
+
     this.keyup(function (args) {
         var searchTerm = $(this).val();
         if (searchTerm.length >= defaultSettings.searchAfter) {
 
             resultsHolder.empty();
-            $.ajax({
-                url: defaultSettings.data.Url,
-                dataType: "json",
-                method: "Post",
-                data: { searchTerm: searchTerm },
-                success: function (data, status, xhr) {
-                    if (data.length > 0) {
-                        $(data).each(function (index, item) {
-                            resultsHolder.css("height", "200px");
-                            var resultItem = $("<p>").html(item[defaultSettings.data.textField]).addClass("autocomplete-results").attr("data-autocomplete-value", item[defaultSettings.data.valueField]);
-                            bendoAutocomplete.keydown(function (args) {
-                            });
-                            resultItem.click(function (args) {
-                                bendoAutocomplete.val(resultItem.text());
-                                bendoAutocomplete.attr("data-autocomplete-value", resultItem.attr("data-autocomplete-value"));
-                            });
-                            resultsHolder.append(resultItem);
-                        });
-
-                    }
-                    if (args.keyCode === 40) {
-                        for (var i = 0; i < resultsHolder.length; i++) {
-                            $(resultsHolder[0].childNodes[i]).addClass("active");
-                        }
-                    }
-                },
-                error: function () {
-                    alert("search fail");
-                }
-            });
         } else {
             resultsHolder.empty();
             resultsHolder.css("height", "0px");

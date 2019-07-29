@@ -332,6 +332,14 @@
     <Compile Include="Migrations\201907280416290_updateDiscussions_w_Premise.Designer.cs">
       <DependentUpon>201907280416290_updateDiscussions_w_Premise.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907281746372_addTagsTable.cs" />
+    <Compile Include="Migrations\201907281746372_addTagsTable.Designer.cs">
+      <DependentUpon>201907281746372_addTagsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907281750404_addM2M_tags_Discussions.cs" />
+    <Compile Include="Migrations\201907281750404_addM2M_tags_Discussions.Designer.cs">
+      <DependentUpon>201907281750404_addM2M_tags_Discussions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AnilistModel.cs" />
@@ -343,6 +351,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\NewAnimeReport.cs" />
     <Compile Include="Models\Picture.cs" />
+    <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\ViewModel\AnimeViewModel.cs" />
     <Compile Include="Models\ViewModel\HomePage_UA.cs" />
     <Compile Include="Models\ViewModel\MainAdminViewModel.cs" />
@@ -537,6 +546,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907280416290_updateDiscussions_w_Premise.resx">
       <DependentUpon>201907280416290_updateDiscussions_w_Premise.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907281746372_addTagsTable.resx">
+      <DependentUpon>201907281746372_addTagsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907281750404_addM2M_tags_Discussions.resx">
+      <DependentUpon>201907281750404_addM2M_tags_Discussions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

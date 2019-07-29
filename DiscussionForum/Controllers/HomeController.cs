@@ -68,5 +68,12 @@ namespace DiscussionForum.Controllers
             return Json(result);
         }
 
+        [HttpPost]
+        public JsonResult Tags()
+        {
+            string testResult = "Yeah!! It worked";
+            return Json(testResult);
+        }
+
     }
 }
