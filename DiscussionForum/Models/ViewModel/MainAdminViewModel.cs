@@ -23,6 +23,7 @@ namespace DiscussionForum.Models.ViewModel
         public List<AnimeModel> AnimeModels { get; set; } = new List<AnimeModel>();
         public List<NewAnimeReport> ReportItems { get; set; }
         public AnilistVariables RequestVariables { get; set; }
+        public List<Tag> FreshTags { get; set; }
 
         public async Task<MainAdminViewModel> ImportNewAnimeData()
         {
@@ -440,4 +441,5 @@ namespace DiscussionForum.Models.ViewModel
             return viewModel;
         }
     }
+
 }

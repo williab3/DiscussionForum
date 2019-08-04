@@ -71,8 +71,9 @@ namespace DiscussionForum.Controllers
         [HttpPost]
         public JsonResult Tags()
         {
-            string testResult = "Yeah!! It worked";
-            return Json(testResult);
+            List<Tag> tags = Tag.GetTags();
+
+            return Json(tags);
         }
 
     }

@@ -370,17 +370,20 @@ $.fn.bendoNetMessenger = function (args) {
 
 // Bendo Auto-complete
 $.fn.bendoAutocomplete = function (args) {
+    //TODO: Properly style the autocomplete
     var defaultSettings = $.extend(true, {
         icon: "&#xe003;",
     }, args);
     var container = $("<div>").attr("id", "autocomplete-container-" + this.attr("id")).css("display", "flex");
     this.before(container).addClass("bendo-autocomplete");
-    this.attr("placeholder", this.attr("placeholder") + " " + defaultSettings.placeholder);
+    if (defaultSettings.placeholder !== null) {
+        this.attr("placeholder", defaultSettings.placeholder);
+    } 
     container.append(this);
     var bendoAutocomplete = this;
 
     //Make button for the autocomplete
-    var autocompleteButton = $("<button>").attr("type", "button").addClass("btn-primary bendo-icon").css("margin-bottom", "-2px");
+    var autocompleteButton = $("<button>").attr("type", "button").addClass("btn-primary bendo-icon");
     var buttonSpan = $("<span>").html(defaultSettings.buttonText);
     autocompleteButton.append(buttonSpan);
     //Attach the click event to the button
@@ -390,9 +393,12 @@ $.fn.bendoAutocomplete = function (args) {
 
     container.append(autocompleteButton);
     container.css("max-width", autocompleteButton.width() + this.width() + 30).css("flex-wrap", "wrap");
-    var resultsHolder = $("<div>").addClass("autocomplete-results-container").width(this.width() + 5).attr("id", "resultsContainer-" + this.attr("id"));
+    var resultsHolder = $("<div>").addClass("autocomplete-results-container").attr("id", "resultsContainer-" + this.attr("id")).css("height", "auto");
+    var holderWidth = bendoAutocomplete.width();
+    //resultsHolder.css("width", holderWidth);
     container.append(resultsHolder);
     //Get data from server
+    var dataSource;
     $.ajax({
         url: defaultSettings.data.url,
         dataType: defaultSettings.data.dataType,
@@ -401,49 +407,73 @@ $.fn.bendoAutocomplete = function (args) {
             if (defaultSettings.data.searchTerm === null) {
                 return null;
             } else {
-                defaultSettings.data.searchTerm;
+                return defaultSettings.data.searchTerm;
             }
         },
         success: function (data, status, xhr) {
-            if (data.length > 0) {
-                $(data).each(function (index, item) {
-                    resultsHolder.css("height", "200px");
-                    var resultItem = $("<p>").html(item[defaultSettings.data.textField]).addClass("autocomplete-results").attr("data-autocomplete-value", item[defaultSettings.data.valueField]);
-                    bendoAutocomplete.keydown(function (args) {
-                    });
-                    resultItem.click(function (args) {
-                        bendoAutocomplete.val(resultItem.text());
-                        bendoAutocomplete.attr("data-autocomplete-value", resultItem.attr("data-autocomplete-value"));
-                    });
-                    resultsHolder.append(resultItem);
-                });
-
-            }
-            if (args.keyCode === 40) {
-                for (var i = 0; i < resultsHolder.length; i++) {
-                    $(resultsHolder[0].childNodes[i]).addClass("active");
-                }
-            }
+            console.log(data);
+            dataSource = data;
         },
         error: function () {
-            alert("search fail");
+            alert("Could not retrieve data for auto-complete " + bendoAutocomplete.attr("id"));
         }
     });
 
     this.keyup(function (args) {
-        var searchTerm = $(this).val();
-        if (searchTerm.length >= defaultSettings.searchAfter) {
+        var resultItems = $(resultsHolder.children());
+        var activeIndex = resultsHolder.children("p.active").index();
+        if (args.keyCode !== 40 && args.keyCode !== 38 && args.keyCode !== 13) {
+            var searchTerm = $(this).val();
+            resultsHolder.empty();
+            $.each(dataSource, function (index, ele) {
+                var match = ele[defaultSettings.data.textField].match(new RegExp(searchTerm, "i"));
+                if (match != "" && match !== null) {
+                    var resultItem = $("<p>").text(ele[defaultSettings.data.textField]).attr("data-autocomplete-value", ele[defaultSettings.data.valueField]).addClass("autocomplete-results btn-primary");
+                    resultItem.click(function (args) {
+                        var clickedItem = $(args.target);
+                        bendoAutocomplete.val(clickedItem.text());
+                        bendoAutocomplete.attr("data-autocomplete-value", clickedItem.attr("data-autocomplete-value"));
+                        closeSelections();
+                    });
+                    resultsHolder.append(resultItem);
+                }
+            });
+        } else if (args.keyCode === 40) { //Down arrow event
+            if (resultItems !== null && activeIndex < resultItems.length - 1) {
+                resultItems.removeClass("active");
+                activeIndex += 1;
+                $(resultItems[activeIndex]).addClass("active");
+            }
+        } else if (args.keyCode === 38 && activeIndex > -1) { //Up arrow event
+            resultItems.removeClass("active");
+            activeIndex -= 1;
+            $(resultItems[activeIndex]).addClass("active");
+        } else if (args.keyCode === 13) {
+            selectResultItem();
+        }
 
-            resultsHolder.empty();
-        } else {
-            resultsHolder.empty();
-            resultsHolder.css("height", "0px");
+        function selectResultItem() {
+            if (activeIndex > -1) {
+                var activeItem = $(resultItems[activeIndex])
+                var selectedText = activeItem.text();
+                bendoAutocomplete.val(selectedText);
+                bendoAutocomplete.attr("data-autocomplete-value", activeItem.attr("data-autocomplete-value"));
+                closeSelections();
+                console.log(activeItem);
+            }
         }
     });
-    this.blur(function (args) {
+
+
+    container.blur(function (args) {
         closeSelections();
     });
+    bendoAutocomplete.blur(function (args) {
+        //closeSelections();
+    });
+
     function closeSelections() {
-        resultsHolder.css("height", "0px");
+        resultsHolder.empty();
+        resultsHolder.css("overflow-y","hidden");
     }
 };

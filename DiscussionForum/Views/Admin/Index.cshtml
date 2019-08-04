@@ -14,6 +14,7 @@
 	@MyHtml.Button("Import Anime", ButtonType.primary, "ImportAnime", "Admin")
 	@Ajax.ActionLink("Import Updates", "ImportUpdates", null, new AjaxOptions() { UpdateTargetId = "ann", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-info" })
 	@Html.ActionLink(" Seed Popularity", "SeedPopularity", null, new {@class = "btn btn-warning" })
+	@Ajax.ActionLink("Seed Tags", "SeedTags", null, new AjaxOptions() { UpdateTargetId="ann", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary"})
 </div>
 @Ajax.ActionLink("Get Report", "NewsReport", null, new AjaxOptions() {UpdateTargetId= "massImportResults", InsertionMode = InsertionMode.Replace }, new {@class="btn btn-primary" })
 <div class="row">

@@ -62,6 +62,12 @@ namespace DiscussionForum.Controllers
             return PartialView("MassImport", viewModel);
         }
 
+        public PartialViewResult SeedTags()
+        {
+            MainAdminViewModel viewModel = new MainAdminViewModel();
+            viewModel.FreshTags = Tag.SeedTags();
+            return PartialView(viewModel);
+        }
     }
 
 

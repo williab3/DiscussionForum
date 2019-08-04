@@ -1,0 +1,11 @@
+﻿@model DiscussionForum.Models.ViewModel.MainAdminViewModel
+@using DiscussionForum.Models
+
+<strong>@Model.FreshTags.Count new tags added</strong>
+<ul>
+	@foreach (Tag tag in Model.FreshTags)
+	{
+		<li>@tag.Name</li>
+	}
+</ul>
+
