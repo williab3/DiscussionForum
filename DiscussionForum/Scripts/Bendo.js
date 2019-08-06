@@ -373,6 +373,7 @@ $.fn.bendoAutocomplete = function (args) {
     //TODO: Properly style the autocomplete
     var defaultSettings = $.extend(true, {
         icon: "&#xe003;",
+        errorMessage: "Please select an item from the autocomplete list before clicking the autocomplete button.",
     }, args);
     var container = $("<div>").attr("id", "autocomplete-container-" + this.attr("id")).css("display", "flex");
     this.before(container).addClass("bendo-autocomplete");
@@ -388,7 +389,30 @@ $.fn.bendoAutocomplete = function (args) {
     autocompleteButton.append(buttonSpan);
     //Attach the click event to the button
     autocompleteButton.click(function (args) {
-        defaultSettings.buttonClick(bendoAutocomplete);
+        if (bendoAutocomplete.val() != "") {
+            var freshTag = $("<span>").text(bendoAutocomplete.val()).attr("data-bendo-itemId", bendoAutocomplete.attr("data-autocomplete-value")).addClass("attachedTags");
+            var idValue = "";
+            idValue = bendoAutocomplete.attr("data-autocomplete-value");
+            if (idValue !== undefined && idValue != "") {
+                var extistingTags = $('#attachedTags > span[data-bendo-itemId="' + idValue + '"]');
+                if (extistingTags.length < 1) {
+                    console.log("safe to add!!");
+                    var bar = $("<span>").text("|").addClass("bar");
+                    $("#attachedTags").append(bar);
+                    $("#attachedTags").append(freshTag);
+                    errorMessage.empty();
+                    bendoAutocomplete.val("");
+                } else {
+                    errorMessage.text(defaultSettings.errorMessage);
+                }
+            } else {
+                errorMessage.text(defaultSettings.errorMessage);
+                console.log("Please select an item from the dropdown list");
+            }
+        } else {
+            errorMessage.text(defaultSettings.errorMessage);
+            console.log("Please enter value");
+        }
     });
 
     container.append(autocompleteButton);
@@ -411,22 +435,25 @@ $.fn.bendoAutocomplete = function (args) {
             }
         },
         success: function (data, status, xhr) {
-            console.log(data);
+            console.log(data.length);
             dataSource = data;
         },
         error: function () {
             alert("Could not retrieve data for auto-complete " + bendoAutocomplete.attr("id"));
         }
     });
-
+    var errorMessage = $("<p>").addClass("text-warning");
+    container.prepend(errorMessage);
     this.keyup(function (args) {
         var resultItems = $(resultsHolder.children());
         var activeIndex = resultsHolder.children("p.active").index();
         if (args.keyCode !== 40 && args.keyCode !== 38 && args.keyCode !== 13) {
+            bendoAutocomplete.attr("data-autocomplete-value", "");
             var searchTerm = $(this).val();
             resultsHolder.empty();
+            errorMessage.empty();
             $.each(dataSource, function (index, ele) {
-                var match = ele[defaultSettings.data.textField].match(new RegExp(searchTerm, "i"));
+                var match = ele[defaultSettings.data.textField].match(new RegExp(searchTerm, "ig"));
                 if (match != "" && match !== null) {
                     var resultItem = $("<p>").text(ele[defaultSettings.data.textField]).attr("data-autocomplete-value", ele[defaultSettings.data.valueField]).addClass("autocomplete-results btn-primary");
                     resultItem.click(function (args) {
@@ -438,6 +465,7 @@ $.fn.bendoAutocomplete = function (args) {
                     resultsHolder.append(resultItem);
                 }
             });
+            console.log(resultsHolder.height());
         } else if (args.keyCode === 40) { //Down arrow event
             if (resultItems !== null && activeIndex < resultItems.length - 1) {
                 resultItems.removeClass("active");

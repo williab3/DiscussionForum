@@ -110,25 +110,13 @@
 					buttonText: "Add Tag",
 					placeholder: "Tags",
 					buttonClick: function (args) {
-						if (args.val() != "") {
-							var freshTag = $("<span>").text(args.val()).attr("data-bendo-itemId", args.attr("data-autocomplete-value")).css("margin-left", "10px");
-							var idValue = args.attr("data-autocomplete-value");
-							console.log("This is the id:" + idValue);
-							var extistingTags = $('#attachedTags > span[data-bendo-itemId="' + idValue + '"]');
-							if (extistingTags.length < 1) {
-								console.log("safe to add!!");
-								$("#attachedTags").append(freshTag);
-							} else {
-								console.log("Hold up!! Don't do it!!");
-							}
-						} else {
-							console.log("totally empty!!");
-						}
-					}
+					},
+					errorMessage:"Please select a one of the tags from the dropdown list before adding to the discussion",
 				});
 
 				$("#btn-newDiscussion").click(function (args) {
 					$("#discussionTitle").val($("#discussionTitleBox").val());
+					$("#txtbx-tags").val("");
 				});
 
 				$(".favoriteCheckbox").bendoCheckbox({

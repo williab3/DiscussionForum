@@ -146,3 +146,12 @@ textarea {
 .favoriteCheckbox:hover{
     cursor:pointer;
 }
+.bar {
+    font-weight: bold;
+    font-size: medium;
+    margin-left: 5px;
+}
+.attachedTags {
+    color: cornflowerblue;
+    font-weight: bold;
+}

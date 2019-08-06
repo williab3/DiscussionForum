@@ -15,11 +15,11 @@ namespace DiscussionForum.Models
         public static List<Tag> SeedTags()
         {
             ApplicationDbContext dbContext = new ApplicationDbContext();
-            List<Tag> results = dbContext.Tags.ToList();
+            List<Tag> results = new List<Tag>();
             foreach (AnimeModel anime in dbContext.Animes)
             {
-                Tag existingRomajiTag = results.Where(t => t.Name == anime.Title_Romaji).SingleOrDefault();
-                Tag existingEnglishTag = results.Where(t => t.Name == anime.Title_English).SingleOrDefault();
+                Tag existingRomajiTag = dbContext.Tags.Where(t => t.Name == anime.Title_Romaji).SingleOrDefault();
+                Tag existingEnglishTag = dbContext.Tags.Where(t => t.Name == anime.Title_English).SingleOrDefault();
                 if (existingEnglishTag == null && existingRomajiTag == null)
                 {
                     Tag freshTag = new Tag()
@@ -34,6 +34,19 @@ namespace DiscussionForum.Models
                         results.Add(freshTag);
                         dbContext.Tags.Add(freshTag);
                     }
+                }
+            }
+            foreach (AnimeGenre genre in dbContext.Genres)
+            {
+                Tag existingGenreTag = dbContext.Tags.Where(t => t.Name == genre.GenreName).SingleOrDefault();
+                if (existingGenreTag == null)
+                {
+                    Tag freshTag = new Tag()
+                    {
+                        Name = genre.GenreName,
+                    };
+                    dbContext.Tags.Add(freshTag);
+                    results.Add(freshTag);
                 }
             }
             dbContext.SaveChanges();

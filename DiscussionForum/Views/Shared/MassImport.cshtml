@@ -1,9 +1,10 @@
 ﻿@model DiscussionForum.Models.ViewModel.MainAdminViewModel
+@using DiscussionForum.Models
 <div id="ann">
 	<div class="row">
 		<div class="col-md-12">
 			<h1>Import Results</h1>
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<table class="table">
 					<thead>
 						<tr>
@@ -20,7 +21,7 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<table class="table">
 					<thead>
 						<tr>
@@ -36,7 +37,24 @@
 						}
 					</tbody>
 				</table>
+			</div>
+			<div class="col-md-4">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>New Tags</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (Tag tag in Model.FreshTags)
+						{
+							<tr>
+								<td>@tag.Name</td>
+							</tr>
 
+						}
+					</tbody>
+				</table>
 			</div>
 
 		</div>

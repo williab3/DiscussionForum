@@ -269,11 +269,13 @@ namespace DiscussionForum.Models.ViewModel
         {
             string searchTerm;
             MainAdminViewModel newData = new MainAdminViewModel();
+            newData.FreshTags = new List<Tag>();
             ApplicationDbContext dbContext = new ApplicationDbContext();
             await Task.Run(() => {
                 foreach (Media animeData in anilistResponse.Data.Page.Media)
                 {
                     AnimeGenre newGenre;
+                    Tag freshTag;
                     List<AnimeGenre> newGenresList = new List<AnimeGenre>();
                     foreach (string genre in animeData.Genres)
                     {
@@ -284,7 +286,8 @@ namespace DiscussionForum.Models.ViewModel
                                 A. Create the new genre
                                 B. Add is to the new anime's list of genres.
                         */
-                        newGenre = dbContext.Genres.Where(g => g.GenreName == genre).SingleOrDefault();
+                        //Add a new genre
+                        newGenre = dbContext.Genres.Where(g => g.GenreName == genre).FirstOrDefault();
                         if (newGenre == null)
                         {
                             newGenre = new AnimeGenre()
@@ -292,14 +295,56 @@ namespace DiscussionForum.Models.ViewModel
                                 GenreName = genre,
                             };
                             newData.NewGenres.Add(genre);
+                            dbContext.Genres.Add(newGenre);
                         }
                         newGenresList.Add(newGenre);
+                        //Add a new tag for new genres
+                        freshTag = dbContext.Tags.Where(t => t.Name == genre).FirstOrDefault();
+                        if (freshTag == null)
+                        {
+                            freshTag = new Tag()
+                            {
+                                Name = genre,
+                            };
+                            newData.FreshTags.Add(freshTag);
+                            dbContext.Tags.Add(freshTag);
+                        }
+                    }
+                    //Add new tag for Romaji title
+                    freshTag = dbContext.Tags.Where(t => t.Name == animeData.Title.Romaji).FirstOrDefault();
+                    if (freshTag == null)
+                    {
+                        freshTag = new Tag()
+                        {
+                            Name = animeData.Title.Romaji,
+                        };
+                        dbContext.Tags.Add(freshTag);
+                        newData.FreshTags.Add(freshTag);
+                    }
+                    //Add new tag for English title
+                    Tag englishTag = dbContext.Tags.Where(t => t.Name == animeData.Title.English).FirstOrDefault();
+                    if (englishTag == null)
+                    {
+                        englishTag = new Tag()
+                        {
+                            Name = animeData.Title.English
+                        };
+                        dbContext.Tags.Add(englishTag);
+                        newData.FreshTags.Add(englishTag);
                     }
 
                     //Create a search term to use as a cross reference with existing anime in the database
                     if (!String.IsNullOrEmpty(animeData.Title.Romaji))
                     {
-                        searchTerm = animeData.Title.Romaji.Substring(0, 5);
+                        int nameLength = animeData.Title.Romaji.Length;
+                        if (nameLength < 6)
+                        {
+                            searchTerm = animeData.Title.Romaji.Substring(0, nameLength - 1);
+                        }
+                        else
+                        {
+                            searchTerm = animeData.Title.Romaji.Substring(0, 5);
+                        }
                     }
                     else
                     {
