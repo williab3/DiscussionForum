@@ -340,6 +340,10 @@
     <Compile Include="Migrations\201907281750404_addM2M_tags_Discussions.Designer.cs">
       <DependentUpon>201907281750404_addM2M_tags_Discussions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908062224077_updatePicture_w_File.cs" />
+    <Compile Include="Migrations\201908062224077_updatePicture_w_File.Designer.cs">
+      <DependentUpon>201908062224077_updatePicture_w_File.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AnilistModel.cs" />
@@ -368,6 +372,8 @@
     <Content Include="Content\Cerulean3.37.css" />
     <Content Include="Content\Images\Favorite.png" />
     <Content Include="Content\Images\UnFavorite.png" />
+    <Content Include="Content\imgareaselect-animated.css" />
+    <Content Include="Content\imgareaselect-default.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -383,6 +389,8 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.imgareaselect.min.js" />
+    <Content Include="Scripts\jquery.imgareaselect.pack.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -553,6 +561,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907281750404_addM2M_tags_Discussions.resx">
       <DependentUpon>201907281750404_addM2M_tags_Discussions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908062224077_updatePicture_w_File.resx">
+      <DependentUpon>201908062224077_updatePicture_w_File.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

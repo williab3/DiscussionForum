@@ -6,7 +6,6 @@
 	ViewBag.Title = "ProfilePage";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="row">
 	<div class="col-md-2 left-sidebar"></div>
 	<div class="col-md-8">
@@ -34,7 +33,10 @@
 						</div>
 						<div class="form-group">
 							<label class="control-label" for="imageUploads">Upload Images</label>
-							<input id="imageUploads" type="file" accept="image/*" placeholder="Upload a few pics" multiple />
+							<div style="display:flex">
+								<input id="imageUploads" type="file" accept="image/*" placeholder="Upload a few pics" multiple />
+								<img id="imgPreview" />
+							</div>
 						</div>
 						<div class="form-group">
 							<div style="display:flex">
@@ -45,7 +47,7 @@
 						</div>
 						<div class="form-group">
 							<label class="control-label" for="txtbx-tags">Tags</label>
-							<input type="text" class="form-control" id="txtbx-tags"  style="width:90%">
+							<input type="text" class="form-control" id="txtbx-tags" style="width:90%">
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -70,34 +72,38 @@
 				if (item.GetType() == typeof(ProfileVewAnime))
 				{
 					ProfileVewAnime Anime = (ProfileVewAnime)item;
-			<div class="feedItem">
-				<a href="@Url.Action("Anime", "Anime", new {Anime.Id })">
-					<div class="media feedItem">
-						<div class="media-left">
-							<img class="media-object" src="@Anime.ImageUrlMedium" alt="...">
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">@Anime.Title_Romaji</h4>
-							<p class="subtitle">@Anime.Title_English</p>
-							<p>@Html.Raw(Anime.Description)</p>
+					<div class="feedItem">
+						<a href="@Url.Action("Anime", "Anime", new {Anime.Id })">
+							<div class="media feedItem">
+								<div class="media-left">
+									<img class="media-object" src="@Anime.ImageUrlMedium" alt="...">
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading">@Anime.Title_Romaji</h4>
+									<p class="subtitle">@Anime.Title_English</p>
+									<p>@Html.Raw(Anime.Description)</p>
+								</div>
+							</div>
+						</a>
+						<div class="icon-container">
+							@if (Anime.IsFavorite)
+							{
+								<div class="favoriteCheckbox" data-bendo-checked="true" data-bendo-itemId="@Anime.Id"></div>
+							}
+							else
+							{
+								<div class="favoriteCheckbox" data-bendo-checked="" data-bendo-itemId="@Anime.Id"></div>
+							}
 						</div>
 					</div>
-				</a>
-				<div class="icon-container">
-					@if (Anime.IsFavorite)
-					{
-						<div class="favoriteCheckbox" data-bendo-checked="true" data-bendo-itemId="@Anime.Id"></div>
-					}
-					else
-					{
-						<div class="favoriteCheckbox" data-bendo-checked="" data-bendo-itemId="@Anime.Id"></div>
-					}
-				</div>
-			</div>
 				}
 			}
 		</div>
+
 		@section scripts{
+			<script src="~/Scripts/jquery.imgareaselect.min.js"></script>
+			<link href="~/Content/imgareaselect-default.css" rel="stylesheet" />
+			<link href="~/Content/imgareaselect-animated.css" rel="stylesheet" />
 			<script>
 				$("#txtbx-tags").bendoAutocomplete({
 					data: {
@@ -111,7 +117,7 @@
 					placeholder: "Tags",
 					buttonClick: function (args) {
 					},
-					errorMessage:"Please select a one of the tags from the dropdown list before adding to the discussion",
+					errorMessage: "Please select a one of the tags from the dropdown list before adding to the discussion",
 				});
 
 				$("#btn-newDiscussion").click(function (args) {
@@ -156,7 +162,7 @@
 					}
 				});
 			</script>
-			}
+		}
 	</div>
 	<div class="col-md-2">
 	</div>

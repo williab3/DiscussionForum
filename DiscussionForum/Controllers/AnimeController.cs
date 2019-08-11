@@ -20,6 +20,7 @@ namespace DiscussionForum.Controllers
         {
             AnimeViewModel model = new AnimeViewModel();
             await model.Media.GetAnime(Id);
+            
 
             return View(model.Media);
         }

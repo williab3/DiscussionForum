@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web;
+using System.Web.Mvc;
 
 namespace DiscussionForum.Custom_Helpers
 {
@@ -72,7 +73,18 @@ namespace DiscussionForum.Custom_Helpers
                     return "btn";
             }
         }
+
+        public static MvcHtmlString File(this HtmlHelper html, string name)
+        {
+            var tb = new TagBuilder("input");
+            tb.Attributes.Add("type", "file");
+            tb.Attributes.Add("name", name);
+            tb.GenerateId(name);
+            return MvcHtmlString.Create(tb.ToString(TagRenderMode.SelfClosing));
+        }
+
     }
+
 
     public class MyAjax
     {
