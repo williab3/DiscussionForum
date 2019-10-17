@@ -48,8 +48,8 @@
     <Reference Include="FSharp.Core, Version=4.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\FSharp.Core.4.5.2\lib\net45\FSharp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack, Version=1.7.4.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlAgilityPack.1.7.4\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="HtmlAgilityPack, Version=1.11.12.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.12\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="Json.Net, Version=1.0.16.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Json.Net.1.0.16\lib\netstandard2.0\Json.Net.dll</HintPath>
@@ -344,12 +344,101 @@
     <Compile Include="Migrations\201908062224077_updatePicture_w_File.Designer.cs">
       <DependentUpon>201908062224077_updatePicture_w_File.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908182044154_updatePicture_removeImageUrl_addImageData.cs" />
+    <Compile Include="Migrations\201908182044154_updatePicture_removeImageUrl_addImageData.Designer.cs">
+      <DependentUpon>201908182044154_updatePicture_removeImageUrl_addImageData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908261834091_changePicture.ImageData2string.cs" />
+    <Compile Include="Migrations\201908261834091_changePicture.ImageData2string.Designer.cs">
+      <DependentUpon>201908261834091_changePicture.ImageData2string.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908301931081_addRequiredfields2Discussion.cs" />
+    <Compile Include="Migrations\201908301931081_addRequiredfields2Discussion.Designer.cs">
+      <DependentUpon>201908301931081_addRequiredfields2Discussion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908312008412_updateDiscussionPremise_multilinetext.cs" />
+    <Compile Include="Migrations\201908312008412_updateDiscussionPremise_multilinetext.Designer.cs">
+      <DependentUpon>201908312008412_updateDiscussionPremise_multilinetext.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909012054378_extendPremiselengthTo2000CharacterMax.cs" />
+    <Compile Include="Migrations\201909012054378_extendPremiselengthTo2000CharacterMax.Designer.cs">
+      <DependentUpon>201909012054378_extendPremiselengthTo2000CharacterMax.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909012123070_RemoveImageDataFromPicture.cs" />
+    <Compile Include="Migrations\201909012123070_RemoveImageDataFromPicture.Designer.cs">
+      <DependentUpon>201909012123070_RemoveImageDataFromPicture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909012124342_AddImageDataToPictureAsByteArray.cs" />
+    <Compile Include="Migrations\201909012124342_AddImageDataToPictureAsByteArray.Designer.cs">
+      <DependentUpon>201909012124342_AddImageDataToPictureAsByteArray.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909041546422_addLocalPopularity_2_IFeedItem.cs" />
+    <Compile Include="Migrations\201909041546422_addLocalPopularity_2_IFeedItem.Designer.cs">
+      <DependentUpon>201909041546422_addLocalPopularity_2_IFeedItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909041639511_addDiscussion_2_AnimeModel.cs" />
+    <Compile Include="Migrations\201909041639511_addDiscussion_2_AnimeModel.Designer.cs">
+      <DependentUpon>201909041639511_addDiscussion_2_AnimeModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909041742363_changeLocalPopularity_2_FeedPriorityIFeedItem.cs" />
+    <Compile Include="Migrations\201909041742363_changeLocalPopularity_2_FeedPriorityIFeedItem.Designer.cs">
+      <DependentUpon>201909041742363_changeLocalPopularity_2_FeedPriorityIFeedItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909052218247_AddDateFavoritedTable.cs" />
+    <Compile Include="Migrations\201909052218247_AddDateFavoritedTable.Designer.cs">
+      <DependentUpon>201909052218247_AddDateFavoritedTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909052221110_AddedDateFavoritedTable.cs" />
+    <Compile Include="Migrations\201909052221110_AddedDateFavoritedTable.Designer.cs">
+      <DependentUpon>201909052221110_AddedDateFavoritedTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909052241144_updateDateFavorited_w_FeedItemId_as_int.cs" />
+    <Compile Include="Migrations\201909052241144_updateDateFavorited_w_FeedItemId_as_int.Designer.cs">
+      <DependentUpon>201909052241144_updateDateFavorited_w_FeedItemId_as_int.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909082101035_updateAnimeModel_w_StartdDate.cs" />
+    <Compile Include="Migrations\201909082101035_updateAnimeModel_w_StartdDate.Designer.cs">
+      <DependentUpon>201909082101035_updateAnimeModel_w_StartdDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909300421432_UpdateAnimeModel_w_AdjustedDate.cs" />
+    <Compile Include="Migrations\201909300421432_UpdateAnimeModel_w_AdjustedDate.Designer.cs">
+      <DependentUpon>201909300421432_UpdateAnimeModel_w_AdjustedDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910041237147_UpdateDiscussionTitleMaxLenth_140.cs" />
+    <Compile Include="Migrations\201910041237147_UpdateDiscussionTitleMaxLenth_140.Designer.cs">
+      <DependentUpon>201910041237147_UpdateDiscussionTitleMaxLenth_140.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910061613530_UpdateDiscussion_w_IsAttachedToNews-IsAttachedToAnime.cs" />
+    <Compile Include="Migrations\201910061613530_UpdateDiscussion_w_IsAttachedToNews-IsAttachedToAnime.Designer.cs">
+      <DependentUpon>201910061613530_UpdateDiscussion_w_IsAttachedToNews-IsAttachedToAnime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910121441465_UpdateComments_w_CommenterId.cs" />
+    <Compile Include="Migrations\201910121441465_UpdateComments_w_CommenterId.Designer.cs">
+      <DependentUpon>201910121441465_UpdateComments_w_CommenterId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910151938268_AddVotesTableToDB.cs" />
+    <Compile Include="Migrations\201910151938268_AddVotesTableToDB.Designer.cs">
+      <DependentUpon>201910151938268_AddVotesTableToDB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910151948127_UpdateComments_w_AddedVotes.cs" />
+    <Compile Include="Migrations\201910151948127_UpdateComments_w_AddedVotes.Designer.cs">
+      <DependentUpon>201910151948127_UpdateComments_w_AddedVotes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910151950508_UpdateIdentity_w_AddedCommentVotes.cs" />
+    <Compile Include="Migrations\201910151950508_UpdateIdentity_w_AddedCommentVotes.Designer.cs">
+      <DependentUpon>201910151950508_UpdateIdentity_w_AddedCommentVotes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910160258490_UpdateComment_w_AddRepliedTo.cs" />
+    <Compile Include="Migrations\201910160258490_UpdateComment_w_AddRepliedTo.Designer.cs">
+      <DependentUpon>201910160258490_UpdateComment_w_AddRepliedTo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AnilistModel.cs" />
     <Compile Include="Models\AnimeGenres.cs" />
     <Compile Include="Models\AnimeModel.cs" />
     <Compile Include="Models\AnimeStatsModel.cs" />
+    <Compile Include="Models\DateFavorited.cs" />
     <Compile Include="Models\Discussion.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -358,6 +447,7 @@
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\ViewModel\AnimeViewModel.cs" />
     <Compile Include="Models\ViewModel\HomePage_UA.cs" />
+    <Compile Include="Models\ViewModel\ImageCropVM.cs" />
     <Compile Include="Models\ViewModel\MainAdminViewModel.cs" />
     <Compile Include="Models\ViewModel\ProfilePageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -371,6 +461,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Cerulean3.37.css" />
     <Content Include="Content\Images\Favorite.png" />
+    <Content Include="Content\Images\toru-icon.jpg" />
     <Content Include="Content\Images\UnFavorite.png" />
     <Content Include="Content\imgareaselect-animated.css" />
     <Content Include="Content\imgareaselect-default.css" />
@@ -398,6 +489,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\testscript.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -440,9 +532,11 @@
     <Content Include="Views\Shared\MassImport.cshtml" />
     <Content Include="Views\Admin\ImportUpdates.cshtml" />
     <Content Include="Views\Admin\SeedTags.cshtml" />
+    <Content Include="Views\Shared\_LoginModalPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\UserImages\" />
+    <Folder Include="Content\Images\UserImages\" />
     <Folder Include="Views\Store\" />
   </ItemGroup>
   <ItemGroup>
@@ -564,6 +658,72 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908062224077_updatePicture_w_File.resx">
       <DependentUpon>201908062224077_updatePicture_w_File.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908182044154_updatePicture_removeImageUrl_addImageData.resx">
+      <DependentUpon>201908182044154_updatePicture_removeImageUrl_addImageData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908261834091_changePicture.ImageData2string.resx">
+      <DependentUpon>201908261834091_changePicture.ImageData2string.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908301931081_addRequiredfields2Discussion.resx">
+      <DependentUpon>201908301931081_addRequiredfields2Discussion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908312008412_updateDiscussionPremise_multilinetext.resx">
+      <DependentUpon>201908312008412_updateDiscussionPremise_multilinetext.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909012054378_extendPremiselengthTo2000CharacterMax.resx">
+      <DependentUpon>201909012054378_extendPremiselengthTo2000CharacterMax.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909012123070_RemoveImageDataFromPicture.resx">
+      <DependentUpon>201909012123070_RemoveImageDataFromPicture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909012124342_AddImageDataToPictureAsByteArray.resx">
+      <DependentUpon>201909012124342_AddImageDataToPictureAsByteArray.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909041546422_addLocalPopularity_2_IFeedItem.resx">
+      <DependentUpon>201909041546422_addLocalPopularity_2_IFeedItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909041639511_addDiscussion_2_AnimeModel.resx">
+      <DependentUpon>201909041639511_addDiscussion_2_AnimeModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909041742363_changeLocalPopularity_2_FeedPriorityIFeedItem.resx">
+      <DependentUpon>201909041742363_changeLocalPopularity_2_FeedPriorityIFeedItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909052218247_AddDateFavoritedTable.resx">
+      <DependentUpon>201909052218247_AddDateFavoritedTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909052221110_AddedDateFavoritedTable.resx">
+      <DependentUpon>201909052221110_AddedDateFavoritedTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909052241144_updateDateFavorited_w_FeedItemId_as_int.resx">
+      <DependentUpon>201909052241144_updateDateFavorited_w_FeedItemId_as_int.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909082101035_updateAnimeModel_w_StartdDate.resx">
+      <DependentUpon>201909082101035_updateAnimeModel_w_StartdDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909300421432_UpdateAnimeModel_w_AdjustedDate.resx">
+      <DependentUpon>201909300421432_UpdateAnimeModel_w_AdjustedDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910041237147_UpdateDiscussionTitleMaxLenth_140.resx">
+      <DependentUpon>201910041237147_UpdateDiscussionTitleMaxLenth_140.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910061613530_UpdateDiscussion_w_IsAttachedToNews-IsAttachedToAnime.resx">
+      <DependentUpon>201910061613530_UpdateDiscussion_w_IsAttachedToNews-IsAttachedToAnime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910121441465_UpdateComments_w_CommenterId.resx">
+      <DependentUpon>201910121441465_UpdateComments_w_CommenterId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910151938268_AddVotesTableToDB.resx">
+      <DependentUpon>201910151938268_AddVotesTableToDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910151948127_UpdateComments_w_AddedVotes.resx">
+      <DependentUpon>201910151948127_UpdateComments_w_AddedVotes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910151950508_UpdateIdentity_w_AddedCommentVotes.resx">
+      <DependentUpon>201910151950508_UpdateIdentity_w_AddedCommentVotes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910160258490_UpdateComment_w_AddRepliedTo.resx">
+      <DependentUpon>201910160258490_UpdateComment_w_AddRepliedTo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

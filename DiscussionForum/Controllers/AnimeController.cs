@@ -1,4 +1,6 @@
-﻿using DiscussionForum.Models.ViewModel;
+﻿using DiscussionForum.Models;
+using DiscussionForum.Models.ViewModel;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +21,28 @@ namespace DiscussionForum.Controllers
         public async Task<ActionResult> Anime(int Id)
         {
             AnimeViewModel model = new AnimeViewModel();
-            await model.Media.GetAnime(Id);
+            await model.GetAnime(Id);
+            model.IsUserAuthenticated = User.Identity.IsAuthenticated;
             
 
-            return View(model.Media);
+            return View(model);
+        }
+
+        [HttpPost]
+        public JsonResult PostAnimeComment(AnimeViewModel comment)
+        {
+
+            comment.PostedComment.CommenterId = User.Identity.GetUserId();
+            comment.PostAnimeComment();
+            return Json(comment.PostedComment);
+        }
+
+        [HttpPost]
+        public JsonResult CommentReply(AnimeViewModel reply)
+        {
+            reply.PostedComment.CommenterId = User.Identity.GetUserId();
+            reply.PostCommentReply();
+            return Json(reply.PostedComment);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DiscussionForum.Models.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -23,10 +24,37 @@ namespace DiscussionForum.Models
         public DateTime? LastUpdated { get; set; }
         public int Popularity { get; set; }
         public List<ApplicationUser> UsersFavorited { get; set; }
+        public int FeedPriority { get; set; }
+        public Discussion Discussion { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime AdjustedDate { get; set; }
+
+        [NotMapped]
+        public bool ExistInDB { get; set; }
     }
 
     public interface IFeedItem
     {
         DateTime? LastUpdated { get; set; }
+        int FeedPriority { get; set; }
+    }
+
+    public class ImportedAnime 
+    {
+        public int CurrentPage { get; set; }
+        public int PerPage { get; set; }
+        public int TotalAnime { get; set; }
+        public List<AnimeModel> Animes { get; set; }
+
+        public ImportedAnime()
+        {
+
+        }
+
+        public ImportedAnime(AnimeModel[] selectedAnime)
+        {
+            Animes = selectedAnime.ToList();
+        }
+
     }
 }

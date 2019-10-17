@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace DiscussionForum.Models
         public List<ApplicationUser> Friends { get; set; }
         public List<AnimeModel> FavoriteAnime { get; set; }
         public List<Discussion> FollowedDiscussions { get; set; }
+        public List<Vote> CommentVotes { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -45,14 +47,33 @@ namespace DiscussionForum.Models
             ApplicationDbContext dbContext = new ApplicationDbContext();
             ApplicationUser _user = dbContext.Users.Include(m => m.FavoriteAnime).SingleOrDefault(m => m.Id == userId);
             AnimeModel anime = dbContext.Animes.Where(a => a.Id == animeId).SingleOrDefault();
+            DateFavorited whenFavorited = dbContext.DateFavorited.Where(df => df.UserId == userId && df.FeedItemId == animeId).SingleOrDefault();
             if (_user.FavoriteAnime.Contains(anime))
             {
+                if (whenFavorited != null)
+                {
+                    dbContext.DateFavorited.Remove(whenFavorited);
+                }
                 _user.FavoriteAnime.Remove(anime);
                 dbContext.SaveChanges();
                 message = anime.Title_Romaji + " removed from current user's fave list.";
             }
             else
             {
+                if (whenFavorited != null)
+                {
+                    whenFavorited.WhenFavorited = DateTime.Now;
+                }
+                else
+                {
+                    whenFavorited = new DateFavorited()
+                    {
+                        FeedItemId = animeId,
+                        UserId = userId,
+                        WhenFavorited = DateTime.Now,
+                    };
+                    dbContext.DateFavorited.Add(whenFavorited);
+                }
                 _user.FavoriteAnime.Add(anime);
                 dbContext.SaveChanges();
                 message = anime.Title_Romaji + " added to current user's fave list.";
@@ -71,6 +92,8 @@ namespace DiscussionForum.Models
         public DbSet<AnimeGenre> Genres { get; set; }
         public DbSet<Picture> Pictures { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<DateFavorited> DateFavorited { get; set; }
+        public DbSet<Vote> Votes { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

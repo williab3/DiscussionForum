@@ -1,43 +1,144 @@
 ﻿@model DiscussionForum.Models.ViewModel.MainAdminViewModel
 @using DiscussionForum.Models
+@Scripts.Render("~/Scripts/testscript.js")
 <div id="ann">
 	<div class="row">
 		<div class="col-md-12">
-			<h1>Import Results</h1>
-			<div class="col-md-4">
-				<table class="table">
+			<h2 style="text-align:center">Import Results</h2>
+			<div class="col-md-12">
+				<table class="table table-hover">
+                    <colgroup>
+                        <col width="30" />
+                        <col width="30" />
+                    </colgroup>
 					<thead>
+						<tr class="gridControlRow">
+							<th colspan="4">
+								<p class="pageInfo">@(((Model.AnimeGridData.CurrentPage - 1) * Model.AnimeGridData.PerPage) + 1) - @(Model.AnimeGridData.CurrentPage * Model.AnimeGridData.PerPage)  out of @Model.AnimeGridData.TotalAnime</p>
+								<button id="btnPageLeft" class="btn btn-primary leftPagebutton btn-sm" type="submit"><span class="glyphicon glyphicon-triangle-left"></span></button>
+								@Html.TextBoxFor(m => m.AnimeGridData.CurrentPage, new { @class = "gridPage", disabled = "", id = "gridPage" })
+								<button id="btnPageRight" class="btn btn-primary rightPageButton btn-sm"><span class="glyphicon glyphicon-triangle-right"></span></button>
+								<select id="gridCount" name="PerPage" class="form-control rowCount" style="line-height:0px">
+									<option value="10">10</option>
+									<option value="25">25</option>
+									<option value="50">50</option>
+								</select>
+							</th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th><button type="button" class="btn btn-primary btn-sm saveSelected" style="margin-bottom:3px" data-toggle="modal" data-target="#gridSaveSummary">
+								<span class="glyphicon glyphicon-floppy-save"> SAVE</span>
+								</button></th>
+						</tr>
 						<tr>
-							<th>New Anime Titles</th>
+                            <th>#</th>
+							<th><input type="checkbox" id="checkAll"/></th>
+							<th>Image</th>
+							<th>English Title</th>
+							<th>Romaji Title</th>
+							<th>Genres</th>
+							<th>Popularity</th>
+							<th>Start Date</th>
 						</tr>
 					</thead>
-					<tbody>
-						@foreach (string title in Model.NewAnimeTitles)
-						{
-							<tr>
-								<td>@title</td>
-							</tr>
-						}
-					</tbody>
+                    <tbody>
+                        @{
+                            int rowCount = 0;
+                            string rowID = "rowID";
+                            foreach (AnimeModel animeModel in Model.AnimeGridData.Animes)
+                            {
+                                rowCount++;
+                                if (animeModel.Description.Length < 20 || (animeModel.Title_English !=  null && animeModel.Title_English.Length < 5) || (animeModel.Title_English == null && animeModel.Title_Romaji.Length < 5))
+                                {
+                                    <tr data-anime-id="@animeModel.AnilistId" class="gridRow rowWarning">
+                                        <td id="@rowID@rowCount" data-grid-row="@rowCount" class="rowNumber">@rowCount</td>
+                                        <td class="rowNumber"><input type="checkbox" disabled class="gridRowCheckbox" /></td>
+                                        <td>
+                                            <img class="gridRowImage" src="@animeModel.ImageUrlMedium" style="background-color:@animeModel.Color" />
+                                            <input type="hidden" class="anime-color" value="@animeModel.Color" />
+                                            <input type="hidden" class="anime-description" value="@animeModel.Description" />
+                                            <input type="hidden" class="anime-largeImage" value="@animeModel.ImageUrlLarge" />
+                                            <input type="hidden" class="anime-lastUpdated" value="@animeModel.LastUpdated" />
+                                            <input type="hidden" class="anime-startDate" value="@animeModel.StartDate" />
+                                        </td>
+                                        <td><h4>@animeModel.Title_English</h4></td>
+                                        <td><h4>@animeModel.Title_Romaji</h4></td>
+                                        <td style="display:flex">
+                                            @foreach (AnimeGenre genre in animeModel.Genres)
+                                            {
+                                                <ul class="genreList"><li><span class="genreListItem">@genre.GenreName</span></li></ul>
+                                            }
+                                        </td>
+                                        <td>@animeModel.Popularity</td>
+                                        <td>@animeModel.StartDate.ToShortDateString()</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr data-anime-id="@animeModel.AnilistId" class="gridRow">
+                                        <td id="@rowID@rowCount" data-grid-row="@rowCount" class="rowNumber">@rowCount</td>
+                                        @if (animeModel.ExistInDB)
+                                        {
+                                            <td class="rowNumber"><input type="checkbox" disabled class="gridRowCheckbox" data-existNDB="true" /></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="rowNumber"><input type="checkbox" class="gridRowCheckbox" /></td>
+                                        }
+                                        <td>
+                                            <img class="gridRowImage" src="@animeModel.ImageUrlMedium" style="background-color:@animeModel.Color" />
+                                            <input type="hidden" class="anime-color" value="@animeModel.Color" />
+                                            <input type="hidden" class="anime-description" value="@animeModel.Description" />
+                                            <input type="hidden" class="anime-largeImage" value="@animeModel.ImageUrlLarge" />
+                                            <input type="hidden" class="anime-lastUpdated" value="@animeModel.LastUpdated" />
+                                            <input type="hidden" class="anime-startDate" value="@animeModel.StartDate" />
+                                        </td>
+                                        <td><h4>@animeModel.Title_English</h4></td>
+                                        <td><h4>@animeModel.Title_Romaji</h4></td>
+                                        <td style="display:flex">
+                                            @foreach (AnimeGenre genre in animeModel.Genres)
+                                            {
+                                                <ul class="genreList"><li><span class="genreListItem">@genre.GenreName</span></li></ul>
+                                            }
+                                        </td>
+                                        <td>@animeModel.Popularity</td>
+                                        <td>@animeModel.StartDate.ToShortDateString()</td>
+                                    </tr>
+
+                                }
+                            }
+
+                        }
+                        <tr>
+                            <td colspan="2">
+                                <p class="pageInfo">@(((Model.AnimeGridData.CurrentPage - 1) * Model.AnimeGridData.PerPage) + 1) - @(Model.AnimeGridData.CurrentPage * Model.AnimeGridData.PerPage)  out of @Model.AnimeGridData.TotalAnime</p>
+                                <button id="btnPageLeft" class="btn btn-primary leftPagebutton btn-sm" type="submit"><span class="glyphicon glyphicon-triangle-left"></span></button>
+                                @Html.TextBoxFor(m => m.AnimeGridData.CurrentPage, new { @class = "gridPage", disabled = "", id = "gridPage" })
+                                <button id="btnPageRight" class="btn btn-primary rightPageButton btn-sm"><span class="glyphicon glyphicon-triangle-right"></span></button>
+                                <select id="gridCount" name="PerPage" class="form-control rowCount" style="line-height:0px">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm saveSelected" style="margin-bottom:3px" data-toggle="modal" data-target="#gridSaveSummary">
+                                    <span class="glyphicon glyphicon-floppy-save"> SAVE</span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
 				</table>
 			</div>
-			<div class="col-md-4">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>New Genres</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach (string genre in Model.NewGenres)
-						{
-							<tr>
-								<td>@genre</td>
-							</tr>
-						}
-					</tbody>
-				</table>
-			</div>
+			<input id="pageCount" name="PerPage" type="hidden" />
+			<input id="pageNumber" name="PageNumber" type="hidden" />
+			@Html.HiddenFor(m => m.RequestVariables.PerPage)
 			<div class="col-md-4">
 				<table class="table">
 					<thead>
@@ -46,17 +147,87 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach (Tag tag in Model.FreshTags)
-						{
-							<tr>
-								<td>@tag.Name</td>
-							</tr>
-
-						}
+						
 					</tbody>
 				</table>
 			</div>
+			<div class="modal fade" id="gridSaveSummary" tabindex="-1" role="dialog" aria-labelledby="gridSaveSummary-label">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="gridSaveSummary-label">Anime Save Summary</h4>
+						</div>
+						<div id="summaryBody" class="modal-body">
+							<div id="modalConten" class="modalSummaryBosdy">
+								<table id="freshAnimeTable" class="table table-bordered myTable">
+									<thead>
+										<tr>
+											<th colspan="2">
+												<h4 class="center-block">New Anime Titles</h4>
+											</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+								<table id="freshGenreTable" class="table table-bordered myTable">
+									<thead>
+										<tr>
+											<th colspan="2">
+												<h4 class="center-block">New Genres</h4>
+											</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+							<p id="tagCount"></p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button id="btn-saveGridData" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-upload"></span>Upload</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
+            <div class="modal fade" id="gridItemDetails" tabindex="-1" role="dialog" aria-labelledby="gridItemDetails-label">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="gridItemDetails-label">Modal title</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="englishHeader" style="display:flex">
+                                <h4 id="details-EnglishTitle" class="editable"></h4>
+                                <input id="EnglishTitle-txtBx" class="field form-control" style="display:none" />
+                                <h4 id="details-startDate" style="color: #5dca5d"></h4>
+                            </div>
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="#">
+                                        <img id="details-Img" class="media-object" src="http://placehold.it/64x64">
+                                    </a>
+                                </div>
+                                <div id="details-body" class="media-body">
+                                    <div id="romanjiHeader">
+                                        <h4 id="details-RomanjiTitle" class="media-heading editable">Media heading</h4>
+                                        <input id="romanjiTitle-txtBx" class="field form-control" style="display:none; width:100%" /> 
+                                    </div>
+                                    <p id="details-description" class="editable"></p>
+                                    <textarea id="premise-txtBx" class="field form-control" style="display:none; width:100%" rows="4"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button id="detailsSave-btn" type="button" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="btn-openDetails" class="hidden" type="button" data-toggle="modal" data-target="#gridItemDetails"></button>
 		</div>
 	</div>
 

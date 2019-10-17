@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -15,6 +17,7 @@ namespace DiscussionForum.Controllers
     {
         public ActionResult Index()
         {
+
             if (!User.Identity.IsAuthenticated)
             {
                 HomePage_UA model = new HomePage_UA();
@@ -58,6 +61,11 @@ namespace DiscussionForum.Controllers
                 return PartialView();
             }
         }
+        [ChildActionOnly]
+        public PartialViewResult _LoginModalPartial()
+        {
+            return PartialView();
+        }
 
         [HttpPost]
         public ActionResult FavoriteCheck(int animeId)
@@ -76,5 +84,21 @@ namespace DiscussionForum.Controllers
             return Json(tags);
         }
 
+        [HttpPost]
+        public ActionResult AddNewDiscussion(ProfilePageViewModel viewModel, HttpPostedFileBase ImageFile)
+        {
+            string currentUser = User.Identity.GetUserId();
+            ProfilePageViewModel model = new ProfilePageViewModel(currentUser);
+            viewModel.FreshDiscussion.CreateNewDiscussion(ImageFile, currentUser);
+            return View("ProfilePage", model);
+        }
+
+        [HttpPost]
+        public ActionResult CropImage(ImageCropVM cropVM, HttpPostedFileBase ImageFile)
+        {
+            cropVM.ImageFile = ImageFile;
+            Bitmap finalImage = cropVM.CropAndSaveImage();
+            return Json(finalImage);
+        }
     }
 }

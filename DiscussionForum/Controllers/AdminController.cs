@@ -1,5 +1,6 @@
 ﻿using DiscussionForum.Models;
 using DiscussionForum.Models.ViewModel;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace DiscussionForum.Controllers
 {
@@ -56,11 +58,25 @@ namespace DiscussionForum.Controllers
         }
 
         [HttpPost]
+        public async Task<JsonResult> SaveNewAnime(AnimeModel[] checkedAnime)
+        {
+            MainAdminViewModel saveResults = new MainAdminViewModel();
+            saveResults.AnimeModels = checkedAnime.ToList();
+            await saveResults.SaveAnimeToDB();
+            saveResults.AnimeModels = null;
+            string json = JsonConvert.SerializeObject(saveResults);
+
+            return Json(json);
+        }
+
+        [HttpPost]
         public async Task<PartialViewResult> MassImport(AnilistVariables requestVariable)
         {
             MainAdminViewModel viewModel = await requestVariable.MassImport();
+            viewModel.RequestVariables = requestVariable;
             return PartialView("MassImport", viewModel);
         }
+
 
         public PartialViewResult SeedTags()
         {

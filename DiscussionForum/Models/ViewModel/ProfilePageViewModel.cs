@@ -11,6 +11,13 @@ namespace DiscussionForum.Models.ViewModel
     {
         public ApplicationUser User { get; set; }
         public List<IFeedItem> AnimeFeed { get; set; }
+        public Discussion FreshDiscussion { get; set; }
+        public string FreshDiscussionImage { get; set; }
+
+        public ProfilePageViewModel()
+        {
+
+        }
         public ProfilePageViewModel(string userId)
         {
             AnimeFeed = new List<IFeedItem>();
@@ -20,6 +27,11 @@ namespace DiscussionForum.Models.ViewModel
             {
                 foreach (AnimeModel anime in User.FavoriteAnime)
                 {
+                    if (anime.FeedPriority == 0)
+                    {
+                        SeedAnimePriority(anime);
+                    }
+                    anime.FeedPriority += 50;
                     ProfileVewAnime profileAnime = new ProfileVewAnime(anime);
                     profileAnime.IsFavorite = true;
                     AnimeFeed.Add(profileAnime);
@@ -27,8 +39,10 @@ namespace DiscussionForum.Models.ViewModel
             }
             if (User.FollowedDiscussions.Count > 0)
             {
+                //TODO: Seed Discussion feed priority for discussions that were made before the implementation of "FeedPriority" upon creation
                 foreach (Discussion discussion in User.FollowedDiscussions)
                 {
+                    discussion.FeedPriority += 50;
                     AnimeFeed.Add(discussion);
                 }
             }
@@ -38,12 +52,33 @@ namespace DiscussionForum.Models.ViewModel
                 List<AnimeModel> supplementalAnime = dbContext.Animes.OrderByDescending(a => a.Popularity).Take(10 - feedCount).ToList();
                 foreach (AnimeModel anime in supplementalAnime)
                 {
+                    if (anime.FeedPriority == 0)
+                    {
+                        SeedAnimePriority(anime);
+                    }
                     ProfileVewAnime profileAnime = new ProfileVewAnime(anime);
                     profileAnime.IsFavorite = false;
                     AnimeFeed.Add(profileAnime);
                 }
             }
-            AnimeFeed.OrderByDescending(af => af.LastUpdated);
+            AnimeFeed = AnimeFeed.OrderByDescending(af => af.FeedPriority).ToList();
+        }
+
+        public void SeedAnimePriority(AnimeModel anime)
+        {
+            ApplicationDbContext dbContext = new ApplicationDbContext();
+            AnimeModel dbAnime = dbContext.Animes.Where(a => a.Id == anime.Id).Include("Discussion").Include("Discussion.Comments").SingleOrDefault();
+            if (dbAnime.Discussion != null)
+            {
+                dbAnime.FeedPriority += (int)(dbAnime.Discussion.FeedPriority * .75);
+                if (dbAnime.Discussion.Comments != null)
+                {
+                    dbAnime.Discussion.FeedPriority += dbAnime.Discussion.Comments.Count;
+                }
+            }
+            anime.FeedPriority = dbAnime.FeedPriority;
+            dbAnime.FeedPriority += (anime.Popularity / 1000);
+            dbContext.SaveChanges();
         }
     }
 
@@ -68,6 +103,7 @@ namespace DiscussionForum.Models.ViewModel
             Color = anime.Color;
             Genres = anime.Genres;
             Popularity = anime.Popularity;
+            FeedPriority = anime.FeedPriority;
             UsersFavorited = anime.UsersFavorited;
             if (anime.LastUpdated != null)
             {

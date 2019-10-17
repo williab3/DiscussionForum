@@ -1,0 +1,18 @@
+namespace DiscussionForum.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class changePictureImageData2string : DbMigration
+    {
+        public override void Up()
+        {
+            AlterColumn("dbo.Pictures", "ImageData", c => c.String());
+        }
+        
+        public override void Down()
+        {
+            AlterColumn("dbo.Pictures", "ImageData", c => c.Binary());
+        }
+    }
+}

@@ -18,6 +18,7 @@
 				</button>
 			</div>
 		</div>
+		@using (Html.BeginForm("AddNewDiscussion", "Home", FormMethod.Post, new { enctype = "multipart/form-data", id = "discusForm" })) {
 		<div class="modal fade" id="newDiscussion" tabindex="-1" role="dialog" aria-labelledby="newDiscussion-label">
 			<div class="modal-dialog modal-lg" role="document">
 				<div class="modal-content">
@@ -25,38 +26,55 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<h3 class="modal-title" id="newDiscussion-label">Anime Hit</h3>
 					</div>
-					<div class="modal-body">
+					<div id="discussionModalBody" class="modal-body">
 						<h4>New Discussion</h4>
 						<div class="form-group">
-							<label class="control-label" for="discussionTitle">Title</label>
-							<input type="text" class="form-control" id="discussionTitle" placeholder="Title" style="width:100%">
+							@*<label class="control-label" for="discussionTitle">Title</label>*@
+							@Html.LabelFor(m => m.FreshDiscussion.Title)
+							<p id="validationTitle" class="text-danger" style="display:none; font-weight:bold">Every discussion must have a title</p>
+							@Html.ValidationMessageFor(m => m.FreshDiscussion.Title,"", new { @class = "validation" })
+							@Html.TextBoxFor(m => m.FreshDiscussion.Title, new { @class="form-control", style="width:100%", id = "modalTitle" })
 						</div>
 						<div class="form-group">
 							<label class="control-label" for="imageUploads">Upload Images</label>
 							<div style="display:flex">
-								<input id="imageUploads" type="file" accept="image/*" placeholder="Upload a few pics" multiple />
-								<img id="imgPreview" />
+								<input id="ImageFile" name="ImageFile" type="file" accept="image/*" placeholder="Upload a few pics" style="display:none" alt="Select a picture" />
+								@MyHtml.Button("Pick Pic", ButtonType.primary, new { id = "selectImage-btn", style = "height:40px; margin-right:10px", @type="button" })
+								<div id="imagePostback"></div>
+								<img id="imgPreview" style="max-width: 850px;" />
+							</div>
+							<div id="cropActions" style="display: flex; margin-top: 5px; justify-content:center">
+								<strong class="text-info" style="margin: auto 0px;">Drag mouse across image to crop</strong>
+								<button id="btn-crop" type="submit" style="margin-left: 10px" class="btn btn-primary">Crop</button>
 							</div>
 						</div>
 						<div class="form-group">
 							<div style="display:flex">
-								<label for="txtBox-newDiscussionPremise">Topic</label>
-								<p id="attachedTags"></p>
+								@Html.LabelFor(m => m.FreshDiscussion.Premise)
 							</div>
-							@Html.TextArea("Premise", new { @class = "form-control", style = "width:100%;", id = "txtBox-newDiscussionPremise" })
+							@Html.ValidationMessageFor(m => m.FreshDiscussion.Premise,"",new { @class= "validation" })
+							@Html.TextAreaFor(m => m.FreshDiscussion.Premise, new { @class="form-control", style="width:100%", id="discussionPremise", rows="4"})
 						</div>
 						<div class="form-group">
 							<label class="control-label" for="txtbx-tags">Tags</label>
+							<p id="attachedTags"></p>
 							<input type="text" class="form-control" id="txtbx-tags" style="width:90%">
 						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Open Discussion</button>
+						<button id="openDiscussion" type="submit" class="btn btn-primary">Add Discussion</button>
 					</div>
 				</div>
 			</div>
+			@Html.Hidden("XCoor")
+			@Html.Hidden("YCoor")
+			@Html.Hidden("CropWidth")
+			@Html.Hidden("CropHeight")
+			@Html.Hidden("X2")
+			@Html.Hidden("Y2")
 		</div>
+		}
 		@*<h2>Profile Page</h2>
 		<ol>
 			<li>Name</li>
@@ -66,8 +84,10 @@
 			<li>Commented discussions </li>
 
 		</ol>*@
-		<div class="feed-container">
-			@foreach (IFeedItem item in Model.AnimeFeed)
+	<div class="feed-container">
+		@try
+		{
+			foreach (IFeedItem item in Model.AnimeFeed)
 			{
 				if (item.GetType() == typeof(ProfileVewAnime))
 				{
@@ -97,14 +117,82 @@
 						</div>
 					</div>
 				}
+				else if (item.GetType() == typeof(Discussion))
+				{
+					Discussion discussion = (Discussion)item;
+					<h3>@discussion.Title</h3>
+				}
 			}
-		</div>
+
+		}
+		catch (Exception err)
+		{
+			<h3>@err.Message</h3>
+		}
+	</div>
 
 		@section scripts{
 			<script src="~/Scripts/jquery.imgareaselect.min.js"></script>
 			<link href="~/Content/imgareaselect-default.css" rel="stylesheet" />
 			<link href="~/Content/imgareaselect-animated.css" rel="stylesheet" />
 			<script>
+				$("#testTag").val("Dragonball Z")
+				var titleTxtbx = document.getElementById("modalTitle");
+				var bal = $("#discussionTitleBox");
+				$("#openDiscussion").click(function (args) {
+				});
+				
+				var cropActions = $("#cropActions").hide();
+				var cropMeasurements;
+				var picUploader = $("#ImageFile");
+				
+				var selectImageBtn = $("#selectImage-btn").click(function (args) {
+					picUploader.click();
+
+				});
+
+				picUploader.change(function (args) {
+					//console.log(picUploader);
+					//console.log(args);
+					//cropActions.show();
+					var imageFile = args.target.files[0];
+					if (!imageFile.type.match("image.*")) {
+						alert("The selected file is not an image. Please select an image file");
+						return;
+					} else {
+						var imageReader = new FileReader();
+						imageReader.onload = function (args) {
+							$("#imgPreview").attr("src", args.target.result).css("height", 400);
+						};
+						imageReader.readAsDataURL(imageFile);
+					}
+				});
+
+				//$("#btn-crop").click(function (args) {
+				//	picturePrevriew.cancelSelection();
+				//	var canvas = document.createElement("canvas");
+				//	var imagePreview = document.getElementById("imgPreview");
+				//	$(canvas).attr("width", 300).attr("height", 300);
+				//	canvas.width = 300
+				//	canvas.height = 300;
+				//	var ctx = canvas.getContext("2d");
+				//	console.log(cropMeasurements);
+				//	ctx.drawImage(imagePreview, cropMeasurements.x1, cropMeasurements.y1, cropMeasurements.width, cropMeasurements.height, 0, 0, cropMeasurements.width, cropMeasurements.height);
+				//	var dataUrl = canvas.toDataURL("image/png");
+				//	imagePreview.src = dataUrl;
+				//	var cropFile = new File(dataUrl, picUploader[0].files[0].name);
+				//	picUploader.files[0] = cropFile;
+				//	console.log(canvas);
+				//});
+				//function setPreview(xPos, yPos, x2, y2, w, h) {
+				//	$("#XCoor").val(xPos || 0);
+				//	$("#YCoor").val(yPos || 0);
+				//	$("#CropWidth").val(w || 0);
+				//	$("#CropHeight").val(h || 0);
+				//	$("#X2").val(x2 || 0);
+				//	$("#Y2").val(y2 || 0);
+				//}
+
 				$("#txtbx-tags").bendoAutocomplete({
 					data: {
 						url: "/Home/Tags",
@@ -116,12 +204,29 @@
 					buttonText: "Add Tag",
 					placeholder: "Tags",
 					buttonClick: function (args) {
+						var formElement = $("#discusForm");
+						var tagNameInput = $("input.hiddenNameTag");
+						var hiddenNameTagCount = tagNameInput.length;
+						var newNameInput = $("<input>").attr("type", "hidden").attr("name", "FreshDiscussion.Tags[" + hiddenNameTagCount + "].Name").addClass("hiddenNameTag").attr("id", "tag_name" + hiddenNameTagCount);
+						newNameInput.val(args.text);
+						formElement.append(newNameInput);
+
+						var tagValueInput = $("input.hiddenValueTag");
+						var valueTagCount = tagValueInput.length;
+						var newValueInput = $("<input>").attr("type", "hidden").attr("name", "FreshDiscussion.Tags[" + valueTagCount + "].Id").addClass("hiddenValueTag").attr("id", "tag_value" + valueTagCount);
+						newValueInput.val(args.value)
+						formElement.append(newValueInput);
 					},
 					errorMessage: "Please select a one of the tags from the dropdown list before adding to the discussion",
 				});
 
 				$("#btn-newDiscussion").click(function (args) {
-					$("#discussionTitle").val($("#discussionTitleBox").val());
+					//$("#discussionTitle").val() = $("#discussionTitleBox").val();
+					var discussion = document.getElementById("discussionTitleBox");
+					console.log(discussion);
+					var modalTitle = document.getElementById("modalTitle");
+					modalTitle.value = discussion.value;
+					discussion.innerText = $("#discussionTitleBox").val();
 					$("#txtbx-tags").val("");
 				});
 

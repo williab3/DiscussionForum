@@ -26,15 +26,17 @@
 	</div>
 
 	@* Main content *@
-	<div class="col-md-8">
-		@{
+<div class="col-md-8">
+	@{
+		try
+		{
 			int animeCoount = Model.AnimeFeed.Count;
 			List<AnimeModel> carouselItem = new List<AnimeModel>();
 
 			do
 			{
 				Random random = new Random();
-				int index = random.Next(0, 9);
+				int index = random.Next(0, 7);
 				if (!carouselItem.Contains(Model.AnimeFeed[index]))
 				{
 					carouselItem.Add((AnimeModel)Model.AnimeFeed[index]);
@@ -58,14 +60,14 @@
 							<p>@carouselItem[0].Title_English</p>
 						</div>
 					</div>
-					<div class="item"style="background-image:linear-gradient(to right,#00000000, @carouselItem[1].Color)">
+					<div class="item" style="background-image:linear-gradient(to right,#00000000, @carouselItem[1].Color)">
 						<img alt="Second slide" src="@carouselItem[1].ImageUrlLarge">
 						<div class="carousel-caption">
 							<h3>@carouselItem[1].Title_Romaji</h3>
 							<p>@carouselItem[1].Title_English</p>
 						</div>
 					</div>
-					<div class="item"style="background-image:linear-gradient(to right,#00000000, @carouselItem[2].Color)">
+					<div class="item" style="background-image:linear-gradient(to right,#00000000, @carouselItem[2].Color)">
 						<img alt="Third slide" src="@carouselItem[2].ImageUrlLarge">
 						<div class="carousel-caption">
 							<h3>@carouselItem[2].Title_Romaji</h3>
@@ -76,25 +78,31 @@
 			</div>
 
 		}
+		catch (Exception err)
+		{
+			<h3>@err.Message</h3>
+		}
 
-		<div class="col-md-12" style="margin-top: 10px; height: 600px; overflow-y:scroll; padding-right: 0px;">
-			@foreach (AnimeModel Anime in Model.AnimeFeed)
-			{
-				<a class="feedItem" href="@Url.Action("Anime", "Anime", new {Anime.Id })">
-					<div class="media feedItem">
-						<div class="media-left">
-							<img class="media-object" src="@Anime.ImageUrlMedium" alt="...">
-						</div>
-						<div class="media-body">
-							<h4 class="media-heading">@Anime.Title_Romaji</h4>
-							<sup>@Anime.Title_English</sup>
-							<p>@Html.Raw(Anime.Description)</p>
-						</div>
+	}
+
+	<div class="col-md-12" style="margin-top: 10px; height: 600px; overflow-y:scroll; padding-right: 0px;">
+		@foreach (AnimeModel Anime in Model.AnimeFeed)
+		{
+			<a class="feedItem" href="@Url.Action("Anime", "Anime", new {Anime.Id })">
+				<div class="media feedItem">
+					<div class="media-left">
+						<img class="media-object" src="@Anime.ImageUrlMedium" alt="...">
 					</div>
-				</a>
-			}
-		</div>
+					<div class="media-body">
+						<h4 class="media-heading">@Anime.Title_Romaji</h4>
+						<sup>@Anime.Title_English</sup>
+						<p>@Html.Raw(Anime.Description)</p>
+					</div>
+				</div>
+			</a>
+		}
 	</div>
+</div>
 	<div class="col-md-2">
 			
 	</div>

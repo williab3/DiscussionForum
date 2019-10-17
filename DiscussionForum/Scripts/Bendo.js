@@ -396,12 +396,16 @@ $.fn.bendoAutocomplete = function (args) {
             if (idValue !== undefined && idValue != "") {
                 var extistingTags = $('#attachedTags > span[data-bendo-itemId="' + idValue + '"]');
                 if (extistingTags.length < 1) {
-                    console.log("safe to add!!");
+                    var para = {
+                        text: bendoAutocomplete.val(),
+                        value: idValue
+                    };
                     var bar = $("<span>").text("|").addClass("bar");
                     $("#attachedTags").append(bar);
                     $("#attachedTags").append(freshTag);
                     errorMessage.empty();
                     bendoAutocomplete.val("");
+                    defaultSettings.buttonClick(para);
                 } else {
                     errorMessage.text(defaultSettings.errorMessage);
                 }
@@ -419,7 +423,7 @@ $.fn.bendoAutocomplete = function (args) {
     container.css("max-width", autocompleteButton.width() + this.width() + 30).css("flex-wrap", "wrap");
     var resultsHolder = $("<div>").addClass("autocomplete-results-container").attr("id", "resultsContainer-" + this.attr("id")).css("height", "auto");
     var holderWidth = bendoAutocomplete.width();
-    //resultsHolder.css("width", holderWidth);
+    resultsHolder.css("overflow-y", "hidden");
     container.append(resultsHolder);
     //Get data from server
     var dataSource;
@@ -450,7 +454,7 @@ $.fn.bendoAutocomplete = function (args) {
         if (args.keyCode !== 40 && args.keyCode !== 38 && args.keyCode !== 13) {
             bendoAutocomplete.attr("data-autocomplete-value", "");
             var searchTerm = $(this).val();
-            resultsHolder.empty();
+            resultsHolder.empty().css("overflow-y","scroll");
             errorMessage.empty();
             $.each(dataSource, function (index, ele) {
                 var match = ele[defaultSettings.data.textField].match(new RegExp(searchTerm, "ig"));

@@ -17,6 +17,7 @@ namespace DiscussionForum.Models
         public string[] Genres { get; set; }
         public int? Episodes { get; set; }
         public int Popularity { get; set; }
+        public StartDate StartDate { get; set; }
 
         public async Task GetAnime(int animeId)
         {
@@ -44,6 +45,13 @@ namespace DiscussionForum.Models
             }
         }
 
+    }
+
+    public class StartDate
+    {
+        public string Year { get; set; }
+        public string Month { get; set; }
+        public string day { get; set; }
     }
 
     public class Title

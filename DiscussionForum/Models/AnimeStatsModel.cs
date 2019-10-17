@@ -21,6 +21,7 @@ namespace DiscussionForum.Models
         public DateTime NextUpdate { get; set; }
         public DateTime AirTime { get; set; }
         public List<string> NewAnimeTitles { get; set; } = new List<string>();
+        public int FeedPriority { get; set; }
 
         public async Task<List<string>> ImportAnimeUpdates()
         {

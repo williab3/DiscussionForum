@@ -1,4 +1,6 @@
-﻿@model DiscussionForum.Models.Media
+﻿@using DiscussionForum.Models
+@using DiscussionForum.Custom_Helpers
+@model DiscussionForum.Models.ViewModel.AnimeViewModel
 @{
 	ViewBag.Title = "Anime";
 	Layout = "~/Views/Shared/_Layout.cshtml";
@@ -12,16 +14,189 @@
 		<div class="media">
 			<div class="media-left">
 				<a href="#">
-					<img class="media-object" src="@Model.CoverImage.Large" alt="...">
+					<img class="media-object" height="350" src="@Model.Anime.ImageUrlLarge" alt="...">
 				</a>
 			</div>
 			<div class="media-body">
-				<h4 class="media-heading">@Model.Title.English</h4>
-				@Html.Raw(Model.Description)
+				<h4 class="media-heading">@Model.Anime.Title_Romaji</h4>
+				<h5>@Model.Anime.Title_English</h5>
+				@Html.Raw(Model.Anime.Description)
 			</div>
 		</div>
-	</div>
-	<div class="col-md-2"></div>
+		<hr />
+		<div class="input-group">
+			<input id="freshComment" type="text" class="form-control txtBx-comment" placeholder="What do you think about it???" aria-describedby="btn-postComment">
+			<span class="input-group-addon btn btn-primary" id="btn-postComment">Post Comment</span>
+		</div>
+        <div id="commentsHolder">
+            @foreach (Comment comment in Model.Anime.Discussion.Comments)
+            {
+                <div class="comment" data-comment-id="@comment.Id">
+                    <div class="comment-header text-primary">
+                        @comment.Who <span class="gold-bar">|</span> <span>@MyHtml.NullableConvertDate(comment.LastUpdated)</span>
+                    </div>
+                    <div class="comment-body">
+                        @comment.What
+                    </div>
+                    <div class="comment-controls">
+                        <span class="glyphicon glyphicon-thumbs-up voteIcon"></span>
+                        <span class="gold-bar">|</span>
+                        <span class="glyphicon glyphicon-thumbs-down voteIcon"></span>
+                        <span class="voteIcon gold-bar reply-toggle">Reply</span>
+                    </div>
+                    @{
+                        string repleye = "reply" + comment.Id;
+                        <div id="@repleye" class="input-group" style="display:none">
+                            <input type="text" class="form-control txtBx-comment" placeholder="What do you think about this comment?" />
+                            <span class="input-group-addon btn btn-primary" onclick="postReply(this)">Reply</span>
+                        </div>
+                    }
+                    @foreach (Comment reply in comment.Replies)
+                    {
+                        <div class="reply" data-comment-id="@reply.Id">
+                            <div class="comment-header text-primary">
+                                @reply.Who <span class="glyphicon glyphicon-hand-right rightHand"></span> @comment.Who
+                                <span class="gold-bar">|</span>
+                                <span>@MyHtml.NullableConvertDate(reply.LastUpdated)</span>
+                            </div>
+                            <div class="comment-body">
+                                @reply.What
+                            </div>
+                            <div class="comment-controls">
+                                <span class="glyphicon glyphicon-thumbs-up voteIcon"></span>
+                                <span class="gold-bar">|</span>
+                                <span class="glyphicon glyphicon-thumbs-down voteIcon"></span>
+                                <span class="voteIcon gold-bar reply-toggle">Reply</span>
+                            </div>
+                            @{
+                                string firstreply = "reply" + reply.Id;
+                                <div id="@firstreply" class="input-group" style="display:none">
+                                    <input type="text" class="form-control txtBx-comment" placeholder="What do you think about this comment?" />
+                                    <span class="input-group-addon btn btn-primary" onclick="postReply(this)">Reply</span>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+		<div class="col-md-2"></div>
 
+	</div>
 </div>
+@{Html.RenderAction("_LoginModalPartial", "Home"); }
+<button id="btn-loginModal" type="button" hidden data-toggle="modal" data-target="#loginModal"></button>
+@section Scripts{
+    <script>
+		var authenticated = "@Model.IsUserAuthenticated";
+		$("#btn-postComment").click(function (args) {
+			if (authenticated === "True") {
+				var comment = {
+				    animeId: @Model.Anime.Id,
+				    postedComment: {
+	                    what: $("#freshComment").val()
+				    }
+                }
+			    $.ajax({
+                    url: "/Anime/PostAnimeComment",
+				    data: comment,
+				    method:"Post",
+				    success: function (data, status, xhr) {
+                        console.log(data);
+                        var commentId = data.Id;
+                        makeComment(0, data);
+	                },
+				    error: function (xhr, status, err) {
+		                alert(err);
+	                }
+                });
+			$("#freshComment").val(null);
+		} else {
+			$("#btn-loginModal").click();
+		    }
+        });
+
+        $(".txtBx-comment").keyup(function (args) {
+            if (args.originalEvent.keyCode === 13) {
+                console.log($(args.currentTarget).siblings("span.btn"));
+                $($(args.currentTarget).siblings("span.btn")).click();
+            }
+        });
+
+        $(".reply-toggle").click(function (args) {
+            console.log(args);
+            var commentId = $(args.target).closest("div[data-comment-id]").attr("data-comment-id");
+            toggleReplyBx(commentId);
+        })
+
+        function postReply(args) {
+            if (authenticated === "True") {
+                var reply = {
+                    RepliedCommentId: $($(args).closest("div[data-comment-id]")).attr("data-comment-id"),
+                    postedComment: {
+                        What: $(args.previousElementSibling).val()
+                    }
+                }
+                console.log($(reply));
+                $.ajax({
+                    url: "/Anime/CommentReply",
+                    method: "Post",
+                    data: reply,
+                    success: function (data, status, xhr) {
+                        console.log(data);
+                        console.log(args);
+                        makeComment(reply.RepliedCommentId, data);
+                        
+                    },
+                });
+            }
+        }
+        function makeComment(parentId, dataComment) {
+            var commentParent;
+            var postedComment;
+            var header = $("<div>").addClass("comment-header").addClass("text-primary").text(dataComment.Who);
+            if (parentId < 1) {
+                commentParent = $("#commentsHolder");
+                postedComment = $("<div>").addClass("comment");
+                header = $("<div>").addClass("comment-header").addClass("text-primary").text(dataComment.Who);
+            } else {
+                commentParent = $("div[data-comment-id=" + parentId + "]");
+                postedComment = $("<div>").addClass("reply");
+                header = $("<div>").addClass("comment-header").addClass("text-primary").text(dataComment.Who);
+                header.append($("<span>").addClass("glyphicon glyphicon-hand-right rightHand")).append(dataComment.RepliedTo);
+                $(commentParent.find("input")).val(null);
+                $(commentParent.find("span.reply-toggle")).click();
+            }
+            const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            var d1 = new Date(parseInt(dataComment.LastUpdated.substr(6)));
+            postedComment.attr("data-comment-id", dataComment.Id);
+            commentParent.append(postedComment);
+            var bar = $("<span>").addClass("gold-bar").text("|");
+            var commentDate = $("<span>").text(d1.getDate() + "-" + months[d1.getMonth()] + "-" + d1.getFullYear());
+            header.append($("<span>").addClass("gold-bar").text("|"));
+            header.append(commentDate);
+            postedComment.append(header);
+            var commentBody = $("<div>").addClass("comment-body").text(dataComment.What);
+            postedComment.append(commentBody);
+            var commentControls = $("<div>").addClass("comment-controls");
+            postedComment.append(commentControls);
+            commentControls.append($("<span>").addClass("glyphicon glyphicon-thumbs-up voteIcon"));
+            commentControls.append(bar);
+            commentControls.append($("<span>").addClass("glyphicon glyphicon-thumbs-down voteIcon"));
+            commentControls.append($("<span>").addClass("voteIcon gold-bar reply-toggle").text("Reply").click(function (args) {
+                toggleReplyBx(dataComment.Id);
+            }));
+            var reply = $("<div>").addClass("input-group").css("display", "none").attr("id", "reply" + dataComment.Id);
+            var txtBxReply = $("<input>").addClass("form-control txtBx-comment").attr("type", "text").attr("placeholder", "What do you think about this comment?");
+            var btnPostReply = $("<span>").addClass("input-group-addon btn btn-primary").text("Reply");
+            reply.append(txtBxReply).append(btnPostReply);
+            postedComment.append(reply);
+
+        }
+
+        function toggleReplyBx(cmntId) {
+            $("#reply" + cmntId).toggle();
+        }
+    </script>
+}
 

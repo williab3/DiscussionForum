@@ -155,3 +155,146 @@ textarea {
     color: cornflowerblue;
     font-weight: bold;
 }
+
+.validation{
+    color: red;
+    font-weight:bold;
+    display:block;
+}
+
+.dateSelect{
+    width:180px;
+    font-size: 17px;
+}
+
+.gridControls-container {
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+.gridPage{
+    width:50px;
+    text-align:center;
+    height: 30px;
+    margin-bottom: -1px
+}
+.leftPagebutton {
+    -moz-border-radius: 3px 0px 0px 3px;
+    -webkit-border-radius: 3px 0px 0px 3px;
+    border-radius: 3px 0px 0px 3px;
+    margin: 0px -4px 3px 0px;
+}
+.rightPageButton {
+    -moz-border-radius: 0px 3px 3px 0px;
+    -webkit-border-radius: 0px 3px 3px 0px;
+    border-radius: 0px 3px 3px 0px;
+    margin: 0px 0px 3px -4px;
+}
+.genreList {
+    list-style: disc;
+    font-weight: bold;
+    display: inline;
+    
+}
+.genreListItem{
+    color:rgb(0, 146, 255);
+}
+.pageInfo{
+    text-align:left;
+    font-weight: lighter;
+    margin: 0px 0px -5px 0px;
+}
+.gridRowImage{
+    height:100px;
+}
+.gridControlRow > th{
+    padding-bottom: 0px !important;
+}
+.rowCount{
+    display:inline-block;
+    height: 30px;
+    padding-bottom: 0px;
+    position:relative;
+    bottom: -4px;
+}
+.checkedRow {
+    background-color: #deeeee;
+}
+.modalSummaryBosdy {
+    display: flex;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
+    max-height: 480px;
+    overflow-y: scroll;
+}
+.myTable{
+    width:auto;
+}
+.subscript {
+    display: block;
+    color: rgb(0, 146, 255);
+}
+.dangerTextelement {
+    background-color: #ffcbd2;
+    color: #750000;
+}
+.goodTextelement {
+    background-color: #cbffd0;
+    color: #00480d;
+}
+.rowNumber{
+    display: table-cell;
+    vertical-align: middle !important;
+}
+.gridRow :hover{
+    cursor: pointer;
+}
+.rowWarning {
+    background-color: #fbe1e1;
+}
+.editable:hover{
+    cursor: pointer !important;
+    color:aqua !important;
+}
+.stretch{
+    width:100%;
+}
+#commentsHolder{
+    margin-top: 30px;
+}
+.comment, .reply {
+    border-left: solid rgb(179, 8, 232);
+    padding-left: 5px;
+    margin-top: 4px;
+}
+.comment-body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size:medium;
+    font-weight:500
+}
+.comment-header{
+    display:flex;
+    font-weight: bold;
+}
+.comment-controls{
+    display:flex;
+}
+.gold-bar{
+    color: rgb(179, 8, 232);
+    margin: 0px 10px 0px 10px;
+}
+.voteIcon{
+    padding-top: 3px;
+}
+.voteIcon:hover{
+    cursor:pointer !important;
+    color:aqua;
+    font-weight: 400;
+}
+.rightHand{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.reply{
+
+}
