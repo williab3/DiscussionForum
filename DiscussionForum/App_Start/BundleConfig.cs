@@ -12,7 +12,7 @@ namespace DiscussionForum
                         "~/Scripts/jquery-{version}.js", 
                         "~/Scripts/jquery.validate.min.js", 
                         "~/Scripts/jquery.validate.unobtrusive.js", 
-                        "~/Scripts/jquery.unobtrusive-ajax.min.js", 
+                        "~/Scripts/jquery.unobtrusive-ajax.min.js",
                         "~/Scripts/Bendo.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(

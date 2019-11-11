@@ -61,6 +61,7 @@ namespace DiscussionForum.Models
     {
         public int Id { get; set; }
         public string Who { get; set; }
+        public Picture CommentorPic { get; set; }
         public string RepliedTo { get; set; }
         public string CommenterId { get; set; }
         public string What { get; set; }
@@ -77,6 +78,8 @@ namespace DiscussionForum.Models
         public bool UpVote { get; set; }
         public bool DownVote { get; set; }
 
+        [Required]
+        public string VoterUserId { get; set; }
 
     }
 }

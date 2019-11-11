@@ -132,6 +132,7 @@ $.fn.bendoGrid = function (args) {
 
 //Bendo Checkbox
 $.fn.bendoCheckbox = function (args) {
+    console.log(this);
     var defaultSettings = $.extend({
         setCheck: "",
         height: "25",
@@ -141,7 +142,13 @@ $.fn.bendoCheckbox = function (args) {
                 url: this.postBack.url,
                 data: args
             });
-        }
+        },
+        uncheckAction: function (args) {
+            console.log("uncheck fucntion not set");
+        },
+        checkAction: function (args) {
+            console.log("check function not set");
+        },
     }, args);
     this.settings = new function () {
         return defaultSettings;
@@ -167,14 +174,57 @@ $.fn.bendoCheckbox = function (args) {
             $(element).prepend(holder);
         }
     });
-    this.data("bendoCheckbox", this);
+    var allCheckboxes = this;
+    this.data("bendoCheckbox", {
+        toggleCheck: function (itemId) {
+            var currentCheckbox = $(allCheckboxes).closest("[data-bendo-itemId='" + itemId + "']");
+            var _attribute = $(currentCheckbox).attr("data-bendo-checked");
+            if (_attribute == "true") {
+                $(allCheckboxes).attr("data-bendo-checked", "");
+                let checkedImg = $(currentCheckbox).find("img.checkedImg");
+                checkedImg.attr("data-bendo-display", "");
+                let uncheckedImg = $(currentCheckbox).find("img.uncheckedImg");
+                uncheckedImg.attr("data-bendo-display", "show");
+            } else {
+                $(currentCheckbox).attr("data-bendo-checked", "true");
+                let checkedImg = $(currentCheckbox).find("img.checkedImg");
+                checkedImg.attr("data-bendo-display", "show");
+                let uncheckedImg = $(currentCheckbox).find("img.uncheckedImg");
+                uncheckedImg.attr("data-bendo-display", "");
+            }
+        },
+        setToCheck: function (itemId) {
+            var currentCheckbox = $(allCheckboxes).closest("[data-bendo-itemId='" + itemId + "']");
+            $(currentCheckbox).attr("data-bendo-checked", "true");
+            let checkedImg = $(currentCheckbox).find("img.checkedImg");
+            checkedImg.attr("data-bendo-display", "show");
+            let uncheckedImg = $(currentCheckbox).find("img.uncheckedImg");
+            uncheckedImg.attr("data-bendo-display", "");
+        },
+        setToUnCheck: function (itemId) {
+            var currentCheckbox = $(allCheckboxes).closest("[data-bendo-itemId='" + itemId + "']");
+            console.log($(currentCheckbox).closest("[data-bendo-itemId='4']"));
+            $(currentCheckbox).attr("data-bendo-checked", "");
+            let checkedImg = $(currentCheckbox).find("img.checkedImg");
+            checkedImg.attr("data-bendo-display", "");
+            let uncheckedImg = $(currentCheckbox).find("img.uncheckedImg");
+            uncheckedImg.attr("data-bendo-display", "show");
+        }
+    });
     this.click(function (e, sender) {
         var _attribute = $(this).attr("data-bendo-checked");
-        var itemId;
+        console.log(this);
+        var clickObj;
         if ($(this).attr("data-bendo-itemId") !== null) {
-            itemId = $(this).attr("data-bendo-itemId");
+            clickObj = {
+                itemId: $(this).attr("data-bendo-itemId"),
+                checkbox: this
+            };
         } else {
-            itemId = "";
+            clickObj = {
+                itemId: "",
+                checkbox: this
+            };
         }
         if (_attribute == "true") {
             $(this).attr("data-bendo-checked", "");
@@ -182,17 +232,18 @@ $.fn.bendoCheckbox = function (args) {
             checkedImg.attr("data-bendo-display", "");
             let uncheckedImg = $(this).find("img.uncheckedImg");
             uncheckedImg.attr("data-bendo-display", "show");
-            defaultSettings.uncheckAction(itemId);
+            defaultSettings.uncheckAction(clickObj);
         } else {
             $(this).attr("data-bendo-checked", "true");
             let checkedImg = $(this).find("img.checkedImg");
             checkedImg.attr("data-bendo-display", "show");
             let uncheckedImg = $(this).find("img.uncheckedImg");
             uncheckedImg.attr("data-bendo-display", "");
-            defaultSettings.checkAction(itemId);
+            defaultSettings.checkAction(clickObj);
             }
     });
 };
+
 //Bendo Select list
 $.fn.bendoSelect = function (args) {
     let defaultSettings = $.extend(true, {

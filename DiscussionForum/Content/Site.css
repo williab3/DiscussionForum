@@ -298,3 +298,26 @@ textarea {
 .reply{
 
 }
+.lessImportantText{
+    font-weight: 500
+}
+.discussionFeedItem {
+    background: linear-gradient(to top, #f0ed09 -30%, #fff 28%)
+}
+.discussionFeedItem > p.text-primary{
+    padding: 0px 10px
+}
+.discussionFeedItem:hover{
+    cursor:pointer
+}
+.biobx {
+    width: 90%;
+    max-width: 768px;
+}
+.imagePreview{
+    max-width: 150px;
+}
+.inlineImage{
+    width: 30px;
+    height: 30px;
+}

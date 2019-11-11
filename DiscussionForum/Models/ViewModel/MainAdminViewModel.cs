@@ -13,6 +13,9 @@ using Newtonsoft.Json;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Drawing;
+using JikanDotNet;
+using ScrapySharp.Extensions;
+using HtmlAgilityPack;
 
 namespace DiscussionForum.Models.ViewModel
 {
@@ -31,6 +34,7 @@ namespace DiscussionForum.Models.ViewModel
         public List<Tag> FreshTags { get; set; } = new List<Tag>();
         public string ErrorMessage { get; set; }
 
+        public List<NewsArticle> FreshNews { get; set; }
         public async Task<MainAdminViewModel> ImportNewAnimeData()
         {
             /* Method Objectives
@@ -45,7 +49,7 @@ namespace DiscussionForum.Models.ViewModel
             APICommunicator.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             string query = @"query ($status: MediaStatus, $page: Int, $perPage: Int, $sort: MediaSort) {
             Page (page: $page, perPage: $perPage) {
-            pageInfo { total currentPage lastPage hasNextPage perPage } media (status: $status, sort: $sort) { id popularity startDate {
+            pageInfo { total currentPage lastPage hasNextPage perPage } media (status: $status, sort: $sort) { id popularity idMal startDate {
             year month day } title { english romaji } description episodes genres coverImage { medium extraLarge color } } } }";
 
             MainAdminViewModel adminViewModel = new MainAdminViewModel();
@@ -62,86 +66,6 @@ namespace DiscussionForum.Models.ViewModel
                 {
                     AnilistResponseModel content = await response.Content.ReadAsAsync<AnilistResponseModel>();
                     ApplicationDbContext dbContext = new ApplicationDbContext();
-                    //adminViewModel = await IndexAndSaveNewAnimeAsync(content);
-                    //foreach (Media animeData in content.Data.Page.Media)
-                    //{
-                    //    AnimeModel existingAnime = dbContext.Animes.Include("Genres").Where(a => a.AnilistId == animeData.Id).SingleOrDefault();
-                    //    existingAnime.ImageUrlLarge = animeData.CoverImage.ExtraLarge;
-                    //    AnimeGenre newGenre;
-                    //    List<AnimeGenre> newGenresList = new List<AnimeGenre>();
-
-                    //    if (!String.IsNullOrEmpty(animeData.Title.Romaji))
-                    //    {
-                    //        searchTerm = animeData.Title.Romaji.Substring(0, 5);
-                    //    }
-                    //    else
-                    //    {
-                    //        searchTerm = animeData.Title.English.Substring(0, 5);
-                    //    }
-
-                    //    foreach (string genre in animeData.Genres)
-                    //    {
-                    //        /* Loop Objectives
-                    //        1. Check to see if the genre already exist in the database
-                    //            --> If it does that add it to the new anime's list of genres
-                    //            --> If it does not:
-                    //                A. Create the new genre
-                    //                B. Add is to the new anime's list of genres.
-                    //        */
-                    //        newGenre = dbContext.Genres.Where(g => g.GenreName == genre).SingleOrDefault();
-                    //        if (newGenre == null)
-                    //        {
-                    //            newGenre = new AnimeGenre()
-                    //            {
-                    //                GenreName = genre,
-                    //            };
-                    //            adminViewModel.NewGenres.Add(genre);
-                    //        }
-                    //        newGenresList.Add(newGenre);
-                    //    }
-
-                    //    if (existingAnime == null)
-                    //    {
-                    //        existingAnime = new AnimeModel()
-                    //        {
-                    //            AnilistId = animeData.Id,
-                    //            Title_English = animeData.Title.English,
-                    //            Title_Romaji = animeData.Title.Romaji,
-                    //            Description = animeData.Description,
-                    //            ImageUrlLarge = animeData.CoverImage.Large,
-                    //            ImageUrlMedium = animeData.CoverImage.Medium,
-                    //            Color = animeData.CoverImage.Color,
-                    //            Popularity = animeData.Popularity,
-                    //            Genres = newGenresList,
-                    //        };
-                    //        if (!String.IsNullOrEmpty(animeData.Title.Romaji))
-                    //        {
-                    //            adminViewModel.NewAnimeTitles.Add(animeData.Title.Romaji);
-                    //        }
-                    //        else if (!String.IsNullOrEmpty(animeData.Title.English))
-                    //        {
-                    //            adminViewModel.NewAnimeTitles.Add(animeData.Title.English);
-                    //        }
-                    //        AnimeStatsModel statsModel = dbContext.LastUpdated.Where(a => a.Title.Substring(0, 5) == searchTerm).FirstOrDefault();
-                    //        if (statsModel != null)
-                    //        {
-                    //            existingAnime.LastUpdated = statsModel.LastUpdated;
-                    //        }
-
-                    //        dbContext.Animes.Add(existingAnime);
-
-                    //    }
-                    //    else
-                    //    {
-                    //        AnimeStatsModel statsModel = dbContext.LastUpdated.Where(a => a.Title.Substring(0, 5) == searchTerm).FirstOrDefault();
-                    //        if (statsModel != null)
-                    //        {
-                    //            existingAnime.LastUpdated = statsModel.LastUpdated;
-                    //        }
-
-                    //    }
-                    //    dbContext.SaveChanges();
-                    //}
                     adminViewModel.TotalAnimeInDb += dbContext.Animes.Count();
                     adminViewModel.TotalGenre += dbContext.Genres.Count();
                 }
@@ -155,29 +79,31 @@ namespace DiscussionForum.Models.ViewModel
 
         public async Task SeedAnimePopularity()
         {
-            DidSeedPopularity = true;
-            string query = @"query {
-  Page(page:1, perPage:13) { pageInfo{
-      total }
-    media (status: RELEASING, sort: POPULARITY_DESC) {
-        id 
-        popularity } } }";
-            using (HttpResponseMessage contentResponse = await APICommunicator.ApiClient.PostAsJsonAsync("https://graphql.anilist.co", new { query}))
-            {
-                ApplicationDbContext dbContext = new ApplicationDbContext();
-                AnilistResponseModel response = await contentResponse.Content.ReadAsAsync<AnilistResponseModel>();
-                foreach (Media animeItem in response.Data.Page.Media)
-                {
-                    AnimeModel anime = dbContext.Animes.SingleOrDefault(a => a.AnilistId == animeItem.Id);
-                    if (anime != null)
-                    {
-                        anime.Popularity = animeItem.Popularity;
-                        PopularityUpdated += 1;
-                        dbContext.SaveChanges();
-                    }
-                }
-                AnimeModels = dbContext.Animes.Where(a => a.Popularity == 0).ToList();
-            }
+            IJikan mal = new Jikan();
+            JikanDotNet.AnimeNews test = await mal.GetAnimeNews(31964);
+  //          DidSeedPopularity = true;
+  //          string query = @"query {
+  //Page(page:1, perPage:13) { pageInfo{
+  //    total }
+  //  media (status: RELEASING, sort: POPULARITY_DESC) {
+  //      id 
+  //      popularity } } }";
+  //          using (HttpResponseMessage contentResponse = await APICommunicator.ApiClient.PostAsJsonAsync("https://graphql.anilist.co", new { query}))
+  //          {
+  //              ApplicationDbContext dbContext = new ApplicationDbContext();
+  //              AnilistResponseModel response = await contentResponse.Content.ReadAsAsync<AnilistResponseModel>();
+  //              foreach (Media animeItem in response.Data.Page.Media)
+  //              {
+  //                  AnimeModel anime = dbContext.Animes.SingleOrDefault(a => a.AnilistId == animeItem.Id);
+  //                  if (anime != null)
+  //                  {
+  //                      anime.Popularity = animeItem.Popularity;
+  //                      PopularityUpdated += 1;
+  //                      dbContext.SaveChanges();
+  //                  }
+  //              }
+  //              AnimeModels = dbContext.Animes.Where(a => a.Popularity == 0).ToList();
+  //          }
         }
 
         public async Task SeedAnimePopularity(int anilistId)
@@ -213,45 +139,35 @@ namespace DiscussionForum.Models.ViewModel
         public async Task RefreshNewsReport()
         {
             ApplicationDbContext dbContext = new ApplicationDbContext();
+            Jikan malContext = new Jikan();
             APICommunicator.ApiClient.DefaultRequestHeaders.Accept.Clear();
-            APICommunicator.ApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/xml"));
-            using (HttpResponseMessage response = await APICommunicator.ApiClient.GetAsync("https://www.animenewsnetwork.com/encyclopedia/reports.xml?id=148"))
+            List<News> recentNews = new List<News>();
+            List<News> malNews = new List<News>();
+            List<AnimeModel> popularAnime = dbContext.Animes.OrderByDescending(an => an.Popularity).Take(6).ToList();
+            foreach (AnimeModel anime in popularAnime)
             {
 
-                if (response.IsSuccessStatusCode)
+                AnimeNews news = await malContext.GetAnimeNews(anime.MALId);
+                foreach (News article in news.News)
                 {
-                    //dbContext.Database.ExecuteSqlCommand("DELETE FROM dbo.NewAnimeReports");
-                    ReportItems = new List<NewAnimeReport>();
-                    string xmlString = await response.Content.ReadAsStringAsync();
-                    XmlDocument xmlReport = new XmlDocument();
-                    xmlReport.LoadXml(xmlString);
-                    foreach (XmlNode xmlNode in xmlReport.DocumentElement.ChildNodes)
-                    {
-                        NewAnimeReport reportItem = new NewAnimeReport();
-                        reportItem.InfoUrl = xmlNode.ChildNodes[0].Attributes["href"].Value;
-                        reportItem.Title = xmlNode.ChildNodes[0].InnerText;
-                        string searchTerm = reportItem.Title.Substring(0, 5);
-                        DateTime theDate;
-                        if (DateTime.TryParse(xmlNode.ChildNodes[1].InnerText, out theDate))
-                        {
-                            reportItem.DateAdded = theDate;
-                        }
-                        List<AnimeModel> referenceAnime = dbContext.Animes.Where(a => a.Title_Romaji.Substring(0, 5) == searchTerm).ToList();
-                        reportItem.AnimeReference = referenceAnime;
-                        dbContext.NewAnimeReport.Add(reportItem);
-                        dbContext.SaveChanges();
-                    } 
+                    malNews.Add(article);
                 }
+                malNews = malNews.OrderByDescending(fn => fn.Date).Take(15).ToList();
 
             }
-            ReportItems = dbContext.NewAnimeReport.ToList();
+            HtmlWeb newsWeb = new HtmlWeb();
+            foreach (News article in malNews)
+            {
+                newsWeb.Load(article.Url);
+            }
+
+            //ReportItems = dbContext.NewAnimeReport.ToList();
 
         }
 
 
         public async Task SaveAnimeToDB()
         {
-            string searchTerm;
             List<AnimeModel> newData = new List<AnimeModel>();
             ApplicationDbContext dbContext = new ApplicationDbContext();
             if (AnimeModels != null)
@@ -471,7 +387,7 @@ namespace DiscussionForum.Models.ViewModel
             query += " Page(page: $page, perPage: $perPage){";
             query += " pageInfo{ total currentPage perPage";
             query += " } media("+ var1+ var3+ var5 + " sort: $sort, type:ANIME ){";
-            query += " id genres episodes popularity description ";
+            query += " id genres episodes popularity description idMal ";
             query += "startDate {year month day} title{ english romaji";
             query += " } coverImage{ medium extraLarge color } } } }";
             var variables = new
@@ -486,23 +402,22 @@ namespace DiscussionForum.Models.ViewModel
 
             string endpoint = "https://graphql.anilist.co";
             MainAdminViewModel viewModel = new MainAdminViewModel();
-            using (HttpResponseMessage response = await APICommunicator.ApiClient.PostAsJsonAsync(endpoint, new {query = query, variables = variables }))
+            try
             {
-                if (response.IsSuccessStatusCode)
+                using (HttpResponseMessage response = await APICommunicator.ApiClient.PostAsJsonAsync(endpoint, new { query = query, variables = variables }))
                 {
-                    try
+                    if (response.IsSuccessStatusCode)
                     {
                         //string text = await response.Content.ReadAsStringAsync();
                         AnilistResponseModel content = await response.Content.ReadAsAsync<AnilistResponseModel>();
                         //viewModel = await MainAdminViewModel.IndexAndSaveNewAnimeAsync(content);
-                        viewModel.AnimeGridData = IndexAnilistAnime(content.Data.Page);
-
-                    }
-                    catch (Exception err)
-                    {
-                        viewModel.ErrorMessage = err.Message;
+                        viewModel.AnimeGridData = IndexAnilistAnime(content.Data.Page); 
                     }
                 }
+            }
+            catch (Exception err)
+            {
+                viewModel.ErrorMessage = err.Message;
             }
             return viewModel;
         }
@@ -546,7 +461,8 @@ namespace DiscussionForum.Models.ViewModel
                     LastUpdated = DateTime.Now,
                     FeedPriority = (int)(media.Popularity / 1000) - ((DateTime.Now - StartDate).Days * 2),
                     Genres = new List<AnimeGenre>(),
-                    AnilistId = media.Id
+                    AnilistId = media.Id,
+                    MALId = media.IdMal
                 };
                 AnimeModel tempTest = SavedAnime.Where(m => m.AnilistId == freshAnime.AnilistId).SingleOrDefault();
                 if (tempTest != null)

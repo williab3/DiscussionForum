@@ -8,7 +8,17 @@
 
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink("Hello " + Model.LoginName + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            @if (Model.ProfilePic != null && Model.ProfilePic.ImageData.Length > 0)
+            {
+                <a href="/Manage/Index" style="padding:10px 0px 10px 0px">
+                    <img class="img-circle inlineImage" src="data:image/png;base64, @System.Convert.ToBase64String(Model.ProfilePic.ImageData)" />
+                    @Model.LoginName
+                </a>
+            }
+            else
+            {
+                @Html.ActionLink("Hello " + Model.LoginName + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            }
         </li>
 		<li>@Html.ActionLink("Site admin","Index", "Admin")</li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>

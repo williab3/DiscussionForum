@@ -3,281 +3,263 @@
 @using DiscussionForum.Models.ViewModel
 @model DiscussionForum.Models.ViewModel.ProfilePageViewModel
 @{
-	ViewBag.Title = "ProfilePage";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "ProfilePage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="row">
-	<div class="col-md-2 left-sidebar"></div>
-	<div class="col-md-8">
-		<div class="newDiscussion-container">
-			<label for="discussionTitleBox">CREATE A DISCUSSION</label>
-			<div class="text-group">
-				<input type="text" placeholder="Discussion Title" id="discussionTitleBox" />
-				<button id="btn-newDiscussion" type="button" class="btn-primary" data-toggle="modal" data-target="#newDiscussion">
-					<span class="glyphicon glyphicon-plus"></span>
-				</button>
-			</div>
-		</div>
-		@using (Html.BeginForm("AddNewDiscussion", "Home", FormMethod.Post, new { enctype = "multipart/form-data", id = "discusForm" })) {
-		<div class="modal fade" id="newDiscussion" tabindex="-1" role="dialog" aria-labelledby="newDiscussion-label">
-			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h3 class="modal-title" id="newDiscussion-label">Anime Hit</h3>
-					</div>
-					<div id="discussionModalBody" class="modal-body">
-						<h4>New Discussion</h4>
-						<div class="form-group">
-							@*<label class="control-label" for="discussionTitle">Title</label>*@
-							@Html.LabelFor(m => m.FreshDiscussion.Title)
-							<p id="validationTitle" class="text-danger" style="display:none; font-weight:bold">Every discussion must have a title</p>
-							@Html.ValidationMessageFor(m => m.FreshDiscussion.Title,"", new { @class = "validation" })
-							@Html.TextBoxFor(m => m.FreshDiscussion.Title, new { @class="form-control", style="width:100%", id = "modalTitle" })
-						</div>
-						<div class="form-group">
-							<label class="control-label" for="imageUploads">Upload Images</label>
-							<div style="display:flex">
-								<input id="ImageFile" name="ImageFile" type="file" accept="image/*" placeholder="Upload a few pics" style="display:none" alt="Select a picture" />
-								@MyHtml.Button("Pick Pic", ButtonType.primary, new { id = "selectImage-btn", style = "height:40px; margin-right:10px", @type="button" })
-								<div id="imagePostback"></div>
-								<img id="imgPreview" style="max-width: 850px;" />
-							</div>
-							<div id="cropActions" style="display: flex; margin-top: 5px; justify-content:center">
-								<strong class="text-info" style="margin: auto 0px;">Drag mouse across image to crop</strong>
-								<button id="btn-crop" type="submit" style="margin-left: 10px" class="btn btn-primary">Crop</button>
-							</div>
-						</div>
-						<div class="form-group">
-							<div style="display:flex">
-								@Html.LabelFor(m => m.FreshDiscussion.Premise)
-							</div>
-							@Html.ValidationMessageFor(m => m.FreshDiscussion.Premise,"",new { @class= "validation" })
-							@Html.TextAreaFor(m => m.FreshDiscussion.Premise, new { @class="form-control", style="width:100%", id="discussionPremise", rows="4"})
-						</div>
-						<div class="form-group">
-							<label class="control-label" for="txtbx-tags">Tags</label>
-							<p id="attachedTags"></p>
-							<input type="text" class="form-control" id="txtbx-tags" style="width:90%">
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button id="openDiscussion" type="submit" class="btn btn-primary">Add Discussion</button>
-					</div>
-				</div>
-			</div>
-			@Html.Hidden("XCoor")
-			@Html.Hidden("YCoor")
-			@Html.Hidden("CropWidth")
-			@Html.Hidden("CropHeight")
-			@Html.Hidden("X2")
-			@Html.Hidden("Y2")
-		</div>
-		}
-		@*<h2>Profile Page</h2>
-		<ol>
-			<li>Name</li>
-			<li>Friends List</li>
-			<li>Favorite Anime</li>
-			<li><del>Followed Anime</del> </li>
-			<li>Commented discussions </li>
+    <div class="col-md-2 left-sidebar"></div>
+    <div class="col-md-8">
+        <div class="newDiscussion-container">
+            <label for="discussionTitleBox">CREATE A DISCUSSION</label>
+            <div class="text-group">
+                <input type="text" placeholder="Discussion Title" id="discussionTitleBox" />
+                <button id="btn-newDiscussion" type="button" class="btn-primary" data-toggle="modal" data-target="#newDiscussion">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </div>
+        </div>
+        @using (Html.BeginForm("AddNewDiscussion", "Home", FormMethod.Post, new { enctype = "multipart/form-data", id = "discusForm" }))
+        {
+            <div class="modal fade" id="newDiscussion" tabindex="-1" role="dialog" aria-labelledby="newDiscussion-label">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h3 class="modal-title" id="newDiscussion-label">Anime Hit</h3>
+                        </div>
+                        <div id="discussionModalBody" class="modal-body">
+                            <h4>New Discussion</h4>
+                            <div class="form-group">
+                                @*<label class="control-label" for="discussionTitle">Title</label>*@
+                                @Html.LabelFor(m => m.FreshDiscussion.Title)
+                                <p id="validationTitle" class="text-danger" style="display:none; font-weight:bold">Every discussion must have a title</p>
+                                @Html.ValidationMessageFor(m => m.FreshDiscussion.Title, "", new { @class = "validation" })
+                                @Html.TextBoxFor(m => m.FreshDiscussion.Title, new { @class = "form-control", style = "width:100%", id = "modalTitle" })
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="imageUploads">Upload Images</label>
+                                <div style="display:flex">
+                                    <input id="ImageFile" name="ImageFile" type="file" accept="image/*" placeholder="Upload a few pics" style="display:none" alt="Select a picture" />
+                                    @MyHtml.Button("Pick Pic", ButtonType.primary, new { id = "selectImage-btn", style = "height:40px; margin-right:10px", @type = "button" })
+                                    <div id="imagePostback"></div>
+                                    <img id="imgPreview" style="max-width: 850px;" />
+                                </div>
+                                <div id="cropActions" style="display: flex; margin-top: 5px; justify-content:center">
+                                    <strong class="text-info" style="margin: auto 0px;">Drag mouse across image to crop</strong>
+                                    <button id="btn-crop" type="submit" style="margin-left: 10px" class="btn btn-primary">Crop</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div style="display:flex">
+                                    @Html.LabelFor(m => m.FreshDiscussion.Premise)
+                                </div>
+                                @Html.ValidationMessageFor(m => m.FreshDiscussion.Premise, "", new { @class = "validation" })
+                                @Html.TextAreaFor(m => m.FreshDiscussion.Premise, new { @class = "form-control", style = "width:100%", id = "discussionPremise", rows = "4" })
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="txtbx-tags">Tags</label>
+                                <p id="attachedTags"></p>
+                                <input type="text" class="form-control" id="txtbx-tags" style="width:90%">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button id="openDiscussion" type="submit" class="btn btn-primary">Add Discussion</button>
+                        </div>
+                    </div>
+                </div>
+                @Html.Hidden("XCoor")
+                @Html.Hidden("YCoor")
+                @Html.Hidden("CropWidth")
+                @Html.Hidden("CropHeight")
+                @Html.Hidden("X2")
+                @Html.Hidden("Y2")
+            </div>
+        }
+        @*<h2>Profile Page</h2>
+            <ol>
+                <li>Name</li>
+                <li>Friends List</li>
+                <li>Favorite Anime</li>
+                <li><del>Followed Anime</del> </li>
+                <li>Commented discussions </li>
 
-		</ol>*@
-	<div class="feed-container">
-		@try
-		{
-			foreach (IFeedItem item in Model.AnimeFeed)
-			{
-				if (item.GetType() == typeof(ProfileVewAnime))
-				{
-					ProfileVewAnime Anime = (ProfileVewAnime)item;
-					<div class="feedItem">
-						<a href="@Url.Action("Anime", "Anime", new {Anime.Id })">
-							<div class="media feedItem">
-								<div class="media-left">
-									<img class="media-object" src="@Anime.ImageUrlMedium" alt="...">
-								</div>
-								<div class="media-body">
-									<h4 class="media-heading">@Anime.Title_Romaji</h4>
-									<p class="subtitle">@Anime.Title_English</p>
-									<p>@Html.Raw(Anime.Description)</p>
-								</div>
-							</div>
-						</a>
-						<div class="icon-container">
-							@if (Anime.IsFavorite)
-							{
-								<div class="favoriteCheckbox" data-bendo-checked="true" data-bendo-itemId="@Anime.Id"></div>
-							}
-							else
-							{
-								<div class="favoriteCheckbox" data-bendo-checked="" data-bendo-itemId="@Anime.Id"></div>
-							}
-						</div>
-					</div>
-				}
-				else if (item.GetType() == typeof(Discussion))
-				{
-					Discussion discussion = (Discussion)item;
-					<h3>@discussion.Title</h3>
-				}
-			}
+            </ol>*@
+        <div class="feed-container">
+            @try
+            {
+                foreach (IFeedItem item in Model.AnimeFeed)
+                {
+                    if (item.GetType() == typeof(ProfileVewAnime))
+                    {
+                        ProfileVewAnime Anime = (ProfileVewAnime)item;
+                        <div class="feedItem">
+                            <a href="@Url.Action("Anime", "Anime", new {Anime.Id })">
+                                <div class="media feedItem">
+                                    <div class="media-left">
+                                        <img class="media-object" src="@Anime.ImageUrlMedium" alt="...">
+                                    </div>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">@Anime.Title_Romaji</h4>
+                                        <p class="subtitle">@Anime.Title_English</p>
+                                        <p>@Html.Raw(Anime.Description)</p>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="icon-container">
+                                @if (Anime.IsFavorite)
+                                {
+                                    <div class="favoriteCheckbox" data-bendo-checked="true" data-bendo-itemId="@Anime.Id"></div>
+                                }
+                                else
+                                {
+                                    <div class="favoriteCheckbox" data-bendo-checked="" data-bendo-itemId="@Anime.Id"></div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    else if (item.GetType() == typeof(Discussion))
+                    {
+                        Discussion discussion = (Discussion)item;
+                        <h3>@discussion.Title</h3>
+                        <div class="discussionFeedItem">
+                            <div style="display:flex">
+                                @if (discussion.Pictures != null && discussion.Pictures.Count > 0)
+                                {
+                                    <img height="150" src="data:image/png;base64, @System.Convert.ToBase64String(discussion.Pictures[0].ImageData)" alt="Nope" />
+                                }
+                                <p class="text-primary">@discussion.Premise</p>
+                            </div>
+                            <div class="icon-container">
+                                <div class="favoriteCheckbox" data-bendo-checked="true" data-bendo-itemId="@discussion.Id"></div>
+                            </div>
+                        </div>
+                    }
+                }
 
-		}
-		catch (Exception err)
-		{
-			<h3>@err.Message</h3>
-		}
-	</div>
+            }
+            catch (Exception err)
+            {
+                <h3>@err.Message</h3>
+            }
+            </>
 
-		@section scripts{
-			<script src="~/Scripts/jquery.imgareaselect.min.js"></script>
-			<link href="~/Content/imgareaselect-default.css" rel="stylesheet" />
-			<link href="~/Content/imgareaselect-animated.css" rel="stylesheet" />
-			<script>
-				$("#testTag").val("Dragonball Z")
-				var titleTxtbx = document.getElementById("modalTitle");
-				var bal = $("#discussionTitleBox");
-				$("#openDiscussion").click(function (args) {
-				});
-				
-				var cropActions = $("#cropActions").hide();
-				var cropMeasurements;
-				var picUploader = $("#ImageFile");
-				
-				var selectImageBtn = $("#selectImage-btn").click(function (args) {
-					picUploader.click();
+            @section scripts{
+                <script src="~/Scripts/jquery.imgareaselect.min.js"></script>
+                <link href="~/Content/imgareaselect-default.css" rel="stylesheet" />
+                <link href="~/Content/imgareaselect-animated.css" rel="stylesheet" />
+                <script>
+                    $("#testTag").val("Dragonball Z")
+                    console.log($("#testTag"));
+                    var titleTxtbx = document.getElementById("modalTitle");
+                    var bal = $("#discussionTitleBox");
+                    $("#openDiscussion").click(function (args) {
+                    });
 
-				});
+                    var cropActions = $("#cropActions").hide();
+                    var cropMeasurements;
+                    var picUploader = $("#ImageFile");
 
-				picUploader.change(function (args) {
-					//console.log(picUploader);
-					//console.log(args);
-					//cropActions.show();
-					var imageFile = args.target.files[0];
-					if (!imageFile.type.match("image.*")) {
-						alert("The selected file is not an image. Please select an image file");
-						return;
-					} else {
-						var imageReader = new FileReader();
-						imageReader.onload = function (args) {
-							$("#imgPreview").attr("src", args.target.result).css("height", 400);
-						};
-						imageReader.readAsDataURL(imageFile);
-					}
-				});
+                    var selectImageBtn = $("#selectImage-btn").click(function (args) {
+                        picUploader.click();
 
-				//$("#btn-crop").click(function (args) {
-				//	picturePrevriew.cancelSelection();
-				//	var canvas = document.createElement("canvas");
-				//	var imagePreview = document.getElementById("imgPreview");
-				//	$(canvas).attr("width", 300).attr("height", 300);
-				//	canvas.width = 300
-				//	canvas.height = 300;
-				//	var ctx = canvas.getContext("2d");
-				//	console.log(cropMeasurements);
-				//	ctx.drawImage(imagePreview, cropMeasurements.x1, cropMeasurements.y1, cropMeasurements.width, cropMeasurements.height, 0, 0, cropMeasurements.width, cropMeasurements.height);
-				//	var dataUrl = canvas.toDataURL("image/png");
-				//	imagePreview.src = dataUrl;
-				//	var cropFile = new File(dataUrl, picUploader[0].files[0].name);
-				//	picUploader.files[0] = cropFile;
-				//	console.log(canvas);
-				//});
-				//function setPreview(xPos, yPos, x2, y2, w, h) {
-				//	$("#XCoor").val(xPos || 0);
-				//	$("#YCoor").val(yPos || 0);
-				//	$("#CropWidth").val(w || 0);
-				//	$("#CropHeight").val(h || 0);
-				//	$("#X2").val(x2 || 0);
-				//	$("#Y2").val(y2 || 0);
-				//}
+                    });
 
-				$("#txtbx-tags").bendoAutocomplete({
-					data: {
-						url: "/Home/Tags",
-						method: "Post",
-						dataType: "json",
-						textField: "Name",
-						valueField: "Id",
-					},
-					buttonText: "Add Tag",
-					placeholder: "Tags",
-					buttonClick: function (args) {
-						var formElement = $("#discusForm");
-						var tagNameInput = $("input.hiddenNameTag");
-						var hiddenNameTagCount = tagNameInput.length;
-						var newNameInput = $("<input>").attr("type", "hidden").attr("name", "FreshDiscussion.Tags[" + hiddenNameTagCount + "].Name").addClass("hiddenNameTag").attr("id", "tag_name" + hiddenNameTagCount);
-						newNameInput.val(args.text);
-						formElement.append(newNameInput);
+                    picUploader.change(function (args) {
+                        //console.log(picUploader);
+                        //console.log(args);
+                        //cropActions.show();
+                        var imageFile = args.target.files[0];
+                        if (!imageFile.type.match("image.*")) {
+                            alert("The selected file is not an image. Please select an image file");
+                            return;
+                        } else {
+                            var imageReader = new FileReader();
+                            imageReader.onload = function (args) {
+                                $("#imgPreview").attr("src", args.target.result).css("height", 400);
+                            };
+                            imageReader.readAsDataURL(imageFile);
+                        }
+                    });
 
-						var tagValueInput = $("input.hiddenValueTag");
-						var valueTagCount = tagValueInput.length;
-						var newValueInput = $("<input>").attr("type", "hidden").attr("name", "FreshDiscussion.Tags[" + valueTagCount + "].Id").addClass("hiddenValueTag").attr("id", "tag_value" + valueTagCount);
-						newValueInput.val(args.value)
-						formElement.append(newValueInput);
-					},
-					errorMessage: "Please select a one of the tags from the dropdown list before adding to the discussion",
-				});
 
-				$("#btn-newDiscussion").click(function (args) {
-					//$("#discussionTitle").val() = $("#discussionTitleBox").val();
-					var discussion = document.getElementById("discussionTitleBox");
-					console.log(discussion);
-					var modalTitle = document.getElementById("modalTitle");
-					modalTitle.value = discussion.value;
-					discussion.innerText = $("#discussionTitleBox").val();
-					$("#txtbx-tags").val("");
-				});
+                    $("#txtbx-tags").bendoAutocomplete({
+                        data: {
+                            url: "/Home/Tags",
+                            method: "Post",
+                            dataType: "json",
+                            textField: "Name",
+                            valueField: "Id",
+                        },
+                        buttonText: "Add Tag",
+                        placeholder: "Tags",
+                        buttonClick: function (args) {
+                            var formElement = $("#discusForm");
+                            var tagNameInput = $("input.hiddenNameTag");
+                            var hiddenNameTagCount = tagNameInput.length;
+                            var newNameInput = $("<input>").attr("type", "hidden").attr("name", "FreshDiscussion.Tags[" + hiddenNameTagCount + "].Name").addClass("hiddenNameTag").attr("id", "tag_name" + hiddenNameTagCount);
+                            newNameInput.val(args.text);
+                            formElement.append(newNameInput);
 
-				$(".favoriteCheckbox").bendoCheckbox({
-					checkedImagUrl: "/Content/Images/Favorite.png",
-					uncheckedImageUrl: "/Content/Images/UnFavorite.png",
-					uncheckAction: function (args) {
-						console.log("unchecked!! " + args);
-						$.ajax({
-							url: "/Home/FavoriteCheck",
-							method: "Post",
-							data: {
-								animeId: args
-							},
-							success: function (data) {
-								console.log(data);
-							},
-							error: function (data) {
-								alert("Something went wrong!!!");
-							}
-						})
-					},
-					checkAction: function (args) {
-						console.log("unchecked!! " + args);
-						$.ajax({
-							url: "/Home/FavoriteCheck",
-							method: "Post",
-							data: {
-								animeId: args
-							},
-							success: function (data) {
-								console.log("it worked!! " + data);
-							},
-							error: function (data) {
-								alert("Something went wrong checked!!!");
-							}
-						})
-					}
-				});
-			</script>
-		}
-	</div>
-	<div class="col-md-2">
-	</div>
+                            var tagValueInput = $("input.hiddenValueTag");
+                            var valueTagCount = tagValueInput.length;
+                            var newValueInput = $("<input>").attr("type", "hidden").attr("name", "FreshDiscussion.Tags[" + valueTagCount + "].Id").addClass("hiddenValueTag").attr("id", "tag_value" + valueTagCount);
+                            newValueInput.val(args.value)
+                            formElement.append(newValueInput);
+                        },
+                        errorMessage: "Please select a one of the tags from the dropdown list before adding to the discussion",
+                    });
+
+                    $("#btn-newDiscussion").click(function (args) {
+                        //$("#discussionTitle").val() = $("#discussionTitleBox").val();
+                        var discussion = document.getElementById("discussionTitleBox");
+                        console.log(discussion);
+                        var modalTitle = document.getElementById("modalTitle");
+                        modalTitle.value = discussion.value;
+                        discussion.innerText = $("#discussionTitleBox").val();
+                        $("#txtbx-tags").val("");
+                    });
+
+                    $(".favoriteCheckbox").bendoCheckbox({
+                        checkedImagUrl: "/Content/Images/Favorite.png",
+                        uncheckedImageUrl: "/Content/Images/UnFavorite.png",
+                        uncheckAction: function (args) {
+                            console.log("unchecked!! " + args);
+                            castVote(args.itemId);
+                        },
+                        checkAction: function (args) {
+                            console.log("unchecked!! " + args);
+                            castVote(args.itemId);
+                        }
+                    });
+                    function castVote(itemId) {
+                        $.ajax({
+                                url: "/Home/FavoriteCheck",
+                                method: "Post",
+                                data: {
+                                    animeId: itemId
+                                },
+                                success: function (data) {
+                                    console.log(data);
+                                },
+                                error: function (data) {
+                                    alert("Something went wrong!!!");
+                                }
+                            })
+                    };
+                </script>
+            }
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
 </div>
 <div id="friendContainer">
-	<label class="friend-title">FRIENDS</label>
-	<div class="friendList">
-		<div>Test 1</div>
-		<div>Test 2</div>
-	</div>
+    <label class="friend-title">FRIENDS</label>
+    <div class="friendList">
+        <div>Test 1</div>
+        <div>Test 2</div>
+    </div>
 </div>
 
 

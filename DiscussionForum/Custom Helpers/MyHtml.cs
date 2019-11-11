@@ -1,6 +1,8 @@
 ﻿using DiscussionForum.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -131,16 +133,27 @@ namespace DiscussionForum.Custom_Helpers
     {
         public static HtmlString WriteComments(List<Comment> comments)
         {
-            StringBuilder rawHtml = new StringBuilder();
-            TagBuilder commentHtml;
+
+            TagBuilder commentHolder = new TagBuilder("div");
+            commentHolder.MergeAttribute("id", "commentsHolder");
             foreach (Comment comment in comments)
             {
-                commentHtml = new TagBuilder("div");
+                TagBuilder commentHtml = new TagBuilder("div");
                 commentHtml.AddCssClass("comment");
                 commentHtml.MergeAttribute("data-comment-id", comment.Id.ToString());
 
                 TagBuilder header = new TagBuilder("div");
                 header.AddCssClass("comment-header text-primary");
+
+                ApplicationDbContext dbContext = new ApplicationDbContext();
+                ApplicationUser who = dbContext.Users.Include(u => u.ProfilePic).SingleOrDefault(u => u.Id == comment.CommenterId);
+                if (who.ProfilePic != null)
+                {
+                    TagBuilder pic = new TagBuilder("img");
+                    pic.MergeAttribute("src", "data:image/png;base64, " + Convert.ToBase64String(who.ProfilePic.ImageData));
+                    pic.MergeAttribute("class", "img-circle inlineImage");
+                    header.InnerHtml += pic;
+                }
                 header.InnerHtml += comment.Who;
 
                 TagBuilder barSpan = new TagBuilder("span");
@@ -161,13 +174,37 @@ namespace DiscussionForum.Custom_Helpers
                 TagBuilder controls = new TagBuilder("div");
                 controls.AddCssClass("comment-controls");
 
-                TagBuilder thumbsUp = new TagBuilder("span");
-                thumbsUp.AddCssClass("glyphicon glyphicon-thumbs-up voteIcon");
+                //TagBuilder thumbsUp = new TagBuilder("span");
+                TagBuilder thumbsUp = new TagBuilder("div");
+                Vote userVote = comment.Votes.SingleOrDefault(v => v.VoterUserId == HttpContext.Current.User.Identity.GetUserId());
+                if (userVote != null && userVote.UpVote)
+                {
+                    thumbsUp.MergeAttribute("data-bendo-checked", "true");
+                }
+                thumbsUp.AddCssClass(" voteIcon upVote");
+                thumbsUp.MergeAttribute("data-bendo-itemId", comment.Id.ToString());
                 controls.InnerHtml += thumbsUp;
+                TagBuilder upVoteCounter = new TagBuilder("label");
+                upVoteCounter.MergeAttribute("id", "upCounter" + comment.Id);
+                upVoteCounter.AddCssClass("upVoteCounter");
+                upVoteCounter.InnerHtml += comment.Votes.Count(v => v.UpVote == true);
+                controls.InnerHtml += upVoteCounter;
                 controls.InnerHtml += barSpan;
 
-                TagBuilder thumbsDown = new TagBuilder("span");
-                thumbsDown.AddCssClass("glyphicon glyphicon-thumbs-down voteIcon");
+                TagBuilder downVoteCounter = new TagBuilder("label");
+                downVoteCounter.AddCssClass("downVoteCounter");
+                downVoteCounter.MergeAttribute("id", "downCounter" + comment.Id);
+                downVoteCounter.InnerHtml += comment.Votes.Count(v => v.DownVote == true);
+                controls.InnerHtml += downVoteCounter;
+
+                //TagBuilder thumbsDown = new TagBuilder("span");
+                TagBuilder thumbsDown = new TagBuilder("div");
+                if (userVote != null && userVote.DownVote)
+                {
+                    thumbsDown.MergeAttribute("data-bendo-checked", "true");
+                }
+                thumbsDown.MergeAttribute("data-bendo-itemId", comment.Id.ToString());
+                thumbsDown.AddCssClass("voteIcon downVote");
                 controls.InnerHtml += thumbsDown;
 
                 TagBuilder replyToggle = new TagBuilder("span");
@@ -194,32 +231,50 @@ namespace DiscussionForum.Custom_Helpers
                 replyBlock.InnerHtml += btnReply;
                 commentHtml.InnerHtml += replyBlock;
                 int nestCount = 0;
-                if (comment.Replies.Count > 0)
+                if (comment.Replies != null && comment.Replies.Count > 0)
                 {
                     nestCount++;
-                    writeReplies(comment.Replies, commentHtml, comment.Who, nestCount);
+                    commentHtml.InnerHtml += writeReplies(comment.Replies, comment.Who, nestCount);
                 }
+                commentHolder.InnerHtml += commentHtml;
             }
             
-            return new HtmlString(rawHtml.ToString());
+            return new HtmlString(commentHolder.ToString());
         }
 
-        private static void writeReplies(List<Comment> _comments, TagBuilder htmlString,string personRepliedTo , int _nestCount)
+        private static TagBuilder writeReplies(List<Comment> _comments, string personRepliedTo , int _nestCount)
         {
+            TagBuilder replyHtml = new TagBuilder("div");
             foreach (Comment reply in _comments)
             {
-                TagBuilder replyHtml = new TagBuilder("div");
+                replyHtml = new TagBuilder("div");
                 replyHtml.MergeAttribute("data-comment-id", reply.Id.ToString());
                 replyHtml.AddCssClass("reply");
 
                 TagBuilder header = new TagBuilder("div");
                 header.AddCssClass("comment-header text-primary");
+
+                ApplicationDbContext dbContext = new ApplicationDbContext();
+                ApplicationUser who = dbContext.Users.Include(u => u.ProfilePic).SingleOrDefault(u => u.Id == reply.CommenterId);
+                if (who.ProfilePic != null)
+                {
+                    TagBuilder pic = new TagBuilder("img");
+                    pic.MergeAttribute("src", "data:image/png;base64, " + Convert.ToBase64String(who.ProfilePic.ImageData));
+                    pic.MergeAttribute("class", "img-circle inlineImage");
+                    header.InnerHtml += pic;
+                }
+
                 header.InnerHtml += reply.Who;
 
                 TagBuilder rightHand = new TagBuilder("span");
                 rightHand.AddCssClass("glyphicon glyphicon-hand-right rightHand");
                 header.InnerHtml += rightHand;
-                header.InnerHtml += personRepliedTo;
+                //header.InnerHtml += personRepliedTo;
+
+                TagBuilder reciever = new TagBuilder("span");
+                reciever.AddCssClass("lessImportantText");
+                reciever.InnerHtml += personRepliedTo;
+                header.InnerHtml += reciever;
 
                 TagBuilder barspan = new TagBuilder("span");
                 barspan.AddCssClass("gold-bar");
@@ -239,13 +294,38 @@ namespace DiscussionForum.Custom_Helpers
                 TagBuilder controls = new TagBuilder("div");
                 controls.AddCssClass("comment-controls");
 
-                TagBuilder thumbsUp = new TagBuilder("span");
-                thumbsUp.AddCssClass("glyphicon glyphicon-thumbs-up voteIcon");
+                //TagBuilder thumbsUp = new TagBuilder("span");
+                TagBuilder thumbsUp = new TagBuilder("div");
+                Vote userVote = reply.Votes.SingleOrDefault(v => v.VoterUserId == HttpContext.Current.User.Identity.GetUserId());
+                if (userVote != null && userVote.UpVote)
+                {
+                    thumbsUp.MergeAttribute("data-bendo-checked", "true");
+                }
+                thumbsUp.AddCssClass("voteIcon upVote");
+                thumbsUp.MergeAttribute("data-bendo-itemId", reply.Id.ToString());
                 controls.InnerHtml += thumbsUp;
+
+                TagBuilder upVoteCounter = new TagBuilder("label");
+                upVoteCounter.AddCssClass("upVoteCounter");
+                upVoteCounter.MergeAttribute("id", "upCounter" + reply.Id);
+                upVoteCounter.InnerHtml += reply.Votes.Count(v => v.UpVote == true);
+                controls.InnerHtml += upVoteCounter;
                 controls.InnerHtml += barspan;
 
-                TagBuilder thumbsDown = new TagBuilder("span");
-                thumbsDown.AddCssClass("glyphicon glyphicon-thumbs-down voteIcon");
+                TagBuilder downVoteCounter = new TagBuilder("label");
+                downVoteCounter.AddCssClass("downVoteCounter");
+                downVoteCounter.MergeAttribute("id", "downCounter" + reply.Id);
+                downVoteCounter.InnerHtml += reply.Votes.Count(v => v.DownVote == true);
+                controls.InnerHtml += downVoteCounter;
+
+                //TagBuilder thumbsDown = new TagBuilder("span");
+                TagBuilder thumbsDown = new TagBuilder("div");
+                if (userVote != null && userVote.DownVote)
+                {
+                    thumbsDown.MergeAttribute("data-bendo-checked", "true");
+                }
+                thumbsDown.MergeAttribute("data-bendo-itemId", reply.Id.ToString());
+                thumbsDown.AddCssClass("voteIcon downVote");
                 controls.InnerHtml += thumbsDown;
 
                 TagBuilder replyToggle = new TagBuilder("span");
@@ -272,16 +352,19 @@ namespace DiscussionForum.Custom_Helpers
                 replyBlock.InnerHtml += btnReply;
                 replyHtml.InnerHtml += replyBlock;
 
-                if (reply.Replies.Count > 0 && _nestCount < 5)
+                
+
+                if (reply.Replies != null && reply.Replies.Count > 0 && _nestCount < 5)
                 {
                     _nestCount++;
-                    writeReplies(reply.Replies, htmlString, reply.Who, _nestCount);
+                    replyHtml.InnerHtml += writeReplies(reply.Replies, reply.Who, _nestCount);
                 }
-                else if (reply.Replies.Count > 0)
+                else if (reply.Replies != null && reply.Replies.Count > 0)
                 {
 
                 }
             }
+            return replyHtml;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace DiscussionForum.Models.ViewModel
         {
             AnimeFeed = new List<IFeedItem>();
             ApplicationDbContext dbContext = new ApplicationDbContext();
-            User = dbContext.Users.Include("FavoriteAnime").Include("FollowedDiscussions").Include("Friends").Where(u => u.Id == userId).SingleOrDefault();
+            User = dbContext.Users.Include("FavoriteAnime").Include(u => u.FollowedDiscussions.Select(d => d.Pictures)).Include("Friends").Where(u => u.Id == userId).SingleOrDefault();
             if (User.FavoriteAnime.Count > 0)
             {
                 foreach (AnimeModel anime in User.FavoriteAnime)
@@ -49,8 +49,9 @@ namespace DiscussionForum.Models.ViewModel
             int feedCount = AnimeFeed.Count;
             if (feedCount < 10) //Check if number of items in the profile feed is less than 10
             {
-                List<AnimeModel> supplementalAnime = dbContext.Animes.OrderByDescending(a => a.Popularity).Take(10 - feedCount).ToList();
-                foreach (AnimeModel anime in supplementalAnime)
+                List<AnimeModel> additionalAnime = dbContext.Animes.AsEnumerable().OrderByDescending(a => a.Popularity).Where(a => isAnimeInFeed(a.Id)).Take(10 - feedCount).ToList();
+
+                foreach (AnimeModel anime in additionalAnime)
                 {
                     if (anime.FeedPriority == 0)
                     {
@@ -62,6 +63,23 @@ namespace DiscussionForum.Models.ViewModel
                 }
             }
             AnimeFeed = AnimeFeed.OrderByDescending(af => af.FeedPriority).ToList();
+        }
+
+        private bool isAnimeInFeed(int animeId)
+        {
+            bool pass = true;
+            if (AnimeFeed != null && AnimeFeed.Count > 0)
+            {
+                foreach (IFeedItem existingAnime in AnimeFeed)
+                {
+                    if (existingAnime.GetType() == typeof(ProfileVewAnime) && ((ProfileVewAnime)existingAnime).Id == animeId)
+                    {
+                        
+                        pass = false;
+                    }
+                }
+            }
+            return pass;
         }
 
         public void SeedAnimePriority(AnimeModel anime)

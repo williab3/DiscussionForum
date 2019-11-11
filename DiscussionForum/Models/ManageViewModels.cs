@@ -1,7 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
+using System.Linq;
+using System.Web;
+using System.Data.Entity.Validation;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using System;
 
 namespace DiscussionForum.Models
 {
@@ -12,6 +17,50 @@ namespace DiscussionForum.Models
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
+
+        public ApplicationUser User { get; set; }
+
+        public void UpdateUserProfile(HttpPostedFileBase profilePic)
+        {
+            ApplicationDbContext dbContext = new ApplicationDbContext();
+            try
+            {
+                ApplicationUser dbUser = dbContext.Users.Include(u => u.ProfilePic).SingleOrDefault(u => u.Id == User.Id);
+                if (!string.IsNullOrEmpty(User.Bio) && User.Bio != "You haven't added a bio yet. Tell us a little about yourself.")
+                {
+                    dbUser.Bio = User.Bio;
+                }
+
+                if (profilePic != null && profilePic.ContentLength > 0)
+                {
+                    Picture freschPic = new Picture()
+                    {
+                        ImageData = new byte[profilePic.ContentLength],
+                    };
+                    profilePic.InputStream.Read(freschPic.ImageData, 0, profilePic.ContentLength);
+                    if (dbUser.ProfilePic == null)
+                    {
+                        dbUser.ProfilePic = freschPic;
+                    }
+                    else
+                    {
+                        dbUser.ProfilePic.ImageData = freschPic.ImageData;
+                    }
+                }
+                dbContext.SaveChanges();
+            }catch(DbEntityValidationException dbErr)
+            {
+                foreach (DbEntityValidationResult err in dbErr.EntityValidationErrors)
+                {
+                    Console.WriteLine(err);
+                }
+            }
+            catch (Exception err)
+            {
+                string errorMessage = err.Message;
+                throw;
+            }
+        }
     }
 
     public class ManageLoginsViewModel

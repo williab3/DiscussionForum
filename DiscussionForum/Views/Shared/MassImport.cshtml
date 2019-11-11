@@ -50,7 +50,7 @@
                             foreach (AnimeModel animeModel in Model.AnimeGridData.Animes)
                             {
                                 rowCount++;
-                                if (animeModel.Description.Length < 20 || (animeModel.Title_English !=  null && animeModel.Title_English.Length < 5) || (animeModel.Title_English == null && animeModel.Title_Romaji.Length < 5))
+                                if (animeModel.Description == null || animeModel.Description.Length < 20 || (animeModel.Title_English !=  null && animeModel.Title_English.Length < 5) || (animeModel.Title_English == null && animeModel.Title_Romaji.Length < 5))
                                 {
                                     <tr data-anime-id="@animeModel.AnilistId" class="gridRow rowWarning">
                                         <td id="@rowID@rowCount" data-grid-row="@rowCount" class="rowNumber">@rowCount</td>
@@ -58,10 +58,18 @@
                                         <td>
                                             <img class="gridRowImage" src="@animeModel.ImageUrlMedium" style="background-color:@animeModel.Color" />
                                             <input type="hidden" class="anime-color" value="@animeModel.Color" />
-                                            <input type="hidden" class="anime-description" value="@animeModel.Description" />
+                                            @if (animeModel.Description == null)
+                                            {
+                                                <input type="hidden" class="anime-description" value="" />
+                                            }
+                                            else
+                                            {
+                                                <input type="hidden" class="anime-description" value="@animeModel.Description" />
+                                            }
                                             <input type="hidden" class="anime-largeImage" value="@animeModel.ImageUrlLarge" />
                                             <input type="hidden" class="anime-lastUpdated" value="@animeModel.LastUpdated" />
                                             <input type="hidden" class="anime-startDate" value="@animeModel.StartDate" />
+                                            <input type="hidden" class="anime-MalId" value="@animeModel.MALId" />
                                         </td>
                                         <td><h4>@animeModel.Title_English</h4></td>
                                         <td><h4>@animeModel.Title_Romaji</h4></td>
@@ -94,6 +102,7 @@
                                             <input type="hidden" class="anime-largeImage" value="@animeModel.ImageUrlLarge" />
                                             <input type="hidden" class="anime-lastUpdated" value="@animeModel.LastUpdated" />
                                             <input type="hidden" class="anime-startDate" value="@animeModel.StartDate" />
+                                            <input type="hidden" class="anime-MalId" value="@animeModel.MALId" />
                                         </td>
                                         <td><h4>@animeModel.Title_English</h4></td>
                                         <td><h4>@animeModel.Title_Romaji</h4></td>

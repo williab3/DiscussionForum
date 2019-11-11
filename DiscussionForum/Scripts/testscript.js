@@ -77,6 +77,7 @@ $(".gridRowCheckbox").change(function (args) {
                 Color: $(currentCheckbox.closest("td").siblings("td")[1]).find("img").css("background-color"),
                 Genres: getGenres(currentCheckbox),
                 LastUpdated: $(currentCheckbox.closest("td").siblings("td")[1]).find(".anime-lastUpdated").val(),
+                MalId: $(currentCheckbox.closest("td").siblings("td")[1]).find(".anime-MalId").val(),
                 Popularity: $(currentCheckbox.closest("td").siblings("td")[5]).text(),
                 StartDate: $(currentCheckbox.closest("td").siblings("td")[1]).find(".anime-startDate").val(),
                 ExistInDB: false

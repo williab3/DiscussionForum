@@ -19,7 +19,9 @@ namespace DiscussionForum.Models
         public List<ApplicationUser> Friends { get; set; }
         public List<AnimeModel> FavoriteAnime { get; set; }
         public List<Discussion> FollowedDiscussions { get; set; }
-        public List<Vote> CommentVotes { get; set; }
+
+        public Picture ProfilePic { get; set; }
+        public string Bio { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -35,10 +37,13 @@ namespace DiscussionForum.Models
         public ApplicationUser(string userId)
         {
             ApplicationDbContext dbContext = new ApplicationDbContext();
-            ApplicationUser _user = dbContext.Users.Include(m => m.FavoriteAnime).Include(m => m.Friends).SingleOrDefault(m => m.Id == userId);
+            ApplicationUser _user = dbContext.Users.Include(m => m.FavoriteAnime).Include(m => m.Friends).Include(u => u.ProfilePic).SingleOrDefault(m => m.Id == userId);
+            UserName = _user.UserName;
             LoginName = _user.LoginName;
             Friends = _user.Friends;
             FavoriteAnime = _user.FavoriteAnime;
+            ProfilePic = _user.ProfilePic;
+            Bio = _user.Bio;
         }
 
         public static string ToggleFavoriteAnime(int animeId, string userId)
@@ -94,6 +99,7 @@ namespace DiscussionForum.Models
         public DbSet<Tag> Tags { get; set; }
         public DbSet<DateFavorited> DateFavorited { get; set; }
         public DbSet<Vote> Votes { get; set; }
+        public DbSet<NewsArticle> NewsArticles { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

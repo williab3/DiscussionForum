@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Data.Entity;
 using System.Web;
+using System.Data;
+using System.Data.Entity.Validation;
 
 namespace DiscussionForum.Models.ViewModel
 {
@@ -25,11 +28,17 @@ namespace DiscussionForum.Models.ViewModel
             {
                 try
                 {
-                    Anime = dbContext.Animes.Include("Discussion.Comments.Replies").Where(a => a.Id == animeId).SingleOrDefault();
+                    //Anime = dbContext.Animes.Include("Discussion.Comments.Replies.Votes").Where(a => a.Id == animeId).SingleOrDefault();
+
+                    Anime = dbContext.Animes.Include(a => a.Discussion.Comments.Select(c => c.Replies.Select(v => v.Votes))).Include(a => a.Discussion.Comments.Select(cv => cv.Votes)) 
+                        .Include(a => a.Discussion.Comments.Select(c => c.Replies.Select(r1 => r1.Replies.Select(v => v.Votes))))
+                        .Include(a => a.Discussion.Comments.Select(c => c.Replies.Select(r1 => r1.Replies.Select(r2 => r2.Replies.Select(v => v.Votes)))))
+                        .Include(a => a.Discussion.Comments.Select(c => c.Replies.Select(r1 => r1.Replies.Select(r2 => r2.Replies.Select(r3 => r3.Replies.Select(v => v.Votes))))))
+                        .Include(a => a.Discussion.Comments.Select(c => c.Replies.Select(r1 => r1.Replies.Select(r2 => r2.Replies.Select(r3 => r3.Replies.Select(r4 => r4.Replies.Select(v => v.Votes))))))).Where(a => a.Id == animeId).SingleOrDefault();
                 }
                 catch (Exception err)
                 {
-
+                    Console.WriteLine(err.Message);
                     throw;
                 }
             });
@@ -51,7 +60,7 @@ namespace DiscussionForum.Models.ViewModel
             }
             catch (Exception err)
             {
-
+                Console.WriteLine(err.Message);
                 HasError = true;
             }
         }
@@ -77,6 +86,46 @@ namespace DiscussionForum.Models.ViewModel
             catch (Exception err)
             {
                 Console.WriteLine(err.Message);
+                throw;
+            }
+        }
+    }
+
+    public class VoteCast
+    {
+        public Comment VotedComment { get; set; }
+        public Vote CastedVote { get; set; }
+
+        public void CastVote ()
+        {
+            ApplicationDbContext dbContext = new ApplicationDbContext();
+            Comment comment = dbContext.Comments.Include(c => c.Votes).Where(c => c.Id == VotedComment.Id).SingleOrDefault();
+            //Check if this use has already made a vote on this comment
+            try
+            {
+                Vote existingVote = comment.Votes.Where(v => v.VoterUserId == CastedVote.VoterUserId).SingleOrDefault();
+                if (existingVote == null)
+                {
+                    //Add new vote to comment
+                    comment.Votes.Add(CastedVote);
+                    //dbContext.SaveChanges();
+                }
+                else
+                {
+                    //Check to see which way the user voted
+                    existingVote.UpVote = CastedVote.UpVote;
+                    existingVote.DownVote = CastedVote.DownVote;
+                    if (existingVote.DownVote == false && existingVote.UpVote == false)
+                    {
+                        comment.Votes.Remove(existingVote);
+                    }
+                    //dbContext.SaveChanges();
+                }
+
+            }
+            catch (DbEntityValidationException err)
+            {
+                string message = err.Message;
                 throw;
             }
         }

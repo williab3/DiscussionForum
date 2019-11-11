@@ -44,5 +44,16 @@ namespace DiscussionForum.Controllers
             reply.PostCommentReply();
             return Json(reply.PostedComment);
         }
+
+        [HttpPost]
+        public JsonResult Vote(VoteCast userVote)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                userVote.CastedVote.VoterUserId = User.Identity.GetUserId();
+                userVote.CastVote();
+            }
+            return Json(userVote);
+        }
     }
 }

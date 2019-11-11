@@ -51,6 +51,9 @@
     <Reference Include="HtmlAgilityPack, Version=1.11.12.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.11.12\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="JikanDotNet, Version=1.3.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\JikanDotNet.1.3.1\lib\netstandard2.0\JikanDotNet.dll</HintPath>
+    </Reference>
     <Reference Include="Json.Net, Version=1.0.16.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Json.Net.1.0.16\lib\netstandard2.0\Json.Net.dll</HintPath>
     </Reference>
@@ -432,6 +435,59 @@
     <Compile Include="Migrations\201910160258490_UpdateComment_w_AddRepliedTo.Designer.cs">
       <DependentUpon>201910160258490_UpdateComment_w_AddRepliedTo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910192126321_UpdateVote_w_Voter.cs" />
+    <Compile Include="Migrations\201910192126321_UpdateVote_w_Voter.Designer.cs">
+      <DependentUpon>201910192126321_UpdateVote_w_Voter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910192129528_UpdateApplicationUser_w_RemovedCommentVotes.cs" />
+    <Compile Include="Migrations\201910192129528_UpdateApplicationUser_w_RemovedCommentVotes.Designer.cs">
+      <DependentUpon>201910192129528_UpdateApplicationUser_w_RemovedCommentVotes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910240230273_updateVote_w_ReplaceUpVote\DownVote_w_Like.cs" />
+    <Compile Include="Migrations\201910241738279_changedVote.cs" />
+    <Compile Include="Migrations\201910241738279_changedVote.Designer.cs">
+      <DependentUpon>201910241738279_changedVote.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910241741007_UnchagedVote.cs" />
+    <Compile Include="Migrations\201910241741007_UnchagedVote.Designer.cs">
+      <DependentUpon>201910241741007_UnchagedVote.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910250033170_UpdateVote_w_MadeVoterRequired.cs" />
+    <Compile Include="Migrations\201910250033170_UpdateVote_w_MadeVoterRequired.Designer.cs">
+      <DependentUpon>201910250033170_UpdateVote_w_MadeVoterRequired.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910250055517_UpdateVote_w_RemovedVoterRequired.cs" />
+    <Compile Include="Migrations\201910250055517_UpdateVote_w_RemovedVoterRequired.Designer.cs">
+      <DependentUpon>201910250055517_UpdateVote_w_RemovedVoterRequired.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910250115529_test.cs" />
+    <Compile Include="Migrations\201910250115529_test.Designer.cs">
+      <DependentUpon>201910250115529_test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910250142575_UpdateVote_ReplaceVoterId_w_VoterUserId.cs" />
+    <Compile Include="Migrations\201910250142575_UpdateVote_ReplaceVoterId_w_VoterUserId.Designer.cs">
+      <DependentUpon>201910250142575_UpdateVote_ReplaceVoterId_w_VoterUserId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910280218558_updateIdentity_w_ProfilePic.cs" />
+    <Compile Include="Migrations\201910280218558_updateIdentity_w_ProfilePic.Designer.cs">
+      <DependentUpon>201910280218558_updateIdentity_w_ProfilePic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910300209243_updateUser_w_Bio.cs" />
+    <Compile Include="Migrations\201910300209243_updateUser_w_Bio.Designer.cs">
+      <DependentUpon>201910300209243_updateUser_w_Bio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911012144274_updateComment_w_CommentorPic.cs" />
+    <Compile Include="Migrations\201911012144274_updateComment_w_CommentorPic.Designer.cs">
+      <DependentUpon>201911012144274_updateComment_w_CommentorPic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911021801260_updateAnimeModel_w_MalID.cs" />
+    <Compile Include="Migrations\201911021801260_updateAnimeModel_w_MalID.Designer.cs">
+      <DependentUpon>201911021801260_updateAnimeModel_w_MalID.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911110233299_addNewsArticlesTbl.cs" />
+    <Compile Include="Migrations\201911110233299_addNewsArticlesTbl.Designer.cs">
+      <DependentUpon>201911110233299_addNewsArticlesTbl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AnilistModel.cs" />
@@ -443,6 +499,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\NewAnimeReport.cs" />
+    <Compile Include="Models\NewsArticle.cs" />
     <Compile Include="Models\Picture.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\ViewModel\AnimeViewModel.cs" />
@@ -454,6 +511,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\..\Assets\Scripts\Bendov1.js" />
     <Content Include="Content\Bendo.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -461,6 +519,11 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Cerulean3.37.css" />
     <Content Include="Content\Images\Favorite.png" />
+    <Content Include="Content\Images\kmk_give_icon_03cd2f.png" />
+    <Content Include="Content\Images\thumbs down-checked.png" />
+    <Content Include="Content\Images\thumbs down-unchecked.png" />
+    <Content Include="Content\Images\thumbs up-checked.png" />
+    <Content Include="Content\Images\thumbs up-unchecked.png" />
     <Content Include="Content\Images\toru-icon.jpg" />
     <Content Include="Content\Images\UnFavorite.png" />
     <Content Include="Content\imgareaselect-animated.css" />
@@ -724,6 +787,45 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910160258490_UpdateComment_w_AddRepliedTo.resx">
       <DependentUpon>201910160258490_UpdateComment_w_AddRepliedTo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910192126321_UpdateVote_w_Voter.resx">
+      <DependentUpon>201910192126321_UpdateVote_w_Voter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910192129528_UpdateApplicationUser_w_RemovedCommentVotes.resx">
+      <DependentUpon>201910192129528_UpdateApplicationUser_w_RemovedCommentVotes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910241738279_changedVote.resx">
+      <DependentUpon>201910241738279_changedVote.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910241741007_UnchagedVote.resx">
+      <DependentUpon>201910241741007_UnchagedVote.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910250033170_UpdateVote_w_MadeVoterRequired.resx">
+      <DependentUpon>201910250033170_UpdateVote_w_MadeVoterRequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910250055517_UpdateVote_w_RemovedVoterRequired.resx">
+      <DependentUpon>201910250055517_UpdateVote_w_RemovedVoterRequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910250115529_test.resx">
+      <DependentUpon>201910250115529_test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910250142575_UpdateVote_ReplaceVoterId_w_VoterUserId.resx">
+      <DependentUpon>201910250142575_UpdateVote_ReplaceVoterId_w_VoterUserId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910280218558_updateIdentity_w_ProfilePic.resx">
+      <DependentUpon>201910280218558_updateIdentity_w_ProfilePic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910300209243_updateUser_w_Bio.resx">
+      <DependentUpon>201910300209243_updateUser_w_Bio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911012144274_updateComment_w_CommentorPic.resx">
+      <DependentUpon>201911012144274_updateComment_w_CommentorPic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911021801260_updateAnimeModel_w_MalID.resx">
+      <DependentUpon>201911021801260_updateAnimeModel_w_MalID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911110233299_addNewsArticlesTbl.resx">
+      <DependentUpon>201911110233299_addNewsArticlesTbl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -14,6 +14,7 @@ namespace DiscussionForum.Models
     {
         public int Id { get; set; }
         public int AnilistId { get; set; }
+        public int MALId { get; set; }
         public string Title_English { get; set; }
         public string Title_Romaji { get; set; }
         public string Description { get; set; }

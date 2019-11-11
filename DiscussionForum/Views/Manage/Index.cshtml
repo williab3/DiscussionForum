@@ -3,85 +3,161 @@
     ViewBag.Title = "Manage";
 }
 
-<h2>@ViewBag.Title.</h2>
+<h2>PROFILE</h2>
 
-<p class="text-success">@ViewBag.StatusMessage</p>
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>Password:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
-            {
-                @Html.ActionLink("Change your password", "ChangePassword")
-            }
-            else
-            {
-                @Html.ActionLink("Create", "SetPassword")
-            }
-            ]
-        </dd>
-        <dt>External Logins:</dt>
-        <dd>
-            @Model.Logins.Count [
-            @Html.ActionLink("Manage", "ManageLogins") ]
-        </dd>
-        @*
-            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
-             
-             See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
-             
-             Uncomment the following block after you have set up two-factor authentication
-        *@
-        @*  
-            <dt>Phone Number:</dt>
-            <dd>
-                @(Model.PhoneNumber ?? "None")
-                @if (Model.PhoneNumber != null)
-                {
-                    <br />
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                    using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+<div class="row">
+    <div class="col-md-6">
+        @using (Ajax.BeginForm("UpdateProfile",new { }, new AjaxOptions() { }, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+        <div class="media">
+            <div class="media-left">
+                <a id="profilePic" href="#">
+                    @if (Model.User.ProfilePic == null)
                     {
-                        @Html.AntiForgeryToken()
-                        <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
+                        <img id="imgPreview" class="media-object img-circle imagePreview" height="150" src="~/Content/Images/kmk_give_icon_03cd2f.png" />
                     }
+                    else
+                    {
+                        <img id="imgPreview" class="media-object img-circle imagePreview" height="150" src="data:image/png;base64, @System.Convert.ToBase64String(Model.User.ProfilePic.ImageData)">
+                    }
+                </a>
+                <input id="ImageData" name="ImageData" type="file"accept="image/png, image/jpg, image/jpeg, image/bmp" class="hidden" />
+            </div>
+            <div class="media-body">
+                @if (String.IsNullOrEmpty(Model.User.Bio))
+                {
+                    <p id="userBio" class="text-primary voteIcon">You haven't added a bio yet. Tell us a little about yourself.</p>
                 }
                 else
                 {
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
+                    <p id="userBio" class="text-primary voteIcon">@Model.User.Bio</p>
                 }
-            </dd>
-        *@
-        <dt>Two-Factor Authentication:</dt>
-        <dd>
-            <p>
-                There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication.
-            </p>
-            @*@if (Model.TwoFactor)
-                {
-                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                @Html.TextAreaFor(m => m.User.Bio, new { style = "display:none;", id = "bioTxtBx", @class = "form-control biobx", rows = "4" })
+            </div>
+            <div class="icon-container" style="margin-top: 5px">
+                <button id="btn-save" type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+        }
+    </div>
+    <div class="col-md-6">
+        <p class="text-success">@ViewBag.StatusMessage</p>
+        <div>
+            <h4>Change your account settings</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>Password:</dt>
+                <dd>
+                    [
+                    @if (Model.HasPassword)
                     {
-                        @Html.AntiForgeryToken()
-                        <text>Enabled
-                        <input type="submit" value="Disable" class="btn btn-link" />
-                        </text>
+                        @Html.ActionLink("Change your password", "ChangePassword")
                     }
-                }
-                else
-                {
-                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    else
                     {
-                        @Html.AntiForgeryToken()
-                        <text>Disabled
-                        <input type="submit" value="Enable" class="btn btn-link" />
-                        </text>
+                        @Html.ActionLink("Create", "SetPassword")
                     }
-                }*@
-        </dd>
-    </dl>
+                    ]
+                </dd>
+                <dt>External Logins:</dt>
+                <dd>
+                    @Model.Logins.Count [
+                    @Html.ActionLink("Manage", "ManageLogins") ]
+                </dd>
+                @*
+                Phone Numbers can used as a second factor of verification in a two-factor authentication system.
+
+                 See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                    for details on setting up this ASP.NET application to support two-factor authentication using SMS.
+
+                 Uncomment the following block after you have set up two-factor authentication
+                *@
+                @*
+                <dt>Phone Number:</dt>
+                <dd>
+                    @(Model.PhoneNumber ?? "None")
+                    @if (Model.PhoneNumber != null)
+                    {
+                        <br />
+                        <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+                        using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
+                        }
+                    }
+                    else
+                    {
+                        <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
+                    }
+                </dd>
+                *@
+                <dt>Two-Factor Authentication:</dt>
+                <dd>
+                    <p>
+                        There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                        for details on setting up this ASP.NET application to support two-factor authentication.
+                    </p>
+                    @*@if (Model.TwoFactor)
+                    {
+                        using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>Enabled
+                            <input type="submit" value="Disable" class="btn btn-link" />
+                            </text>
+                        }
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>Disabled
+                            <input type="submit" value="Enable" class="btn btn-link" />
+                            </text>
+                        }
+                    }*@
+                </dd>
+            </dl>
+        </div>
+
+    </div>
 </div>
+@section scripts{
+    <script>
+        var picUploader = $("#ImageData");
+        $("#profilePic").click(function (args) {
+            picUploader.click()
+            picUploader.change(function (args) {
+                var imageFile = args.target.files[0];
+                if (!imageFile.type.match("image.*")) {
+                    alert("The selected file is not an image. Please select an image file");
+                    return;
+                } else {
+                    var imageReader = new FileReader();
+                    imageReader.onload = function (args) {
+                        $("#imgPreview").attr("src", args.target.result).css("height", 150);
+                    };
+                    imageReader.readAsDataURL(imageFile);
+                    console.log(picUploader.val());
+                }
+            });
+        });
+        $("#userBio").click(function (args) {
+            var txtBxBio = $("#bioTxtBx");
+            txtBxBio.val($("#userBio").text());
+            txtBxBio.show();
+            $(this).hide();
+
+        });
+        $("#btn-save").click(function (args) {
+            var paraBio = $("#userBio");
+            var txtBxBio = $("#bioTxtBx");
+            paraBio.text(txtBxBio.val());
+            paraBio.show();
+            txtBxBio.hide();
+        });
+    </script>
+    }
