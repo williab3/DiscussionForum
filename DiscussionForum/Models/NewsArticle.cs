@@ -12,6 +12,6 @@ namespace DiscussionForum.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public AnimeModel PrimaryAnime { get; set; }
-        public Picture ArticleImage { get; set; }
+        public string ArticleImage { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace DiscussionForum.Controllers
             return View();
         }
 
+
         public async Task<ActionResult> ImportAnime()
         {
             MainAdminViewModel viewModel = new MainAdminViewModel();
@@ -42,12 +43,19 @@ namespace DiscussionForum.Controllers
 
             return PartialView(model);
         }
-
-        public async Task<PartialViewResult> NewsReport()
+        [HttpPost]
+        public async Task<PartialViewResult> NewsReport(int malId)
         {
             MainAdminViewModel viewModel = new MainAdminViewModel();
-            await viewModel.RefreshNewsReport();
-            return PartialView(viewModel);
+            await viewModel.RefreshNewsReport(malId);
+            if (viewModel.ProcessError.HasErrors)
+            {
+                return PartialView("_ErrorPartial.cshtml", viewModel.ProcessError);
+            }
+            else
+            {
+                return PartialView(viewModel);
+            }
         }
 
         public async Task<PartialViewResult> ImportUpdates()
@@ -77,7 +85,20 @@ namespace DiscussionForum.Controllers
             return PartialView("MassImport", viewModel);
         }
 
-
+        public PartialViewResult NavItem(int tabNo)
+        {
+            switch (tabNo)
+            {
+                case 1: 
+                    return PartialView("AnimeImportPartial");
+                case 2:
+                    MainAdminViewModel viewModel = new MainAdminViewModel();
+                    viewModel.GetPopularAnime();
+                    return PartialView("NewsImportPartial", viewModel);
+                default:
+                    return PartialView("");
+            }
+        }
         public PartialViewResult SeedTags()
         {
             MainAdminViewModel viewModel = new MainAdminViewModel();

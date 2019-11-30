@@ -1,0 +1,86 @@
+﻿@model DiscussionForum.Models.ViewModel.MainAdminViewModel
+@using DiscussionForum.Models
+
+<div id="importControls" class="row">
+    <div class="col-md-12">
+        <h3>Import News</h3>
+        @Ajax.ActionLink("Get News", "NewsReport", null, new AjaxOptions() { UpdateTargetId = "ann", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary" })
+    </div>
+</div>
+<div class="viewBox">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>MAL ID#</th>
+                <th>IMAGE</th>
+                <th>TITLE</th>
+                <th>POPULARITY</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.AnimeModels != null && Model.AnimeModels.Count > 0)
+            {
+                foreach (AnimeModel anime in Model.AnimeModels)
+                {
+
+                    <tr class="gridRow news">
+                        <td class="malID">@anime.MALId</td>
+                        <td><img class="gridRowImage" src="@anime.ImageUrlMedium" /></td>
+                        <td class="animeTitle">
+                            <p class="text-primary">@anime.Title_Romaji</p>
+                            @if (!String.IsNullOrEmpty(anime.Title_English))
+                            {
+                                <p class="subscript">@anime.Title_English</p>
+                            }
+                        </td>
+                        <td>@anime.Popularity</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<button id="btnArticle" type="button" data-toggle="modal" data-target="#articleModal" >open</button>
+<div class="modal fade" id="articleModal" tabindex="-1" role="dialog" aria-labelledby="articleModal-label">
+    <div class="modal-dialog modal-lg" role="document">
+        <div id="mainArticleModal" class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="articleModal-label">Modal title</h4>
+            </div>
+            <div class="modal-body newsImportModal">
+                <div id="articleContent">
+                    <div class="media articleMedia">
+                        <div class="articleMedia-controls-container">
+                            <a id="btnArticleBack" href="#" class="articleMedia-controls btn-info" style="margin-right:10px;">
+                                <span class="glyphicon glyphicon-arrow-left"></span>
+                            </a>
+                            <a id="btnArticleSave" href="#" class="articleMedia-controls btn-primary">
+                                <span class="glyphicon glyphicon-floppy-save"></span>
+                            </a>
+                        </div>
+                        <hr class="articleHr" />
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="media-object" src="http://placehold.it/64x64">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">Media heading</h4>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        </div>
+                    </div>
+                </div>
+                <div id="articleGrid">
+                    This is temporary content where the grid will show
+                    <button id="showArticle" class="btn btn-primary">Show</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="saveNews" type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/NewsImport.js"></script>

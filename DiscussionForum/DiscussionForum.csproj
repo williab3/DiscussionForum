@@ -488,6 +488,10 @@
     <Compile Include="Migrations\201911110233299_addNewsArticlesTbl.Designer.cs">
       <DependentUpon>201911110233299_addNewsArticlesTbl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911182155508_updateNewsArticle_w_replacearticleImage_w_string.cs" />
+    <Compile Include="Migrations\201911182155508_updateNewsArticle_w_replacearticleImage_w_string.Designer.cs">
+      <DependentUpon>201911182155508_updateNewsArticle_w_replacearticleImage_w_string.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AnilistModel.cs" />
@@ -496,6 +500,7 @@
     <Compile Include="Models\AnimeStatsModel.cs" />
     <Compile Include="Models\DateFavorited.cs" />
     <Compile Include="Models\Discussion.cs" />
+    <Compile Include="Models\Error.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\NewAnimeReport.cs" />
@@ -552,6 +557,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\NewsImport.js" />
     <Content Include="Scripts\testscript.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -596,6 +602,9 @@
     <Content Include="Views\Admin\ImportUpdates.cshtml" />
     <Content Include="Views\Admin\SeedTags.cshtml" />
     <Content Include="Views\Shared\_LoginModalPartial.cshtml" />
+    <Content Include="Views\Admin\AnimeImportPartial.cshtml" />
+    <Content Include="Views\Admin\NewsImportPartial.cshtml" />
+    <Content Include="Views\Shared\_ErrorPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\UserImages\" />
@@ -826,6 +835,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911110233299_addNewsArticlesTbl.resx">
       <DependentUpon>201911110233299_addNewsArticlesTbl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911182155508_updateNewsArticle_w_replacearticleImage_w_string.resx">
+      <DependentUpon>201911182155508_updateNewsArticle_w_replacearticleImage_w_string.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -3,11 +3,15 @@
 @using DiscussionForum.Custom_Helpers
 @using DiscussionForum.Models
 
+
 @{
     ViewBag.Title = "Admin Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<div id="overlay" style="display: none"></div>
+<div id="busyCursor" style="display: none">
+    <div id="spinner"></div>
+</div>
 <h2>Administrator</h2>
 
 <div class="btn-group" role="group" aria-label="...">
@@ -16,67 +20,30 @@
     @Html.ActionLink(" Seed Popularity", "SeedPopularity", null, new { @class = "btn btn-warning" })
     @Ajax.ActionLink("Seed Tags", "SeedTags", null, new AjaxOptions() { UpdateTargetId = "ann", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary" })
 </div>
-@Ajax.ActionLink("Get News", "NewsReport", null, new AjaxOptions() { UpdateTargetId = "massImportResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary" })
+
 <h3>Import</h3>
 <ul class="nav nav-tabs">
-    <li class="active"><a href="#">Anime</a></li>
-    <li><a href="#">News</a></li>
+    <li class="active">
+        @Ajax.ActionLink("Anime", "NavItem", new { tabNo = 1 }, new AjaxOptions()
+           {
+               UpdateTargetId = "importControls",
+               InsertionMode = InsertionMode.Replace,
+           })
+    </li>
+    <li>
+        @Ajax.ActionLink("News", "NavItem", new { tabNo = 2 }, new AjaxOptions()
+        {
+            UpdateTargetId = "importControls",
+            InsertionMode = InsertionMode.Replace,
+        })
+    </li>
 </ul>
 <div id="importControls">
-    <div class="row">
-        <div class="col-md-12 mass-import-container">
-            @using (Ajax.BeginForm("MassImport", new { onsubmit = "return false" }, new AjaxOptions() { UpdateTargetId = "massImportResults", InsertionMode = InsertionMode.Replace, HttpMethod = "Post" }))
-            {
-                <h3>Import New Anime</h3>
-                <div style="display: flex">
-                    <div class="form-group import-form-group">
-                        @Html.LabelFor(m => m.RequestVariables.StartDate)
-                        <select id="RequestVariables_SDQuantifier" name="SDQuantifier">
-                            <option value="">Comparator</option>
-                            <option value="startDate_lesser">Before</option>
-                            <option value="startDate_greater">After</option>
-                        </select>
-                        <input type="date" id="RequestVariables_StartDate" name="StartDate" class="form-control dateSelect" />
-                    </div>
-                    <div class="form-group import-form-group">
-                        @Html.LabelFor(m => m.RequestVariables.EndDate)
-                        <select id="RequestVariables_EDQuantifier" name="EDQuantifier">
-                            <option value="">Comparator</option>
-                            <option value="endDate_lesser">Before</option>
-                            <option value="endDate_greater">After</option>
-                        </select>
-                        <input type="date" id="RequestVariables_EndDate" name="EndDate" class="form-control dateSelect" />
-                    </div>
-                    <div class="form-group import-form-group">
-                        @Html.LabelFor(m => m.RequestVariables.ReleaseStatus)
-                        <select id="RequestVariables_ReleaseStatus" name="ReleaseStatus" class="form-control">
-                            <option value="">Status</option>
-                            <option value="RELEASING">Active</option>
-                            <option value="FINISHED">Completed</option>
-                            <option value="NOT_YET_RELEASED">Pending Release</option>
-                            <option value="CANCELLED">Canceled</option>
-                        </select>
-                    </div>
-                    <div class="form-group import-form-group">
-                        @Html.LabelFor(m => m.RequestVariables.SortByDate)
-                        <select id="sortList" name="SortByDate" class="form-control">
-                            <option value="START_DATE">Oldest First</option>
-                            <option value="START_DATE_DESC">Newest First</option>
-                        </select>
-                    </div>
-                    <div class="form-group import-form-group">
-                        @Html.LabelFor(m => m.RequestVariables.Title)
-                        @Html.TextBoxFor(m => m.RequestVariables.Title, new { @class = "form-control", placeholder = "Anime Title" })
-                    </div>
-                </div>
-                <div>
-                    <button type="submit" class="btn btn-primary">Import A Lot!!</button>
-                </div>
-                <div id="massImportResults"></div>
-            }
-        </div>
-    </div>
+    @{ Html.RenderAction("NavItem", new { tabNo = 1 });}
 
 </div>
 <div id="ann"></div>
+@section scripts{
+    <script src="~/Scripts/testscript.js"></script>
+    }
 

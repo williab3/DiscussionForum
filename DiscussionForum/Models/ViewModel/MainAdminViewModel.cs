@@ -16,6 +16,7 @@ using System.Drawing;
 using JikanDotNet;
 using ScrapySharp.Extensions;
 using HtmlAgilityPack;
+using ScrapySharp.Network;
 
 namespace DiscussionForum.Models.ViewModel
 {
@@ -32,8 +33,7 @@ namespace DiscussionForum.Models.ViewModel
         public List<NewAnimeReport> ReportItems { get; set; }
         public AnilistVariables RequestVariables { get; set; }
         public List<Tag> FreshTags { get; set; } = new List<Tag>();
-        public string ErrorMessage { get; set; }
-
+        public Error ProcessError { get; set; } = new Error();
         public List<NewsArticle> FreshNews { get; set; }
         public async Task<MainAdminViewModel> ImportNewAnimeData()
         {
@@ -136,31 +136,64 @@ namespace DiscussionForum.Models.ViewModel
             }
         }
 
-        public async Task RefreshNewsReport()
+        public void GetPopularAnime()
         {
             ApplicationDbContext dbContext = new ApplicationDbContext();
+            AnimeModels = dbContext.Animes.OrderByDescending(a => a.Popularity).Take(15).ToList();
+        }
+
+        public async Task RefreshNewsReport(int malId)
+        {
             Jikan malContext = new Jikan();
-            APICommunicator.ApiClient.DefaultRequestHeaders.Accept.Clear();
-            List<News> recentNews = new List<News>();
-            List<News> malNews = new List<News>();
-            List<AnimeModel> popularAnime = dbContext.Animes.OrderByDescending(an => an.Popularity).Take(6).ToList();
-            foreach (AnimeModel anime in popularAnime)
-            {
+            AnimeNews malNews = await malContext.GetAnimeNews(malId);
+            ApplicationDbContext dbContext = new ApplicationDbContext();
+            AnimeModel primaryAnime = dbContext.Animes.Where(a => a.MALId == malId).SingleOrDefault();
+            FreshNews = new List<NewsArticle>();
 
-                AnimeNews news = await malContext.GetAnimeNews(anime.MALId);
-                foreach (News article in news.News)
+            try
+            {
+                ScrapingBrowser malBrowser = new ScrapingBrowser();
+                malBrowser.AllowAutoRedirect = true;
+                malBrowser.AllowMetaRedirect = true;
+
+                foreach (News article in malNews.News.OrderByDescending(n => n.Date).Take(8))
                 {
-                    malNews.Add(article);
+                    WebPage malNewsPage = await malBrowser.NavigateToPageAsync(new Uri(article.Url), HttpVerb.Get);
+                    HtmlNode articleDiv = malNewsPage.Html.CssSelect("div.content.clearfix").FirstOrDefault();
+                    HtmlNode imageNode = malNewsPage.Html.CssSelect("div.content.clearfix > img").FirstOrDefault();
+                    if (imageNode != null)
+                    {
+                        FreshNews.Add(new NewsArticle()
+                        {
+                            PublishDate = article.Date ?? DateTime.MinValue,
+                            Title = article.Title,
+                            Content = articleDiv.InnerText,
+                            ArticleImage = imageNode.GetAttributeValue("src"),
+                            PrimaryAnime = primaryAnime
+                        }); 
+                    }
                 }
-                malNews = malNews.OrderByDescending(fn => fn.Date).Take(15).ToList();
-
+                ProcessError.HasErrors = false;
             }
-            HtmlWeb newsWeb = new HtmlWeb();
-            foreach (News article in malNews)
+            catch(HtmlWebException err)
             {
-                newsWeb.Load(article.Url);
+                ProcessError.HasErrors = true;
+                ProcessError.ErrorMessage = err.Message;
+                ProcessError.Translation = "Looks like that the MyAnimeList API wants to act like a lil bitch and won't return the requested data. Just try again after a few minutes.";
+                ProcessError.ErrorType = err.GetType();
             }
-
+            catch(InvalidOperationException err)
+            {
+                ProcessError.HasErrors = true;
+                ProcessError.ErrorMessage = err.Message;
+                ProcessError.ErrorType = err.GetType();
+            }
+            catch (Exception err)
+            {
+                ProcessError.HasErrors = true;
+                ProcessError.ErrorMessage = err.Message;
+                ProcessError.ErrorType = err.GetType();
+            }
             //ReportItems = dbContext.NewAnimeReport.ToList();
 
         }
@@ -417,7 +450,7 @@ namespace DiscussionForum.Models.ViewModel
             }
             catch (Exception err)
             {
-                viewModel.ErrorMessage = err.Message;
+                viewModel.ProcessError.ErrorMessage = err.Message;
             }
             return viewModel;
         }

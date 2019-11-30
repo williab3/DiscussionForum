@@ -3,7 +3,7 @@
 @using JikanDotNet
 <strong>@Model.FreshNews.Count news report links imported</strong>
 <div class="row">
-    <div class="col-md-12">
+    <div id="ImportContainer" class="col-md-12">
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -18,7 +18,7 @@
             </thead>
             @foreach (NewsArticle article in Model.FreshNews)
             {
-                <tr>
+                <tr data-mal-id="@article.Id">
                     <td>
                         <input type="checkbox" />
                     </td>
@@ -26,7 +26,7 @@
                         
                     </td>
                     <td>
-                        <img class="gridRowImage" src="@article.ArticleImage.ImageData" />
+                        <img class="gridRowImage" src="@article.ArticleImage" />
                     </td>
                     <td>
                         @article.Title

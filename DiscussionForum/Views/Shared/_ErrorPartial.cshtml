@@ -1,0 +1,10 @@
+﻿@model DiscussionForum.Models.Error
+
+<h3>Error</h3>
+<p>@Model.ErrorMessage</p>
+@if (!String.IsNullOrEmpty(Model.Translation))
+{
+<p>This probably means:</p>
+<p>@Model.Translation</p>
+
+}
