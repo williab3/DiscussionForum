@@ -61,13 +61,16 @@
                         </div>
                         <hr class="articleHr" />
                         <div class="media-left">
-                            <a href="#">
+                            <a id="articleImage" href="#" >
                                 <img class="media-object" src="http://placehold.it/64x64">
                             </a>
+                            <input id="imgUploader" type="file" style="display:none" accept="image/*" />
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading">Media heading</h4>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            <h4 id="articleTitle" class="media-heading editable">Media heading</h4>
+                            <h4 id="editTitleContainer" style="display:none;" class="stretch"><input id="titleEdit" class="form-control stretch" /></h4>
+                            <div id="articleText" class="viewBox editable"> Article Content goes here.</div>
+                            <textarea id="contentEdit" rows="10" style="display:none; width:515px" class="form-control"></textarea>
                         </div>
                     </div>
                 </div>

@@ -4,7 +4,7 @@
 
 <div class="row" id="importControls">
     <div class="col-md-12 mass-import-container">
-        @using (Ajax.BeginForm("MassImport", new { onsubmit = "return false" }, new AjaxOptions() { UpdateTargetId = "massImportResults", InsertionMode = InsertionMode.Replace, HttpMethod = "Post" }))
+        @using (Ajax.BeginForm("MassImport", new { onsubmit = "return false" }, new AjaxOptions() { UpdateTargetId = "massImportResults", InsertionMode = InsertionMode.Replace, HttpMethod = "Post", OnSuccess="uiUnlock();" }))
         {
             <h3>Import New Anime</h3>
             <div style="display: flex">
@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-primary">Import A Lot!!</button>
+                <button id="btnMassImport" type="submit" class="btn btn-primary">Import A Lot!!</button>
             </div>
             <div id="massImportResults"></div>
         }

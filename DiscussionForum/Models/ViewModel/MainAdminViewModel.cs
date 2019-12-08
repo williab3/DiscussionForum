@@ -179,12 +179,21 @@ namespace DiscussionForum.Models.ViewModel
             {
                 ProcessError.HasErrors = true;
                 ProcessError.ErrorMessage = err.Message;
+                ProcessError.Translation = "Some kinda web exception. Debug time!!";
+                ProcessError.ErrorType = err.GetType();
+            }
+            catch(System.Net.WebException err)
+            {
+                ProcessError.HasErrors = true;
+                ProcessError.ErrorMessage = err.Message;
                 ProcessError.Translation = "Looks like that the MyAnimeList API wants to act like a lil bitch and won't return the requested data. Just try again after a few minutes.";
+
                 ProcessError.ErrorType = err.GetType();
             }
             catch(InvalidOperationException err)
             {
                 ProcessError.HasErrors = true;
+                ProcessError.Translation = "I don't know what you did but you REALLY screwed this one up!! Debug time!!";
                 ProcessError.ErrorMessage = err.Message;
                 ProcessError.ErrorType = err.GetType();
             }
@@ -192,6 +201,7 @@ namespace DiscussionForum.Models.ViewModel
             {
                 ProcessError.HasErrors = true;
                 ProcessError.ErrorMessage = err.Message;
+                ProcessError.Translation = "No clue about this one. Take a closer look";
                 ProcessError.ErrorType = err.GetType();
             }
             //ReportItems = dbContext.NewAnimeReport.ToList();

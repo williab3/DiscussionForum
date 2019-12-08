@@ -18,17 +18,26 @@
             </thead>
             @foreach (NewsArticle article in Model.FreshNews)
             {
-                <tr data-mal-id="@article.Id">
-                    <td>
-                        <input type="checkbox" />
-                    </td>
+                <tr class="articleRow" data-mal-id="@article.Id">
+                        <td>
+                            <input class="rowCheckbox" type="checkbox" />
+                        </td>
                     <td>
                         
                     </td>
                     <td>
-                        <img class="gridRowImage" src="@article.ArticleImage" />
+                        <img class="gridRowImage" data-article="image" src="@article.ArticleImage" />
+                        <input class="articleContent" data-article="content" type="hidden" value="@article.Content" />
+                        @if (String.IsNullOrEmpty(article.PrimaryAnime.Title_English))
+                        {
+                            <input class="relatedAnime" data-article="anime" type="hidden" value="@article.PrimaryAnime.Title_Romaji" />
+                        }
+                        else
+                        {
+                            <input class="relatedAnime" data-article="anime" type="hidden" value="@article.PrimaryAnime.Title_English" />
+                        }
                     </td>
-                    <td>
+                    <td data-article="title">
                         @article.Title
                     </td>
                     <td>

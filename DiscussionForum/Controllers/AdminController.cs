@@ -50,7 +50,7 @@ namespace DiscussionForum.Controllers
             await viewModel.RefreshNewsReport(malId);
             if (viewModel.ProcessError.HasErrors)
             {
-                return PartialView("_ErrorPartial.cshtml", viewModel.ProcessError);
+                return PartialView("_ErrorPartial", viewModel.ProcessError);
             }
             else
             {

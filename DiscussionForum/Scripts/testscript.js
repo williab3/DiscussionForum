@@ -334,12 +334,25 @@
 
     });
 
-    $("tr").click(function (args) {
-        console.log("clickity click!!");
-    });
-
     $("body").mousemove(function (arg) {
         $("#busyCursor").css("left", arg.clientX - 10).css("top", arg.clientY - 60);
         //$("#spinner").css("left", arg.clientX - 10).css("top", arg.clientY - 60);
     });
+    $("#btnMassImport").click(function (args) {
+        uiBusy();
+    });
 });
+function uiBusy() {
+    $("#overlay").show();
+    $("#busyCursor").show();
+    $("body").css("cursor", "none");
+}
+function uiUnlock() {
+    setTimeout(function () {
+        $("#overlay").hide();
+    }, 300);
+    $("#busyCursor").hide();
+    $("body").css("cursor", "initial");
+
+}
+
